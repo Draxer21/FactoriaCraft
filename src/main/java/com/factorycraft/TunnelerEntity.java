@@ -298,6 +298,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        InteractionResult handled = engine.interact(player, hand);
         if (handled != null) return handled;
         // Sneak + right-click (or a seat that's taken): the machine's screen with bay and module slots.
         if (player.isSecondaryUseActive() || !canAddPassenger(player)) {
