@@ -1,0 +1,14 @@
+name: Probe
+on: push
+permissions:
+  contents: write
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/probe'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(curl -s https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge | jq -r '.versions[]' | grep -E '^26\.' | tr '\n' ' ')
+          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments -f body="NEO: $v"
