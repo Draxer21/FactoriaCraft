@@ -11,6 +11,18 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mc: '26.1'
+            neo: '26.1.0.19-beta'
+            range: '[26.1,26.1.2)'
+          - mc: '26.1.2'
+            neo: '26.1.2.122'
+            range: '[26.1.2]'
+    env:
+      VERSION_ARGS: -Pminecraft_version=${{ matrix.mc }} -Pneo_version=${{ matrix.neo }} -Pminecraft_version_range=${{ matrix.range }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
@@ -22,14 +34,14 @@ jobs:
         run: |
           chmod +x gradlew
           set -o pipefail
-          ./gradlew build --no-configuration-cache 2>&1 | tee build.log
+          ./gradlew build --no-configuration-cache $VERSION_ARGS 2>&1 | tee build.log
       - name: Report errors as a commit comment
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           {
-            echo '### Build failed'
+            echo '### [${{ matrix.mc }}] Build failed'
             echo '```'
             grep -E -A3 "error:|What went wrong|FAILURE|Exception" build.log | head -c 60000
             echo '```'
@@ -43,7 +55,7 @@ jobs:
           mkdir -p run/server
           echo "eula=true" > run/server/eula.txt
           printf 'online-mode=false\nlevel-type=minecraft\\:normal\n' > run/server/server.properties
-          ./gradlew runServer --no-configuration-cache > server.log 2>&1 &
+          ./gradlew runServer --no-configuration-cache $VERSION_ARGS > server.log 2>&1 &
           PID=$!
           for i in $(seq 1 150); do
             if grep -q 'Done (' server.log; then echo "Server started"; break; fi
@@ -54,7 +66,7 @@ jobs:
           kill $PID 2>/dev/null || true
           pkill -f 'net.neoforged' 2>/dev/null || true
           {
-            if grep -q 'Done (' server.log; then echo '### Server started OK'; else echo '### Server did NOT start'; fi
+            if grep -q 'Done (' server.log; then echo '### [${{ matrix.mc }}] Server started OK'; else echo '### [${{ matrix.mc }}] Server did NOT start'; fi
             echo '```'
             grep -E -i -B1 -A4 "exception|error|failed|couldn't|could not|unknown|missing|invalid" server.log \
               | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\." | head -c 60000
@@ -72,7 +84,7 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri mesa-utils > /dev/null
           mkdir -p run/client
           printf 'onboardAccessibility:false\nnarrator:0\nsoundDevice:""\n' > run/client/options.txt
-          xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient --no-configuration-cache > client.log 2>&1 &
+          xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient --no-configuration-cache $VERSION_ARGS > client.log 2>&1 &
           PID=$!
           for i in $(seq 1 180); do
             if grep -q -E 'Sound engine started|Narrator library|Created: .*minecraft:textures/atlas/blocks' client.log && sleep 30; then echo "Client loaded"; break; fi
@@ -82,7 +94,7 @@ jobs:
           kill $PID 2>/dev/null || true
           pkill -f 'net.neoforged' 2>/dev/null || true
           {
-            echo '### Client log (filtered)'
+            echo '### [${{ matrix.mc }}] Client log (filtered)'
             echo '```'
             grep -E -i -B1 -A3 "factorycraft|missing|unable to|exception|failed|couldn't" client.log \
               | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\.|kqueue" | head -c 60000
@@ -93,5 +105,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: factorycraft-jar
+          name: factorycraft-mc${{ matrix.mc }}
           path: build/libs/*.jar
