@@ -47,7 +47,7 @@ public final class OreMarkerRenderer extends EntityRenderer<OreMarkerEntity, Ore
         poseStack.pushPose();
         poseStack.translate(-0.51F, -0.01F, -0.51F);
         poseStack.scale(1.02F, 1.02F, 1.02F);
-        collector.submitMovingBlock(poseStack, state.block, state.outlineColor);
+        collector.submitMovingBlock(poseStack, state.block);
         poseStack.popPose();
     }
 }

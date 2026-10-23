@@ -97,7 +97,7 @@ public class CraneRenderer extends WorkVehicleRenderer {
             BlockPos offset = crane.offsets.get(i);
             poseStack.pushPose();
             poseStack.translate(offset.getX() - 0.5F, offset.getY() - crane.loadHeight, offset.getZ() - 0.5F);
-            collector.submitMovingBlock(poseStack, block, state.outlineColor);
+            collector.submitMovingBlock(poseStack, block);
             poseStack.popPose();
         }
         poseStack.popPose();

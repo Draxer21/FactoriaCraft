@@ -50,7 +50,7 @@ public final class VehicleClient {
 
     /** Opens the manual (called from {@link GuideBookItem} on the client only). */
     public static void openGuide() {
-        Minecraft.getInstance().gui.setScreen(new GuideScreen());
+        Minecraft.getInstance().setScreen(new GuideScreen());
     }
 
     // ---------------------------------------------------------------- registration
@@ -64,7 +64,7 @@ public final class VehicleClient {
 
     @SubscribeEvent
     public static void registerClientPayloads(net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent event) {
-        event.register(StationDataPayload.TYPE, (payload, context) -> Minecraft.getInstance().gui.setScreen(new StationScreen(payload)));
+        event.register(StationDataPayload.TYPE, (payload, context) -> Minecraft.getInstance().setScreen(new StationScreen(payload)));
     }
 
     @SubscribeEvent
