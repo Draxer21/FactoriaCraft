@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "factorycraft:block/mechanic_bench_top",
+    "side": "factorycraft:block/mechanic_bench_side",
+    "bottom": "factorycraft:block/machine_bottom"
+  }
+}

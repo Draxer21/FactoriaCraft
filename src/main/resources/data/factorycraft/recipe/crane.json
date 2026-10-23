@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  C",
+    "IGC",
+    "BBB"
+  ],
+  "key": {
+    "C": "minecraft:iron_chain",
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:glass",
+    "B": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "factorycraft:crane",
+    "count": 1
+  }
+}

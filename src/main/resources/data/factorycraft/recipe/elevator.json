@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ICI",
+    "ICI",
+    "ICI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "factorycraft:conveyor"
+  },
+  "result": {
+    "id": "factorycraft:elevator",
+    "count": 3
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "factorycraft:block/control_station"
+    },
+    "facing=east": {
+      "model": "factorycraft:block/control_station",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "factorycraft:block/control_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "factorycraft:block/control_station",
+      "y": 270
+    }
+  }
+}

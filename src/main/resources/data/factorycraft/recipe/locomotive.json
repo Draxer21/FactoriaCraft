@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "G  ",
+    "PPP",
+    "GMG"
+  ],
+  "key": {
+    "G": "factorycraft:iron_gear",
+    "P": "factorycraft:iron_plate",
+    "M": "minecraft:minecart"
+  },
+  "result": {
+    "id": "factorycraft:locomotive",
+    "count": 1
+  }
+}

@@ -1,0 +1,35 @@
+package com.factorycraft;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+
+public final class DumpTruckItem extends Item {
+    public DumpTruckItem(Properties properties) {
+        super(properties.stacksTo(1));
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+
+        BlockPos placeAt = context.getClickedPos().relative(context.getClickedFace());
+        DumpTruckEntity truck = FactoryCraft.DUMP_TRUCK.value().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+        if (truck == null) return InteractionResult.FAIL;
+
+        Player player = context.getPlayer();
+        if (player != null) truck.setYRot(player.getYRot());
+        truck.setInitialPos(placeAt.getX() + 0.5, placeAt.getY(), placeAt.getZ() + 0.5);
+        if (!level.noCollision(truck, truck.getBoundingBox()) || !level.addFreshEntity(truck)) {
+            return InteractionResult.FAIL;
+        }
+        if (player != null) player.startRiding(truck);
+        if (player != null && !player.getAbilities().instabuild) context.getItemInHand().shrink(1);
+        return InteractionResult.CONSUME;
+    }
+}

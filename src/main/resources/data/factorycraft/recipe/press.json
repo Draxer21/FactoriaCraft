@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IPI",
+    "IAI",
+    "IRI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:piston",
+    "A": "minecraft:anvil",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:press",
+    "count": 1
+  }
+}

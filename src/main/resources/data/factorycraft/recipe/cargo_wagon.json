@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ICI",
+    "IBI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:chest",
+    "B": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "factorycraft:cargo_wagon",
+    "count": 1
+  }
+}

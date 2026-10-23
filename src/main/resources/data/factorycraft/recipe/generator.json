@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "PFP",
+    "IRI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:piston",
+    "F": "minecraft:blast_furnace",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:generator",
+    "count": 1
+  }
+}

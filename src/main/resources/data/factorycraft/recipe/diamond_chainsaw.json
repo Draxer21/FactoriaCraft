@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "factorycraft_chainsaw",
+  "pattern": [
+    "MMM",
+    "IRI",
+    " S "
+  ],
+  "key": {
+    "M": "#minecraft:diamond_tool_materials",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "factorycraft:diamond_chainsaw",
+    "count": 1
+  }
+}

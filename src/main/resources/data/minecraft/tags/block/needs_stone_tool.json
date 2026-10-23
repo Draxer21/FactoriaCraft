@@ -1,0 +1,15 @@
+{
+  "values": [
+    "factorycraft:crusher",
+    "factorycraft:industrial_furnace",
+    "factorycraft:well_drill",
+    "factorycraft:generator",
+    "factorycraft:ore_washer",
+    "factorycraft:press",
+    "factorycraft:mixer",
+    "factorycraft:pump",
+    "factorycraft:packager",
+    "factorycraft:robot_arm",
+    "factorycraft:control_station"
+  ]
+}

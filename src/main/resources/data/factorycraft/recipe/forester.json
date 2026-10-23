@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "G A",
+    "IRS",
+    "BBB"
+  ],
+  "key": {
+    "G": "minecraft:glass",
+    "A": "minecraft:iron_axe",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone_block",
+    "S": "minecraft:stonecutter",
+    "B": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "factorycraft:forester",
+    "count": 1
+  }
+}

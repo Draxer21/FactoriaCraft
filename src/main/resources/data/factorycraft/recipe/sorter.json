@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "factorycraft:conveyor",
+    "minecraft:comparator",
+    "minecraft:hopper"
+  ],
+  "result": {
+    "id": "factorycraft:sorter",
+    "count": 1
+  }
+}

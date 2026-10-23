@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "WCW",
+    "III"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "G": "factorycraft:iron_gear",
+    "W": "#minecraft:planks",
+    "C": "minecraft:crafting_table",
+    "I": "minecraft:iron_ingot"
+  },
+  "result": {
+    "id": "factorycraft:mechanic_bench",
+    "count": 1
+  }
+}

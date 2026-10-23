@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "factorycraft_drill",
+  "pattern": [
+    " MM",
+    "IRM",
+    "S  "
+  ],
+  "key": {
+    "M": "#minecraft:iron_tool_materials",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "factorycraft:iron_drill",
+    "count": 1
+  }
+}

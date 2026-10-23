@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "factorycraft_hammer",
+  "pattern": [
+    "MMM",
+    "MSM",
+    " S "
+  ],
+  "key": {
+    "M": "#minecraft:iron_tool_materials",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "factorycraft:iron_hammer",
+    "count": 1
+  }
+}

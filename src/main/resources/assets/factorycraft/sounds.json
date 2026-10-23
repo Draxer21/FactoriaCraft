@@ -1,0 +1,44 @@
+{
+  "engine_loop": {
+    "sounds": [
+      "factorycraft:engine_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.engine_loop"
+  },
+  "engine_start": {
+    "sounds": [
+      "factorycraft:engine_start"
+    ],
+    "subtitle": "subtitles.factorycraft.engine_start"
+  },
+  "engine_stop": {
+    "sounds": [
+      "factorycraft:engine_stop"
+    ],
+    "subtitle": "subtitles.factorycraft.engine_stop"
+  },
+  "tracks_loop": {
+    "sounds": [
+      "factorycraft:tracks_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.tracks_loop"
+  },
+  "drill_loop": {
+    "sounds": [
+      "factorycraft:drill_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.drill_loop"
+  },
+  "crane_winch": {
+    "sounds": [
+      "factorycraft:crane_winch"
+    ],
+    "subtitle": "subtitles.factorycraft.crane_winch"
+  },
+  "hydraulic": {
+    "sounds": [
+      "factorycraft:hydraulic"
+    ],
+    "subtitle": "subtitles.factorycraft.hydraulic"
+  }
+}

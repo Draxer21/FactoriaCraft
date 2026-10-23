@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PCP",
+    "GKG",
+    "PRP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "C": "minecraft:crafter",
+    "G": "factorycraft:iron_gear",
+    "K": "minecraft:piston",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:packager",
+    "count": 1
+  }
+}

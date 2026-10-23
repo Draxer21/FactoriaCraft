@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "front": "factorycraft:block/industrial_furnace_front",
+    "side": "factorycraft:block/industrial_furnace_side",
+    "top": "factorycraft:block/industrial_furnace_top",
+    "bottom": "factorycraft:block/machine_bottom"
+  }
+}

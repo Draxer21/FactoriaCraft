@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "CCI",
+    "BBB"
+  ],
+  "key": {
+    "G": "minecraft:glass",
+    "C": "minecraft:cauldron",
+    "I": "minecraft:iron_ingot",
+    "B": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "factorycraft:tanker",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "PGP",
+    "PRP"
+  ],
+  "key": {
+    "T": "minecraft:redstone_torch",
+    "P": "factorycraft:iron_plate",
+    "G": "minecraft:glass_pane",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:drone_controller",
+    "count": 1
+  }
+}

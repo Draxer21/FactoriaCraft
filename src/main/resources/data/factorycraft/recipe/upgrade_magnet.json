@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "RXR",
+    "IGI"
+  ],
+  "key": {
+    "I": "factorycraft:iron_plate",
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "X": "minecraft:lodestone"
+  },
+  "result": {
+    "id": "factorycraft:upgrade_magnet",
+    "count": 1
+  }
+}

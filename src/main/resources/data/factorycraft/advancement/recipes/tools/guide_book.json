@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:book"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "factorycraft:guide_book"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_material"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "factorycraft:guide_book"
+    ]
+  }
+}

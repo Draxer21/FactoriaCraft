@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "FPF",
+    "IRI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "F": "minecraft:flint",
+    "P": "minecraft:piston",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:crusher",
+    "count": 1
+  }
+}

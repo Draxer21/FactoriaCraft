@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:netherite_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "factorycraft:netherite_drill_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_material"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "factorycraft:netherite_drill_smithing"
+    ]
+  }
+}

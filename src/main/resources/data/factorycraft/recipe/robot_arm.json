@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " GP",
+    " G ",
+    "PRP"
+  ],
+  "key": {
+    "G": "factorycraft:iron_gear",
+    "P": "factorycraft:iron_plate",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:robot_arm",
+    "count": 1
+  }
+}

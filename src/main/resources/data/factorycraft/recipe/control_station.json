@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "CRC",
+    "PPP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "G": "minecraft:glass_pane",
+    "C": "minecraft:comparator",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:control_station",
+    "count": 1
+  }
+}

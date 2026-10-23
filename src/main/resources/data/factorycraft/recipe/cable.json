@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "WWW",
+    "CRC",
+    "WWW"
+  ],
+  "key": {
+    "W": "minecraft:black_wool",
+    "C": "minecraft:copper_ingot",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:cable",
+    "count": 8
+  }
+}

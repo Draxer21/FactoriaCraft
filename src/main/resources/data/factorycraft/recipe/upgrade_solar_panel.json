@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "RXR",
+    "IGI"
+  ],
+  "key": {
+    "I": "factorycraft:iron_plate",
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "X": "minecraft:daylight_detector"
+  },
+  "result": {
+    "id": "factorycraft:upgrade_solar_panel",
+    "count": 1
+  }
+}

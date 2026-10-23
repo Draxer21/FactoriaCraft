@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "factorycraft_vehicle",
+  "pattern": [
+    " GD",
+    "IRI",
+    "TTT"
+  ],
+  "key": {
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_block",
+    "R": "minecraft:redstone_block",
+    "T": "minecraft:iron_ingot",
+    "D": "factorycraft:diamond_drill"
+  },
+  "result": {
+    "id": "factorycraft:tunneler",
+    "count": 1
+  }
+}

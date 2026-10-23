@@ -1,0 +1,17 @@
+{
+  "parent": "factorycraft:block/fluid_pipe_core",
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        45,
+        0
+      ],
+      "scale": [
+        1.6,
+        1.6,
+        1.6
+      ]
+    }
+  }
+}

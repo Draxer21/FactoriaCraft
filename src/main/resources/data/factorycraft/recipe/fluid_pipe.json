@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GGG",
+    "PPP"
+  ],
+  "key": {
+    "P": "factorycraft:copper_plate",
+    "G": "minecraft:glass"
+  },
+  "result": {
+    "id": "factorycraft:fluid_pipe",
+    "count": 8
+  }
+}

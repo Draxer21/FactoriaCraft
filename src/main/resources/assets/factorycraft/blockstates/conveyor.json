@@ -1,0 +1,139 @@
+{
+  "variants": {
+    "facing=north,slope=flat,turn=straight": {
+      "model": "factorycraft:block/conveyor"
+    },
+    "facing=north,slope=flat,turn=from_left": {
+      "model": "factorycraft:block/conveyor_turn_left"
+    },
+    "facing=north,slope=flat,turn=from_right": {
+      "model": "factorycraft:block/conveyor_turn_right"
+    },
+    "facing=north,slope=up,turn=straight": {
+      "model": "factorycraft:block/conveyor_up"
+    },
+    "facing=north,slope=up,turn=from_left": {
+      "model": "factorycraft:block/conveyor_up"
+    },
+    "facing=north,slope=up,turn=from_right": {
+      "model": "factorycraft:block/conveyor_up"
+    },
+    "facing=north,slope=down,turn=straight": {
+      "model": "factorycraft:block/conveyor_down"
+    },
+    "facing=north,slope=down,turn=from_left": {
+      "model": "factorycraft:block/conveyor_down"
+    },
+    "facing=north,slope=down,turn=from_right": {
+      "model": "factorycraft:block/conveyor_down"
+    },
+    "facing=east,slope=flat,turn=straight": {
+      "model": "factorycraft:block/conveyor",
+      "y": 90
+    },
+    "facing=east,slope=flat,turn=from_left": {
+      "model": "factorycraft:block/conveyor_turn_left",
+      "y": 90
+    },
+    "facing=east,slope=flat,turn=from_right": {
+      "model": "factorycraft:block/conveyor_turn_right",
+      "y": 90
+    },
+    "facing=east,slope=up,turn=straight": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 90
+    },
+    "facing=east,slope=up,turn=from_left": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 90
+    },
+    "facing=east,slope=up,turn=from_right": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 90
+    },
+    "facing=east,slope=down,turn=straight": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 90
+    },
+    "facing=east,slope=down,turn=from_left": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 90
+    },
+    "facing=east,slope=down,turn=from_right": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 90
+    },
+    "facing=south,slope=flat,turn=straight": {
+      "model": "factorycraft:block/conveyor",
+      "y": 180
+    },
+    "facing=south,slope=flat,turn=from_left": {
+      "model": "factorycraft:block/conveyor_turn_left",
+      "y": 180
+    },
+    "facing=south,slope=flat,turn=from_right": {
+      "model": "factorycraft:block/conveyor_turn_right",
+      "y": 180
+    },
+    "facing=south,slope=up,turn=straight": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 180
+    },
+    "facing=south,slope=up,turn=from_left": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 180
+    },
+    "facing=south,slope=up,turn=from_right": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 180
+    },
+    "facing=south,slope=down,turn=straight": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 180
+    },
+    "facing=south,slope=down,turn=from_left": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 180
+    },
+    "facing=south,slope=down,turn=from_right": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 180
+    },
+    "facing=west,slope=flat,turn=straight": {
+      "model": "factorycraft:block/conveyor",
+      "y": 270
+    },
+    "facing=west,slope=flat,turn=from_left": {
+      "model": "factorycraft:block/conveyor_turn_left",
+      "y": 270
+    },
+    "facing=west,slope=flat,turn=from_right": {
+      "model": "factorycraft:block/conveyor_turn_right",
+      "y": 270
+    },
+    "facing=west,slope=up,turn=straight": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 270
+    },
+    "facing=west,slope=up,turn=from_left": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 270
+    },
+    "facing=west,slope=up,turn=from_right": {
+      "model": "factorycraft:block/conveyor_up",
+      "y": 270
+    },
+    "facing=west,slope=down,turn=straight": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 270
+    },
+    "facing=west,slope=down,turn=from_left": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 270
+    },
+    "facing=west,slope=down,turn=from_right": {
+      "model": "factorycraft:block/conveyor_down",
+      "y": 270
+    }
+  }
+}

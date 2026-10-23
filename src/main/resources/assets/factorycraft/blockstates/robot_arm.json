@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "active=false,facing=north": {
+      "model": "factorycraft:block/robot_arm"
+    },
+    "active=true,facing=north": {
+      "model": "factorycraft:block/robot_arm_active"
+    },
+    "active=false,facing=east": {
+      "model": "factorycraft:block/robot_arm",
+      "y": 90
+    },
+    "active=true,facing=east": {
+      "model": "factorycraft:block/robot_arm_active",
+      "y": 90
+    },
+    "active=false,facing=south": {
+      "model": "factorycraft:block/robot_arm",
+      "y": 180
+    },
+    "active=true,facing=south": {
+      "model": "factorycraft:block/robot_arm_active",
+      "y": 180
+    },
+    "active=false,facing=west": {
+      "model": "factorycraft:block/robot_arm",
+      "y": 270
+    },
+    "active=true,facing=west": {
+      "model": "factorycraft:block/robot_arm_active",
+      "y": 270
+    }
+  }
+}
