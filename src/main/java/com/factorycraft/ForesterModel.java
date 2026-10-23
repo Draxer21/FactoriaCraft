@@ -101,7 +101,7 @@ public final class ForesterModel extends EntityModel<BoatRenderState> {
                 .addBox(-2, -1.5F, -2, 4, 3, 4), PartPose.ZERO);
         for (int k = 0; k < 12; k++) {
             saw.addOrReplaceChild("saw_tooth_" + k, CubeListBuilder.create().texOffs(166, 74)
-                    .addBox(9.5F, -0.5F, -1, 2, 1, 2), PartPose.rotation(0, (float) (k * Math.PI / 6 + Math.PI / 12), 0));
+                    .addBox(8.0F, -0.5F, -1, 3, 1, 2), PartPose.rotation(0, (float) (k * Math.PI / 6 + Math.PI / 12), 0));
         }
         root.addOrReplaceChild("saw_arm", CubeListBuilder.create().texOffs(140, 74)
                 .addBox(32, -8, -1, 3, 3, 2), PartPose.ZERO);
