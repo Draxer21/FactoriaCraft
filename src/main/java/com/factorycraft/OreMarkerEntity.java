@@ -4,7 +4,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
+import net.neoforged.neoforge.common.Tags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -60,14 +60,14 @@ public final class OreMarkerEntity extends Entity {
     @Override
     public int getTeamColor() {
         BlockState ore = getOre();
-        if (ore.is(BlockTags.DIAMOND_ORES)) return 0x4FF0E6;
-        if (ore.is(BlockTags.EMERALD_ORES)) return 0x3CE070;
-        if (ore.is(BlockTags.GOLD_ORES) || ore.is(Blocks.NETHER_GOLD_ORE)) return 0xFFD84A;
-        if (ore.is(BlockTags.IRON_ORES)) return 0xE0B48C;
-        if (ore.is(BlockTags.COPPER_ORES)) return 0xE07A3C;
-        if (ore.is(BlockTags.REDSTONE_ORES)) return 0xFF3030;
-        if (ore.is(BlockTags.LAPIS_ORES)) return 0x3060FF;
-        if (ore.is(BlockTags.COAL_ORES)) return 0x505050;
+        if (ore.is(Tags.Blocks.ORES_DIAMOND)) return 0x4FF0E6;
+        if (ore.is(Tags.Blocks.ORES_EMERALD)) return 0x3CE070;
+        if (ore.is(Tags.Blocks.ORES_GOLD) || ore.is(Blocks.NETHER_GOLD_ORE)) return 0xFFD84A;
+        if (ore.is(Tags.Blocks.ORES_IRON)) return 0xE0B48C;
+        if (ore.is(Tags.Blocks.ORES_COPPER)) return 0xE07A3C;
+        if (ore.is(Tags.Blocks.ORES_REDSTONE)) return 0xFF3030;
+        if (ore.is(Tags.Blocks.ORES_LAPIS)) return 0x3060FF;
+        if (ore.is(Tags.Blocks.ORES_COAL)) return 0x505050;
         if (ore.is(Blocks.ANCIENT_DEBRIS)) return 0xA050C0;
         return 0xFFFFFF;
     }

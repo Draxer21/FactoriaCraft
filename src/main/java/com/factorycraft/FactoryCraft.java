@@ -175,7 +175,7 @@ public final class FactoryCraft {
     public static final DeferredHolder<Item, Item> HARVESTER_ITEM = ITEMS.registerItem("harvester",
             properties -> new VehicleItem(properties, HARVESTER::value));
     public static final DeferredHolder<EntityType<?>, EntityType<CraneEntity>> CRANE = ENTITY_TYPES.register("crane", () ->
-            EntityType.Builder.of(CraneEntity::new, MobCategory.MISC)
+            EntityType.Builder.<CraneEntity>of(CraneEntity::new, MobCategory.MISC)
                     .sized(3.4F, 3.6F)
                     .clientTrackingRange(16)
                     .updateInterval(2)
