@@ -68,6 +68,8 @@ public final class VehicleEngine {
     private final EntityDataAccessor<Integer> fuel;
     private final EntityDataAccessor<Integer> upgrades;
     private boolean wasDriven;
+    /** The installed modules as real items (shown in the vehicle's screen). Server side is authoritative. */
+    private final ModuleContainer modules = new ModuleContainer();
     /** Fractional fuel burnt (or charged) but not yet taken from the tank. */
     private double burnDebt;
     private @Nullable ItemStack fortuneTool;
@@ -124,8 +126,103 @@ public final class VehicleEngine {
 
     // ---------------------------------------------------------------- upgrades
 
+    /** Synced bits: low bits = installed modules, bits 28-29 = headlight mode. */
+    private int raw() {
+        return vehicle.getEntityData().get(upgrades);
+    }
+
+    private void setRaw(int value) {
+        if (raw() != value) vehicle.getEntityData().set(upgrades, value);
+    }
+
     public boolean has(Upgrade upgrade) {
-        return (vehicle.getEntityData().get(upgrades) & upgrade.bit()) != 0;
+        return (raw() & upgrade.bit()) != 0;
+    }
+
+    /** The module slots, for the vehicle screen. */
+    public Container modules() {
+        return modules;
+    }
+
+    /** Whether {@code stack} may go into a module slot (fits this machine, not doubled, room left). */
+    public boolean canInstall(ItemStack stack, int replacingSlot) {
+        if (!(stack.getItem() instanceof UpgradeModuleItem module) || !module.upgrade().fits(vehicle)) return false;
+        int used = 0;
+        for (int i = 0; i < modules.getContainerSize(); i++) {
+            if (i == replacingSlot) continue;
+            ItemStack other = modules.getItem(i);
+            if (other.getItem() instanceof UpgradeModuleItem installed) {
+                if (installed.upgrade() == module.upgrade()) return false;
+                used += installed.upgrade().slots();
+            }
+        }
+        return used + module.upgrade().slots() <= MAX_UPGRADES;
+    }
+
+    /** Recomputes the synced module bits from the module slots. */
+    private void syncModules() {
+        int bits = 0;
+        for (int i = 0; i < modules.getContainerSize(); i++) {
+            if (modules.getItem(i).getItem() instanceof UpgradeModuleItem module) bits |= module.upgrade().bit();
+        }
+        if (vehicle.level().isClientSide()) return;
+        setRaw((raw() & LIGHT_MASK) | bits);
+        fortuneTool = null;
+        setFuel(getFuel()); // clamp if the big tank came out
+    }
+
+    /** Module storage that keeps the synced bits up to date. */
+    private final class ModuleContainer extends net.minecraft.world.SimpleContainer {
+        ModuleContainer() {
+            super(MAX_UPGRADES);
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            syncModules();
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 1;
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return vehicle.isAlive() && player.distanceToSqr(vehicle) < 64.0;
+        }
+    }
+
+    // ---------------------------------------------------------------- headlights
+
+    /** AUTO: on in the dark while driving. ON: always on while someone rides. OFF: never. */
+    public enum LightMode { AUTO, ON, OFF }
+
+    private static final int LIGHT_SHIFT = 28;
+    private static final int LIGHT_MASK = 3 << LIGHT_SHIFT;
+
+    public LightMode lightMode() {
+        int value = (raw() & LIGHT_MASK) >>> LIGHT_SHIFT;
+        return LightMode.values()[Math.min(value, 2)];
+    }
+
+    /** Headlight key pressed by the driver: AUTO -> ON -> OFF -> AUTO. */
+    public void cycleLights(Player driver) {
+        LightMode next = LightMode.values()[(lightMode().ordinal() + 1) % 3];
+        setRaw((raw() & ~LIGHT_MASK) | (next.ordinal() << LIGHT_SHIFT));
+        driver.sendOverlayMessage(Component.translatable("message.factorycraft.lights",
+                Component.translatable("hud.factorycraft.lights." + next.name().toLowerCase())));
+    }
+
+    /** Whether the headlights should shine now ({@code dark}: it's night or underground). */
+    public boolean lightsWanted(boolean driven, boolean dark) {
+        if (!driven || !isRunning()) return false;
+        return switch (lightMode()) {
+            case ON -> true;
+            case OFF -> false;
+            case AUTO -> dark;
+        };
     }
 
     public List<Upgrade> installed() {
@@ -209,8 +306,11 @@ public final class VehicleEngine {
             player.sendOverlayMessage(Component.translatable("message.factorycraft.upgrade.full", MAX_UPGRADES));
             return InteractionResult.FAIL;
         }
-        vehicle.getEntityData().set(upgrades, vehicle.getEntityData().get(upgrades) | upgrade.bit());
-        fortuneTool = null;
+        for (int i = 0; i < modules.getContainerSize(); i++) {
+            if (!modules.getItem(i).isEmpty()) continue;
+            modules.setItem(i, held.copyWithCount(1));
+            break;
+        }
         if (!player.getAbilities().instabuild) held.shrink(1);
         vehicle.level().playSound(null, vehicle.getX(), vehicle.getY(), vehicle.getZ(),
                 SoundEvents.ANVIL_USE, SoundSource.NEUTRAL, 0.5F, 1.6F);
@@ -225,13 +325,12 @@ public final class VehicleEngine {
             player.sendOverlayMessage(Component.translatable("message.factorycraft.upgrade.none"));
             return InteractionResult.FAIL;
         }
-        for (Upgrade upgrade : list) {
-            ItemStack module = new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(upgrade).value());
+        for (int i = 0; i < modules.getContainerSize(); i++) {
+            ItemStack module = modules.removeItemNoUpdate(i);
+            if (module.isEmpty()) continue;
             if (!player.getInventory().add(module)) player.drop(module, false);
         }
-        vehicle.getEntityData().set(upgrades, 0);
-        fortuneTool = null;
-        setFuel(getFuel()); // clamp to the normal tank
+        modules.setChanged();
         vehicle.level().playSound(null, vehicle.getX(), vehicle.getY(), vehicle.getZ(),
                 SoundEvents.ANVIL_USE, SoundSource.NEUTRAL, 0.5F, 1.2F);
         player.sendOverlayMessage(Component.translatable("message.factorycraft.upgrade.removed", list.size()));
@@ -360,12 +459,37 @@ public final class VehicleEngine {
 
     public void save(ValueOutput output) {
         output.putInt("Fuel", getFuel());
-        output.putInt("Upgrades", vehicle.getEntityData().get(upgrades));
+        output.putInt("Lights", lightMode().ordinal());
+        java.util.List<ItemStack> list = new java.util.ArrayList<>();
+        for (int i = 0; i < modules.getContainerSize(); i++) list.add(modules.getItem(i));
+        output.store("Modules", ItemStack.OPTIONAL_CODEC.listOf(), list);
     }
 
     public void load(ValueInput input) {
-        vehicle.getEntityData().set(upgrades, input.getIntOr("Upgrades", 0));
+        java.util.Optional<java.util.List<ItemStack>> stored = input.read("Modules", ItemStack.OPTIONAL_CODEC.listOf());
+        if (stored.isPresent()) {
+            for (int i = 0; i < modules.getContainerSize() && i < stored.get().size(); i++) {
+                modules.setItem(i, stored.get().get(i));
+            }
+        } else {
+            // Worlds from before module slots: turn the old bit mask into module items.
+            int legacy = input.getIntOr("Upgrades", 0);
+            int slot = 0;
+            for (Upgrade upgrade : Upgrade.values()) {
+                if ((legacy & upgrade.bit()) == 0 || slot >= MAX_UPGRADES) continue;
+                modules.setItem(slot++, new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(upgrade).value()));
+            }
+        }
+        setRaw((Math.min(input.getIntOr("Lights", 0), 2) << LIGHT_SHIFT) | (raw() & ~LIGHT_MASK));
+        syncModules();
         setFuel(input.getIntOr("Fuel", STARTER_FUEL));
+    }
+
+    /** Drops the installed modules (the machine was broken). Call from the vehicle's remove(). */
+    public void dropModules(Entity.RemovalReason reason) {
+        if (reason.shouldDestroy() && !vehicle.level().isClientSide()) {
+            net.minecraft.world.Containers.dropContents(vehicle.level(), vehicle, modules);
+        }
     }
 
     /** True while {@code entity} is a machine whose engine is off (for lights, sounds, the HUD). */

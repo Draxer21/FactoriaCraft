@@ -54,6 +54,7 @@ public final class TunnelerRenderer extends AbstractBoatRenderer {
             tunneler.pilotView = minecraft.player != null && entity.hasPassenger(minecraft.player)
                     && minecraft.options.getCameraType().isFirstPerson();
             tunneler.lightsOn = Headlights.areOn(entity);
+            tunneler.travelled = TrackTreads.travelled(entity, partialTicks);
         }
     }
 

@@ -28,6 +28,7 @@ public final class CargoWagonRenderer extends AbstractBoatRenderer {
     public static final class WagonRenderState extends BoatRenderState {
         public float pitch;
         public float fill;
+        public float travelled;
     }
 
     @Override
@@ -46,6 +47,7 @@ public final class CargoWagonRenderer extends AbstractBoatRenderer {
         if (state instanceof WagonRenderState wagon && entity instanceof CargoWagonEntity cargo) {
             wagon.pitch = entity.getXRot(partialTicks);
             wagon.fill = cargo.getFill();
+            wagon.travelled = TrackTreads.travelled(entity, partialTicks);
         }
     }
 

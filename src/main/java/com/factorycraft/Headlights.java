@@ -56,10 +56,11 @@ public final class Headlights {
 
     /** Same rule the server uses to place light blocks: someone driving and it's dark. */
     public static boolean areOn(Entity vehicle) {
-        return vehicle instanceof VehicleLights.Holder holder
-                && vehicle.getFirstPassenger() instanceof Player
-                && !VehicleEngine.isOff(vehicle)
-                && holder.lights().isDark(vehicle.level());
+        if (!(vehicle instanceof VehicleLights.Holder holder)) return false;
+        boolean driven = vehicle.getFirstPassenger() instanceof Player;
+        VehicleEngine engine = VehicleEngine.of(vehicle);
+        if (engine == null) return driven && holder.lights().isDark(vehicle.level());
+        return engine.lightsWanted(driven, holder.lights().isDark(vehicle.level()));
     }
 
     /**
@@ -131,5 +132,7 @@ public final class Headlights {
     /** Render state for vehicles with headlights. */
     public static class LitBoatRenderState extends BoatRenderState {
         public boolean lightsOn;
+        /** Blocks driven, for track treads and wheels. */
+        public float travelled;
     }
 }

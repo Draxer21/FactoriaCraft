@@ -38,6 +38,7 @@ public final class ExcavatorRenderer extends AbstractBoatRenderer {
         super.extractRenderState(entity, state, partialTicks);
         if (state instanceof Headlights.LitBoatRenderState lit) {
             lit.lightsOn = Headlights.areOn(entity);
+            lit.travelled = TrackTreads.travelled(entity, partialTicks);
         }
     }
 

@@ -375,6 +375,9 @@ public final class FactoryCraft {
             () -> new MenuType<>(ProcessingMenu::crusher, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> INDUSTRIAL_FURNACE_MENU = MENUS.register("industrial_furnace",
             () -> new MenuType<>(ProcessingMenu::furnace, FeatureFlags.VANILLA_SET));
+    /** Machine screen: storage bay, module slots and fuel gauge (see VehicleMenu). */
+    public static final DeferredHolder<MenuType<?>, MenuType<VehicleMenu>> VEHICLE_MENU = MENUS.register("vehicle",
+            () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(VehicleMenu::client));
     /** Nine-row chest menu for the truck bed (the client side gets an empty container of the same size). */
     public static final DeferredHolder<MenuType<?>, MenuType<ChestMenu>> DUMP_TRUCK_MENU = MENUS.register("dump_truck",
             () -> new MenuType<>((id, inventory) -> new ChestMenu(FactoryCraft.DUMP_TRUCK_MENU.value(), id, inventory,

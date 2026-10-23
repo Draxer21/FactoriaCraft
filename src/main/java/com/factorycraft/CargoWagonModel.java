@@ -18,8 +18,11 @@ public final class CargoWagonModel extends EntityModel<BoatRenderState> {
 
     private final ModelPart load;
 
+    private final TrackTreads treads;
+
     public CargoWagonModel(ModelPart root) {
         super(root);
+        this.treads = new TrackTreads(root, -15, 15, 2, 1.5F);
         this.load = root.getChild("load");
     }
 
@@ -31,6 +34,7 @@ public final class CargoWagonModel extends EntityModel<BoatRenderState> {
                 .addBox(-15, -2, -11, 30, 8, 3), PartPose.ZERO);
         root.addOrReplaceChild("right_track", CubeListBuilder.create().texOffs(0, 69)
                 .addBox(-15, -2, 8, 30, 8, 3), PartPose.ZERO);
+        TrackTreads.add(root, 0, 69, -15, 15, -2, 6, new float[] {-11, -8}, new float[] {8, 11});
         root.addOrReplaceChild("chassis", CubeListBuilder.create().texOffs(0, 50)
                 .addBox(-15, -4, -8, 30, 3, 16), PartPose.ZERO);
         root.addOrReplaceChild("bin_floor", CubeListBuilder.create().texOffs(0, 28)
@@ -57,6 +61,7 @@ public final class CargoWagonModel extends EntityModel<BoatRenderState> {
     @Override
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
+        if (state instanceof CargoWagonRenderer.WagonRenderState moving) treads.animate(moving.travelled);
         float fill = state instanceof CargoWagonRenderer.WagonRenderState wagon ? wagon.fill : 0.0F;
         load.visible = fill > 0.0F;
         load.yScale = Math.max(fill, 0.05F);

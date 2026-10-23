@@ -301,4 +301,10 @@ public final class CargoWagonEntity extends AbstractChestBoat {
         Optional<UUID> id = input.read("Leader", UUIDUtil.CODEC);
         leaderId = id.orElse(null);
     }
+
+    @Override
+    protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
+        // Engines and tracks have their own sounds: no boat paddling.
+        return null;
+    }
 }

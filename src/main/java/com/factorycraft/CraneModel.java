@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -28,8 +29,11 @@ public final class CraneModel extends EntityModel<BoatRenderState> {
     private final ModelPart[] rollers;
     private final ModelPart[] lamps;
 
+    private final TrackTreads treads;
+
     public CraneModel(ModelPart root) {
         super(root);
+        this.treads = new TrackTreads(root, -26, 26, 2, 1.5F);
         this.rollers = Headlights.parts(root, ROLLERS);
         this.lamps = Headlights.parts(root, LAMP_PARTS);
     }
@@ -43,6 +47,7 @@ public final class CraneModel extends EntityModel<BoatRenderState> {
                 .addBox(-26, -3, -17, 52, 9, 6), PartPose.ZERO);
         root.addOrReplaceChild("right_track", CubeListBuilder.create().texOffs(0, 84)
                 .addBox(-26, -3, 11, 52, 9, 6), PartPose.ZERO);
+        TrackTreads.add(root, 0, 84, -26, 26, -3, 6, new float[] {-17, -11}, new float[] {11, 17});
         root.addOrReplaceChild("chassis", CubeListBuilder.create().texOffs(0, 37)
                 .addBox(-24, -6, -11, 48, 3, 22), PartPose.ZERO);
         String[] sides = {"l", "r"};
@@ -99,19 +104,20 @@ public final class CraneModel extends EntityModel<BoatRenderState> {
 
         // Lights.
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(226, 99)
-                .addBox(22, -10, -9, 1, 2, 3), PartPose.ZERO);
+                .addBox(22, -10, -9, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(226, 99)
-                .addBox(22, -10, 6, 1, 2, 3), PartPose.ZERO);
+                .addBox(22, -10, 6, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_left", CubeListBuilder.create().texOffs(234, 99)
-                .addBox(-28, -14, -9, 1, 2, 3), PartPose.ZERO);
+                .addBox(-28, -14, -9, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_right", CubeListBuilder.create().texOffs(234, 99)
-                .addBox(-28, -14, 6, 1, 2, 3), PartPose.ZERO);
+                .addBox(-28, -14, 6, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         return LayerDefinition.create(mesh, 256, 128);
     }
 
     @Override
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
+        if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
         boolean lit = false;
         float roll = 0.0F;
         if (state instanceof WorkVehicleRenderer.WorkRenderState work) {

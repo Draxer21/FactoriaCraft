@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -57,13 +58,13 @@ public final class PaverModel extends EntityModel<BoatRenderState> {
         root.addOrReplaceChild("exhaust", CubeListBuilder.create().texOffs(78, 74)
                 .addBox(-17, -20, 6, 2, 12, 2), PartPose.ZERO);
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(118, 74)
-                .addBox(26, -12, -12, 1, 2, 3), PartPose.ZERO);
+                .addBox(26, -12, -12, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(118, 74)
-                .addBox(26, -12, 9, 1, 2, 3), PartPose.ZERO);
+                .addBox(26, -12, 9, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_left", CubeListBuilder.create().texOffs(126, 74)
-                .addBox(-19, -6, -10, 1, 2, 3), PartPose.ZERO);
+                .addBox(-19, -6, -10, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_right", CubeListBuilder.create().texOffs(126, 74)
-                .addBox(-19, -6, 7, 1, 2, 3), PartPose.ZERO);
+                .addBox(-19, -6, 7, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         return LayerDefinition.create(mesh, 256, 128);
     }
 

@@ -42,6 +42,8 @@ public final class VehicleClient {
             new KeyMapping.Category(Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "vehicles"));
     public static final KeyMapping ENGINE_KEY = new KeyMapping("key.factorycraft.engine",
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY);
+    public static final KeyMapping LIGHTS_KEY = new KeyMapping("key.factorycraft.lights",
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, CATEGORY);
 
     /** Machines are heard up to this far away. */
     private static final double HEARING_RANGE = 40.0;
@@ -57,6 +59,7 @@ public final class VehicleClient {
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.registerCategory(CATEGORY);
         event.register(ENGINE_KEY);
+        event.register(LIGHTS_KEY);
     }
 
     @SubscribeEvent
@@ -76,6 +79,11 @@ public final class VehicleClient {
     public static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
+        while (LIGHTS_KEY.consumeClick()) {
+            if (player != null && player.getVehicle() instanceof VehicleEngine.Holder) {
+                ClientPacketDistributor.sendToServer(ToggleLightsPayload.INSTANCE);
+            }
+        }
         while (ENGINE_KEY.consumeClick()) {
             if (player != null && player.getVehicle() instanceof VehicleEngine.Holder) {
                 ClientPacketDistributor.sendToServer(ToggleEnginePayload.INSTANCE);
@@ -240,7 +248,7 @@ public final class VehicleClient {
             cx += w + 2;
         }
         int craneRows = mc.player.getVehicle() instanceof HudInfo ? 10 : 0;
-        int height = 32 + craneRows + chipRows * 11;
+        int height = 42 + craneRows + chipRows * 11;
         int x = graphics.guiWidth() / 2 - 91 - 6 - width;
         int y = graphics.guiHeight() - height - 2;
         if (x < 2) {
@@ -270,13 +278,19 @@ public final class VehicleClient {
         graphics.fill(barX, barY, barX + Math.round(barW * fuel), barY + 5, color);
         Component fuelText = Component.translatable("hud.factorycraft.fuel", Math.round(fuel * 100));
         graphics.text(font, fuelText, x + 4, y + 22, 0xFFBFC7CE);
+        // Headlight mode with its key.
+        Component lights = Component.translatable("hud.factorycraft.lights",
+                Component.translatable("hud.factorycraft.lights." + engine.lightMode().name().toLowerCase()));
+        graphics.text(font, lights, x + 4, y + 32, 0xFFBFC7CE);
+        String lightKey = "[" + LIGHTS_KEY.getTranslatedKeyMessage().getString() + "]";
+        graphics.text(font, lightKey, x + width - 3 - font.width(lightKey), y + 32, 0xFF9AA3AB);
         if (engine.isCharging()) {
             // Solar panel charging.
             graphics.text(font, "\u2600", x + width - 12, y + 22, 0xFFFFD84A);
         }
 
         if (mc.player.getVehicle() instanceof HudInfo info) {
-            graphics.text(font, info.hudLine(), x + 4, y + 32, 0xFFE8A21C);
+            graphics.text(font, info.hudLine(), x + 4, y + 42, 0xFFE8A21C);
         }
 
         int row = -1;
@@ -285,7 +299,7 @@ public final class VehicleClient {
             int w = font.width(chip) + 4;
             if (row < 0 || chipX + w > width - 8) { row++; chipX = 0; }
             int cxAbs = x + 4 + chipX;
-            int cyAbs = y + 32 + craneRows + row * 11;
+            int cyAbs = y + 42 + craneRows + row * 11;
             graphics.fill(cxAbs, cyAbs, cxAbs + w, cyAbs + 10, 0xFF2F4A5C);
             graphics.text(font, chip, cxAbs + 2, cyAbs + 1, 0xFFDDEEFF);
             chipX += w + 2;

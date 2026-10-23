@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -25,8 +26,11 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
     /** Beam origins (model px): front face centre of each headlight. */
     public static final float[][] BEAM_ORIGINS = {{5.0F, -10.0F, -8.5F}, {5.0F, -10.0F, 8.5F}};
 
+    private final TrackTreads treads;
+
     public TunnelerModel(ModelPart root) {
         super(root);
+        this.treads = new TrackTreads(root, -15, 15, 2, 1.65F);
         this.drillHead = root.getChild("drill_head");
         this.cabFrame = new ModelPart[] {
                 root.getChild("cab_back"), root.getChild("cab_roof_rear"),
@@ -46,6 +50,7 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
                 .addBox(-15, -1, -12, 30, 6, 8), PartPose.ZERO);
         root.addOrReplaceChild("right_track", CubeListBuilder.create().texOffs(24, 51)
                 .addBox(-15, -1, 4, 30, 6, 8), PartPose.ZERO);
+        TrackTreads.add(root, 24, 51, -15, 15, -1, 5, new float[] {-12, -4}, new float[] {4, 12});
         for (int x = -12; x <= 12; x += 4) {
             root.addOrReplaceChild("left_roller_" + x, CubeListBuilder.create().texOffs(52, 67)
                     .addBox(x - 1.5F, -1, -12.4F, 3, 3, 0.8F), PartPose.ZERO);
@@ -81,7 +86,7 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
         root.addOrReplaceChild("console", CubeListBuilder.create().texOffs(146, 51)
                 .addBox(-1, -15, -4, 2, 3, 8), PartPose.ZERO);
         root.addOrReplaceChild("lights", CubeListBuilder.create().texOffs(42, 67)
-                .addBox(-12, -17, -7, 2, 2, 3)
+                .addBox(-12, -17, -7, 2, 2, 3, new CubeDeformation(0.06F))
                 .addBox(-12, -17, 4, 2, 2, 3), PartPose.ZERO);
 
         // Drill housing and stepped conical boring head, with rotating auger flights.
@@ -105,9 +110,9 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
                 .addBox(-1, -12, -10, 5, 8, 20), PartPose.ZERO);
         // Headlights on the drill mount, either side of the drill housing.
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(60, 67)
-                .addBox(4, -11, -9.5F, 1, 2, 2), PartPose.ZERO);
+                .addBox(4, -11, -9.5F, 1, 2, 2, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(60, 67)
-                .addBox(4, -11, 7.5F, 1, 2, 2), PartPose.ZERO);
+                .addBox(4, -11, 7.5F, 1, 2, 2, new CubeDeformation(0.06F)), PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 256, 128);
     }
@@ -115,6 +120,7 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
     @Override
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
+        if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
         this.drillHead.xRot = state.ageInTicks * 0.75F;
         // The pilot can't tilt their camera with the machine, so in first person the
         // cab frame would cut through their view when sloped. Other players still see it.

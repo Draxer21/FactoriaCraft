@@ -10,15 +10,14 @@ import net.minecraft.util.FormattedCharSequence;
 
 /**
  * The FactoryCraft manual: an index of chapters (one per machine or system)
- * and paged text for each. Texts live in the language files
- * (guide.factorycraft.<chapter>.title / .text).
+ * and paged text for each. The book fills most of the screen. Texts live in
+ * the language files (guide.factorycraft.<chapter>.title / .text).
  */
 public final class GuideScreen extends Screen {
     private static final String[] CHAPTERS = {"intro", "engine", "upgrades", "excavator", "tunneler", "dump_truck", "paver", "harvester", "bulldozer", "tanker", "forester", "crane", "tower_crane", "locomotive", "drone", "belts", "processing", "well_drill", "power", "powered", "automation", "station", "mechanic", "tools"};
-    private static final int WIDTH = 300;
-    private static final int HEIGHT = 200;
-    private static final int TEXT_TOP = 30;
-    private static final int TEXT_BOTTOM = 172;
+    private static final int HEADER = 24;
+    private static final int FOOTER = 30;
+    private static final int LINE = 11;
 
     /** -1 = index. */
     private int chapter = -1;
@@ -34,38 +33,51 @@ public final class GuideScreen extends Screen {
         return false;
     }
 
+    private int bookWidth() {
+        return Math.max(300, Math.min(this.width - 30, 520));
+    }
+
+    private int bookHeight() {
+        return Math.max(200, Math.min(this.height - 24, 340));
+    }
+
     private int left() {
-        return (this.width - WIDTH) / 2;
+        return (this.width - bookWidth()) / 2;
     }
 
     private int top() {
-        return (this.height - HEIGHT) / 2;
+        return (this.height - bookHeight()) / 2;
     }
 
     @Override
     protected void init() {
         int x = left();
         int y = top();
+        int w = bookWidth();
+        int h = bookHeight();
         if (chapter < 0) {
-            // Index: two columns of chapter buttons.
+            // Index: two columns of chapter buttons filling the page.
             int perColumn = (CHAPTERS.length + 1) / 2;
+            int rowHeight = Math.min(20, (h - HEADER - 12) / perColumn);
+            int columnWidth = (w - 30) / 2;
             for (int i = 0; i < CHAPTERS.length; i++) {
                 int column = i / perColumn;
                 int row = i % perColumn;
                 final int target = i;
                 addRenderableWidget(Button.builder(Component.translatable("guide.factorycraft." + CHAPTERS[i] + ".title"),
                                 button -> open(target))
-                        .bounds(x + 8 + column * 146, y + 26 + row * 14, 138, 13).build());
+                        .bounds(x + 10 + column * (columnWidth + 10), y + HEADER + 6 + row * rowHeight, columnWidth, rowHeight - 2)
+                        .build());
             }
             return;
         }
         paginate();
         addRenderableWidget(Button.builder(Component.translatable("gui.factorycraft.guide.index"), button -> open(-1))
-                .bounds(x + 8, y + HEIGHT - 24, 70, 18).build());
+                .bounds(x + 10, y + h - 26, 90, 20).build());
         addRenderableWidget(Button.builder(Component.literal("<"), button -> turn(-1))
-                .bounds(x + WIDTH - 88, y + HEIGHT - 24, 36, 18).build());
+                .bounds(x + w - 110, y + h - 26, 46, 20).build());
         addRenderableWidget(Button.builder(Component.literal(">"), button -> turn(1))
-                .bounds(x + WIDTH - 46, y + HEIGHT - 24, 36, 18).build());
+                .bounds(x + w - 58, y + h - 26, 46, 20).build());
     }
 
     private void open(int target) {
@@ -92,8 +104,8 @@ public final class GuideScreen extends Screen {
 
     private void paginate() {
         List<FormattedCharSequence> lines = this.font.split(
-                Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".text"), WIDTH - 24);
-        int perPage = (TEXT_BOTTOM - TEXT_TOP) / (this.font.lineHeight + 1);
+                Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".text"), bookWidth() - 32);
+        int perPage = Math.max(1, (bookHeight() - HEADER - FOOTER - 12) / LINE);
         List<List<FormattedCharSequence>> result = new ArrayList<>();
         for (int i = 0; i < lines.size(); i += perPage) {
             result.add(lines.subList(i, Math.min(lines.size(), i + perPage)));
@@ -107,23 +119,26 @@ public final class GuideScreen extends Screen {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         int x = left();
         int y = top();
-        graphics.fill(x - 3, y - 3, x + WIDTH + 3, y + HEIGHT + 3, 0xFF15181B);
-        graphics.fill(x - 2, y - 2, x + WIDTH + 2, y + HEIGHT + 2, 0xFFE8A21C);
-        graphics.fill(x, y, x + WIDTH, y + HEIGHT, 0xFFEDE6D3);
-        graphics.fill(x, y, x + WIDTH, y + 20, 0xFF3A4047);
+        int w = bookWidth();
+        int h = bookHeight();
+        graphics.fill(x - 4, y - 4, x + w + 4, y + h + 4, 0xFF15181B);
+        graphics.fill(x - 3, y - 3, x + w + 3, y + h + 3, 0xFFE8A21C);
+        graphics.fill(x, y, x + w, y + h, 0xFFEDE6D3);
+        graphics.fill(x, y, x + w, y + HEADER, 0xFF3A4047);
+        graphics.fill(x, y + HEADER, x + w, y + HEADER + 2, 0xFFE8A21C);
 
         Component heading = chapter < 0 ? Component.translatable("gui.factorycraft.guide.contents")
                 : Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".title");
-        graphics.centeredText(this.font, heading, x + WIDTH / 2, y + 6, 0xFFE8A21C);
+        graphics.centeredText(this.font, heading, x + w / 2, y + 8, 0xFFE8A21C);
 
         if (chapter >= 0 && !pages.isEmpty()) {
-            int lineY = y + TEXT_TOP;
+            int lineY = y + HEADER + 10;
             for (FormattedCharSequence line : pages.get(page)) {
-                graphics.text(this.font, line, x + 12, lineY, 0xFF2A2D31, false);
-                lineY += this.font.lineHeight + 1;
+                graphics.text(this.font, line, x + 16, lineY, 0xFF2A2D31, false);
+                lineY += LINE;
             }
             String number = (page + 1) + " / " + pages.size();
-            graphics.text(this.font, number, x + WIDTH / 2 - this.font.width(number) / 2, y + HEIGHT - 18, 0xFF6B6B6B, false);
+            graphics.text(this.font, number, x + w / 2 - this.font.width(number) / 2, y + h - 20, 0xFF6B6B6B, false);
         }
         super.extractRenderState(graphics, mouseX, mouseY, a);
     }

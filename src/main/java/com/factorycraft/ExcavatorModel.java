@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -25,8 +26,11 @@ public final class ExcavatorModel extends EntityModel<BoatRenderState> {
     /** Beam origins (model px): front face centre of each headlight. */
     public static final float[][] BEAM_ORIGINS = {{11.0F, -5.0F, -5.5F}, {11.0F, -5.0F, 5.5F}};
 
+    private final TrackTreads treads;
+
     public ExcavatorModel(ModelPart root) {
         super(root);
+        this.treads = new TrackTreads(root, -14, 14, 2, 1.75F);
         this.boomBase = root.getChild("boom_base");
         this.boomArm = boomBase.getChild("boom_arm");
         this.bucket = boomArm.getChild("bucket");
@@ -43,12 +47,7 @@ public final class ExcavatorModel extends EntityModel<BoatRenderState> {
                 .addBox(-14, -1, -10, 28, 5, 7), PartPose.ZERO);
         root.addOrReplaceChild("right_track", CubeListBuilder.create().texOffs(102, 52)
                 .addBox(-14, -1, 3, 28, 5, 7), PartPose.ZERO);
-        for (int x = -12; x <= 12; x += 4) {
-            root.addOrReplaceChild("left_track_cleat_" + x, CubeListBuilder.create().texOffs(14, 67)
-                    .addBox(x, -1.6F, -10.35F, 2, 1, 7.7F), PartPose.ZERO);
-            root.addOrReplaceChild("right_track_cleat_" + x, CubeListBuilder.create().texOffs(14, 67)
-                    .addBox(x, -1.6F, 2.65F, 2, 1, 7.7F), PartPose.ZERO);
-        }
+        TrackTreads.add(root, 102, 52, -14, 14, -1, 4, new float[] {-10, -3}, new float[] {3, 10});
 
         // Lower frame and rollers visible along the outside of each track.
         root.addOrReplaceChild("undercarriage", CubeListBuilder.create().texOffs(118, 32)
@@ -106,12 +105,12 @@ public final class ExcavatorModel extends EntityModel<BoatRenderState> {
         root.addOrReplaceChild("steps", CubeListBuilder.create().texOffs(198, 67)
                 .addBox(-3, -8, -8, 5, 1, 2), PartPose.ZERO);
         root.addOrReplaceChild("work_lights", CubeListBuilder.create().texOffs(212, 67)
-                .addBox(-6, -24.5F, -4.5F, 3, 1, 2), PartPose.ZERO);
+                .addBox(-6, -24.5F, -4.5F, 3, 1, 2, new CubeDeformation(0.06F)), PartPose.ZERO);
         // Front headlights on the chassis nose, below the loader arms.
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(171, 67)
-                .addBox(10, -6, -6.5F, 1, 2, 2), PartPose.ZERO);
+                .addBox(10, -6, -6.5F, 1, 2, 2, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(171, 67)
-                .addBox(10, -6, 4.5F, 1, 2, 2), PartPose.ZERO);
+                .addBox(10, -6, 4.5F, 1, 2, 2, new CubeDeformation(0.06F)), PartPose.ZERO);
 
         // Twin loader arms support the bucket and keep the front assembly connected.
         root.addOrReplaceChild("loader_arm_left", CubeListBuilder.create().texOffs(94, 67)
@@ -155,6 +154,7 @@ public final class ExcavatorModel extends EntityModel<BoatRenderState> {
     @Override
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
+        if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
         // When lit, the renderer draws the lamps in a separate full-bright pass.
         boolean lit = state instanceof Headlights.LitBoatRenderState lamp && lamp.lightsOn;
         for (ModelPart part : lamps) part.visible = !lit;

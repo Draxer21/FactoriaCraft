@@ -113,6 +113,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
     @Override
     public void remove(RemovalReason reason) {
         lights.clear();
+        engine.dropModules(reason);
         super.remove(reason);
     }
 
@@ -207,7 +208,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
 
         super.tick();
         engine.tick(pilot, getPaddleState(0) || getPaddleState(1), this);
-        lights.tick(pilot != null && engine.isRunning(), heading());
+        lights.tick(engine.lightsWanted(pilot != null, lights.isDark(level())), heading());
 
         if (pilot == null) return;
         if (isInWater()) pilot.setAirSupply(pilot.getMaxAirSupply());
@@ -297,8 +298,13 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
-        InteractionResult handled = engine.interact(player, hand);
-        return handled != null ? handled : super.interact(player, hand, location);
+        if (handled != null) return handled;
+        // Sneak + right-click (or a seat that's taken): the machine's screen with bay and module slots.
+        if (player.isSecondaryUseActive() || !canAddPassenger(player)) {
+            if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
+            return InteractionResult.SUCCESS;
+        }
+        return super.interact(player, hand, location);
     }
 
     @Override
@@ -311,5 +317,17 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         engine.load(input);
+    }
+
+    @Override
+    protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
+        // Engines and tracks have their own sounds: no boat paddling.
+        return null;
+    }
+
+    @Override
+    public void openCustomInventoryScreen(Player player) {
+        // Inventory key while riding: the machine's screen.
+        if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
     }
 }

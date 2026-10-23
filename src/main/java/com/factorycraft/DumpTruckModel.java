@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -30,8 +31,11 @@ public final class DumpTruckModel extends EntityModel<BoatRenderState> {
     private final ModelPart[] wheels;
     private final ModelPart[] lamps;
 
+    private final TrackTreads treads;
+
     public DumpTruckModel(ModelPart root) {
         super(root);
+        this.treads = new TrackTreads(root, -27, 27, 2, 1.5F);
         this.bed = root.getChild("bed");
         this.tailgate = bed.getChild("tailgate");
         this.load = bed.getChild("load");
@@ -50,6 +54,7 @@ public final class DumpTruckModel extends EntityModel<BoatRenderState> {
                 .addBox(-27, -3, -16, 54, 9, 5), PartPose.ZERO);
         root.addOrReplaceChild("right_track", CubeListBuilder.create().texOffs(0, 127)
                 .addBox(-27, -3, 11, 54, 9, 5), PartPose.ZERO);
+        TrackTreads.add(root, 0, 127, -27, 27, -3, 6, new float[] {-16, -11}, new float[] {11, 16});
         root.addOrReplaceChild("roller_l0", CubeListBuilder.create().texOffs(210, 127)
                 .addBox(-2.5F, -2.5F, -0.7F, 5, 5, 0.7F), PartPose.offset(-19, 1.5F, -16));
         root.addOrReplaceChild("roller_r0", CubeListBuilder.create().texOffs(210, 127)
@@ -85,15 +90,15 @@ public final class DumpTruckModel extends EntityModel<BoatRenderState> {
         root.addOrReplaceChild("bumper", CubeListBuilder.create().texOffs(0, 101)
                 .addBox(31, -6, -12, 2, 2, 24), PartPose.ZERO);
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(222, 127)
-                .addBox(31, -10, -10, 1, 2, 3), PartPose.ZERO);
+                .addBox(31, -10, -10, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(222, 127)
-                .addBox(31, -10, 7, 1, 2, 3), PartPose.ZERO);
+                .addBox(31, -10, 7, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("exhaust", CubeListBuilder.create().texOffs(208, 101)
                 .addBox(10, -31, 10, 2, 18, 2), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_left", CubeListBuilder.create().texOffs(230, 127)
-                .addBox(-29, -5, -11, 1, 2, 3), PartPose.ZERO);
+                .addBox(-29, -5, -11, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_right", CubeListBuilder.create().texOffs(230, 127)
-                .addBox(-29, -5, 8, 1, 2, 3), PartPose.ZERO);
+                .addBox(-29, -5, 8, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
 
         // Tipping bed, hinged at the rear bottom of the frame.
         PartDefinition bed = root.addOrReplaceChild("bed", CubeListBuilder.create().texOffs(0, 73)
@@ -117,6 +122,7 @@ public final class DumpTruckModel extends EntityModel<BoatRenderState> {
     @Override
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
+        if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
         float dump = 0.0F;
         float fill = 0.0F;
         float wheelRot = 0.0F;

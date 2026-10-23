@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -74,13 +75,13 @@ public final class LocomotiveModel extends EntityModel<BoatRenderState> {
                 .addBox(-32, -34, -13, 25, 2, 26), PartPose.ZERO);
         // Lights.
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(194, 129)
-                .addBox(30, -16, -6, 1, 3, 3), PartPose.ZERO);
+                .addBox(30, -16, -6, 1, 3, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(194, 129)
-                .addBox(30, -16, 3, 1, 3, 3), PartPose.ZERO);
+                .addBox(30, -16, 3, 1, 3, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_left", CubeListBuilder.create().texOffs(202, 129)
-                .addBox(-32, -14, -10, 1, 2, 3), PartPose.ZERO);
+                .addBox(-32, -14, -10, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_right", CubeListBuilder.create().texOffs(202, 129)
-                .addBox(-32, -14, 7, 1, 2, 3), PartPose.ZERO);
+                .addBox(-32, -14, 7, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         return LayerDefinition.create(mesh, 256, 256);
     }
 

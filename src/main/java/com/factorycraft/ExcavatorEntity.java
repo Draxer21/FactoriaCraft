@@ -80,6 +80,7 @@ public final class ExcavatorEntity extends Boat implements VehicleLights.Holder,
     @Override
     public void remove(RemovalReason reason) {
         lights.clear();
+        engine.dropModules(reason);
         super.remove(reason);
     }
 
@@ -130,7 +131,7 @@ public final class ExcavatorEntity extends Boat implements VehicleLights.Holder,
         float yaw = getYRot() * Mth.DEG_TO_RAD;
         Player driverNow = getControllingPassenger() instanceof Player p ? p : null;
         engine.tick(driverNow, getPaddleState(0) || getPaddleState(1), null);
-        lights.tick(driverNow != null && engine.isRunning(), new Vec3(-Mth.sin(yaw), 0.0, Mth.cos(yaw)));
+        lights.tick(engine.lightsWanted(driverNow != null, lights.isDark(level())), new Vec3(-Mth.sin(yaw), 0.0, Mth.cos(yaw)));
         if (!(getControllingPassenger() instanceof Player driver)) return;
 
         if (level().isClientSide() || tickCount % DIG_INTERVAL != 0
@@ -176,7 +177,13 @@ public final class ExcavatorEntity extends Boat implements VehicleLights.Holder,
     @Override
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         InteractionResult handled = engine.interact(player, hand);
-        return handled != null ? handled : super.interact(player, hand, location);
+        if (handled != null) return handled;
+        // Sneak + right-click: the module slots (the excavator has no storage bay).
+        if (player.isSecondaryUseActive()) {
+            if (!level().isClientSide()) VehicleMenu.open(player, this, new net.minecraft.world.SimpleContainer(0), 0);
+            return InteractionResult.SUCCESS;
+        }
+        return super.interact(player, hand, location);
     }
 
     @Override
@@ -189,5 +196,11 @@ public final class ExcavatorEntity extends Boat implements VehicleLights.Holder,
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         engine.load(input);
+    }
+
+    @Override
+    protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
+        // Engines and tracks have their own sounds: no boat paddling.
+        return null;
     }
 }

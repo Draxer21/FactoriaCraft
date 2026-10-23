@@ -37,6 +37,7 @@ public record ToggleEnginePayload() implements CustomPacketPayload {
         public static void register(RegisterPayloadHandlersEvent event) {
             event.registrar("1")
                     .playToServer(TYPE, STREAM_CODEC, ToggleEnginePayload::handle)
+                    .playToServer(ToggleLightsPayload.TYPE, ToggleLightsPayload.STREAM_CODEC, ToggleLightsPayload::handle)
                     .playToClient(StationDataPayload.TYPE, StationDataPayload.STREAM_CODEC);
         }
     }

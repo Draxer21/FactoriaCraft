@@ -50,12 +50,12 @@ public final class VehicleLights {
     }
 
     /** Call every tick from the vehicle. {@code heading} is the (possibly tilted) forward direction. */
-    public void tick(boolean driven, Vec3 heading) {
+    public void tick(boolean on, Vec3 heading) {
         if (!(vehicle.level() instanceof ServerLevel level)) return;
         if (vehicle.tickCount % UPDATE_INTERVAL != 0) return;
 
         Set<BlockPos> wanted = new HashSet<>();
-        if (driven && isDark(level)) {
+        if (on) {
             Vec3 origin = vehicle.position().add(0.0, lampHeight, 0.0);
             // Cab / work light so the machine itself is visible.
             addLight(level, BlockPos.containing(origin), wanted);

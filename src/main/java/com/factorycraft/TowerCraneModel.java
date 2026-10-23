@@ -4,6 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -71,13 +72,13 @@ public final class TowerCraneModel extends EntityModel<BoatRenderState> {
                 .addBox(118, -67, -2, 4, 4, 4), PartPose.ZERO);
         // Lights.
         root.addOrReplaceChild("headlight_left", CubeListBuilder.create().texOffs(234, 214)
-                .addBox(20, -180, -5, 1, 2, 3), PartPose.ZERO);
+                .addBox(20, -180, -5, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("headlight_right", CubeListBuilder.create().texOffs(234, 214)
-                .addBox(20, -180, 2, 1, 2, 3), PartPose.ZERO);
+                .addBox(20, -180, 2, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_left", CubeListBuilder.create().texOffs(242, 214)
-                .addBox(-63, -192, -5, 1, 2, 3), PartPose.ZERO);
+                .addBox(-63, -192, -5, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         root.addOrReplaceChild("tail_light_right", CubeListBuilder.create().texOffs(242, 214)
-                .addBox(-63, -192, 2, 1, 2, 3), PartPose.ZERO);
+                .addBox(-63, -192, 2, 1, 2, 3, new CubeDeformation(0.06F)), PartPose.ZERO);
         return LayerDefinition.create(mesh, 256, 256);
     }
 

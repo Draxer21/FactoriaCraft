@@ -178,7 +178,7 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
         super.tick();
         Player driver = getControllingPassenger() instanceof Player p ? p : null;
         engine.tick(driver, getPaddleState(0) || getPaddleState(1), this);
-        lights.tick(driver != null && engine.isRunning(), forward());
+        lights.tick(engine.lightsWanted(driver != null, lights.isDark(level())), forward());
 
         if (level().isClientSide()) {
             travelledO = travelled;
@@ -240,6 +240,7 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     @Override
     public void remove(RemovalReason reason) {
         lights.clear();
+        engine.dropModules(reason);
         super.remove(reason);
     }
 
@@ -258,8 +259,13 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
-        InteractionResult handled = engine.interact(player, hand);
-        return handled != null ? handled : super.interact(player, hand, location);
+        if (handled != null) return handled;
+        // Sneak + right-click (or a seat that's taken): the machine's screen with bay and module slots.
+        if (player.isSecondaryUseActive() || !canAddPassenger(player)) {
+            if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
+            return InteractionResult.SUCCESS;
+        }
+        return super.interact(player, hand, location);
     }
 
     @Override
@@ -272,5 +278,17 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         engine.load(input);
+    }
+
+    @Override
+    protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
+        // Engines and tracks have their own sounds: no boat paddling.
+        return null;
+    }
+
+    @Override
+    public void openCustomInventoryScreen(Player player) {
+        // Inventory key while riding: the machine's screen.
+        if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
     }
 }

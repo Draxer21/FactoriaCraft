@@ -31,7 +31,6 @@ public class WorkVehicleRenderer extends AbstractBoatRenderer {
 
     /** Boat state plus the distance driven, for rollers and wheels. */
     public static class WorkRenderState extends Headlights.LitBoatRenderState {
-        public float travelled;
     }
 
     @Override

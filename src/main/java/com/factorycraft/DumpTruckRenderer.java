@@ -50,6 +50,7 @@ public final class DumpTruckRenderer extends AbstractBoatRenderer {
             truck.fill = dumpTruck.getFill();
             truck.wheelRot = dumpTruck.getWheelRot(partialTicks);
             truck.lightsOn = Headlights.areOn(entity);
+            truck.travelled = TrackTreads.travelled(entity, partialTicks);
         }
     }
 
