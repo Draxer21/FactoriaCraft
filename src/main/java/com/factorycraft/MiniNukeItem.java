@@ -25,6 +25,23 @@ public final class MiniNukeItem extends Item implements Radiation.Source {
         return 3.0F;
     }
 
+    /** 1-3 = enriched uranium grade of the core, 4 = plutonium core. */
+    public static int yield(ItemStack stack) {
+        int y = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                net.minecraft.world.item.component.CustomData.EMPTY).copyTag().getIntOr("Yield", 2);
+        return Math.max(1, Math.min(4, y));
+    }
+
+    /** Explosion power for each yield (TNT is 4). */
+    public static float power(int yield) {
+        return switch (yield) {
+            case 1 -> 4.0F;
+            case 2 -> 6.0F;
+            case 3 -> 9.0F;
+            default -> 12.0F;
+        };
+    }
+
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -43,6 +60,8 @@ public final class MiniNukeItem extends Item implements Radiation.Source {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> tooltip, TooltipFlag flag) {
         tooltip.accept(Radiation.tooltip(radiation()));
+        tooltip.accept(Component.translatable("tooltip.factorycraft.mini_nuke.yield",
+                Component.translatable("tooltip.factorycraft.mini_nuke.yield." + yield(stack))).withStyle(ChatFormatting.RED));
         tooltip.accept(Component.translatable("tooltip.factorycraft.mini_nuke.help").withStyle(ChatFormatting.GRAY));
     }
 }

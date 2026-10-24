@@ -108,6 +108,9 @@ public final class Nuclear {
     public static final DeferredHolder<Item, Item> THORIUM_INGOT = hot("thorium_ingot", 0.5F);
     public static final DeferredHolder<Item, Item> PLUTONIUM_NUGGET = hot("plutonium_nugget", 0.35F);
     public static final DeferredHolder<Item, Item> PLUTONIUM_INGOT = hot("plutonium_ingot", 3.0F);
+    public static final DeferredHolder<Item, Item> ENRICHED_URANIUM_1 = hot("enriched_uranium_1", 1.5F);
+    public static final DeferredHolder<Item, Item> ENRICHED_URANIUM_2 = hot("enriched_uranium_2", 2.5F);
+    public static final DeferredHolder<Item, Item> ENRICHED_URANIUM_3 = hot("enriched_uranium_3", 4.0F);
     public static final DeferredHolder<Item, Item> RAW_LEAD = ITEMS.registerItem("raw_lead", Item::new);
     public static final DeferredHolder<Item, Item> LEAD_DUST = ITEMS.registerItem("lead_dust", Item::new);
     public static final DeferredHolder<Item, Item> LEAD_INGOT = ITEMS.registerItem("lead_ingot", Item::new);
@@ -144,6 +147,18 @@ public final class Nuclear {
             BLOCK_ENTITY_TYPES.register("nuclear_reactor", () -> new BlockEntityType<>(NuclearReactorBlockEntity::new, REACTOR.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ReactorMenu>> REACTOR_MENU = MENUS.register("nuclear_reactor",
             () -> new MenuType<>(ReactorMenu::client, FeatureFlags.VANILLA_SET));
+
+    // ---------------------------------------------------------------- centrifuge
+
+    public static final DeferredHolder<Block, Block> CENTRIFUGE = BLOCKS.register("centrifuge", () ->
+            new SimpleMachineBlock(props("centrifuge").strength(3.5F, 6.0F).sound(SoundType.METAL)
+                    .lightLevel(state -> state.getValue(MachineBlock.LIT) ? 6 : 0),
+                    () -> Nuclear.CENTRIFUGE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> CENTRIFUGE_ITEM = blockItem("centrifuge", CENTRIFUGE);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("centrifuge", () -> new BlockEntityType<>(CentrifugeBlockEntity::new, CENTRIFUGE.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> CENTRIFUGE_MENU = MENUS.register("centrifuge",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(Nuclear.CENTRIFUGE_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
 
     // ---------------------------------------------------------------- lead armour
 
@@ -192,6 +207,7 @@ public final class Nuclear {
                                 RAW_THORIUM, THORIUM_DUST, THORIUM_INGOT, THORIUM_BLOCK_ITEM,
                                 RAW_LEAD, LEAD_DUST, LEAD_INGOT, LEAD_BLOCK_ITEM,
                                 PLUTONIUM_NUGGET, PLUTONIUM_INGOT, PLUTONIUM_BLOCK_ITEM,
+                                CENTRIFUGE_ITEM, ENRICHED_URANIUM_1, ENRICHED_URANIUM_2, ENRICHED_URANIUM_3,
                                 THORIUM_FUEL_ROD, URANIUM_FUEL_ROD, PLUTONIUM_FUEL_ROD, DEPLETED_FUEL_ROD,
                                 REACTOR_ITEM, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS,
                                 GAMMA_RIFLE, IRRADIATED_BLADE, MINI_NUKE)) {

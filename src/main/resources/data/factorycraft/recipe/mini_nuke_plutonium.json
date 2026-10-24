@@ -3,16 +3,21 @@
   "category": "equipment",
   "pattern": [
     " L ",
-    "TPT",
+    "TCT",
     " L "
   ],
   "key": {
     "L": "factorycraft:lead_ingot",
     "T": "minecraft:tnt",
-    "P": "factorycraft:plutonium_ingot"
+    "C": "factorycraft:plutonium_ingot"
   },
   "result": {
     "id": "factorycraft:mini_nuke",
-    "count": 2
+    "count": 2,
+    "components": {
+      "minecraft:custom_data": {
+        "Yield": 4
+      }
+    }
   }
 }

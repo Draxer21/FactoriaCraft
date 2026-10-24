@@ -260,10 +260,20 @@ public final class FactoryCraft {
             properties -> new BlockItem(SOLAR_GENERATOR.value(), properties.useBlockDescriptionPrefix()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarGeneratorBlockEntity>> SOLAR_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITY_TYPES.register("solar_generator", () -> new BlockEntityType<>(SolarGeneratorBlockEntity::new, SOLAR_GENERATOR.value()));
+    public static final DeferredHolder<Block, Block> REPAIR_STATION = BLOCKS.register("repair_station", () ->
+            new SimpleMachineBlock(machineProperties("repair_station").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 8 : 0),
+                    () -> FactoryCraft.REPAIR_STATION_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> REPAIR_STATION_ITEM = ITEMS.registerItem("repair_station",
+            properties -> new BlockItem(REPAIR_STATION.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RepairStationBlockEntity>> REPAIR_STATION_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("repair_station", () -> new BlockEntityType<>(RepairStationBlockEntity::new, REPAIR_STATION.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> REPAIR_STATION_MENU = MENUS.register("repair_station",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), id, inventory, 4), FeatureFlags.VANILLA_SET));
+
     public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> SOLAR_GENERATOR_MENU = MENUS.register("solar_generator",
             () -> new MenuType<>(GeneratorMenu::solarClient, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ORE_WASHER_MENU = MENUS.register("ore_washer",
-            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), id, inventory, ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> PRESS_MENU = MENUS.register("press",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.PRESS_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> MIXER_MENU = MENUS.register("mixer",
@@ -479,6 +489,7 @@ public final class FactoryCraft {
                         output.accept(TITAN_HAMMER.value());
                         output.accept(GENERATOR_ITEM.value());
                         output.accept(SOLAR_GENERATOR_ITEM.value());
+                        output.accept(REPAIR_STATION_ITEM.value());
                         output.accept(CABLE_ITEM.value());
                         output.accept(ORE_WASHER_ITEM.value());
                         output.accept(PRESS_ITEM.value());
