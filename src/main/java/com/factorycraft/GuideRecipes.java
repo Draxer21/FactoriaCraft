@@ -29,8 +29,8 @@ import org.jspecify.annotations.Nullable;
  * villager trade files.
  */
 final class GuideRecipes {
-    static final int WIDTH = 136;
-    static final int HEIGHT = 74;
+    static final int WIDTH = 118;
+    static final int HEIGHT = 68;
     private static final int SLOT = 18;
 
     /** A slot cycles through its options (tags) once a second. */
@@ -282,10 +282,10 @@ final class GuideRecipes {
         // Title: the result's name.
         ItemStack main = display.outputs().isEmpty() ? ItemStack.EMPTY : display.outputs().get(0).shown();
         String title = font.plainSubstrByWidth(main.getHoverName().getString(), WIDTH - 8);
-        graphics.text(font, title, x + 4, y + 4, 0xFF3A4047, false);
+        graphics.text(font, title, x + 4, y + 3, 0xFF3A4047, false);
 
         int gridX = x + 4;
-        int gridY = y + 15;
+        int gridY = y + 13;
         for (int i = 0; i < 9; i++) {
             int sx = gridX + (i % 3) * SLOT;
             int sy = gridY + (i / 3) * SLOT;
@@ -298,18 +298,18 @@ final class GuideRecipes {
         }
 
         // Arrow with the station on top.
-        int arrowX = gridX + 3 * SLOT + 6;
+        int arrowX = gridX + 3 * SLOT + 3;
         int arrowY = gridY + SLOT + 4;
-        graphics.fill(arrowX, arrowY + 4, arrowX + 16, arrowY + 6, 0xFF6B6B6B);
-        for (int i = 0; i < 5; i++) graphics.fill(arrowX + 16 + i, arrowY + i, arrowX + 17 + i, arrowY + 10 - i, 0xFF6B6B6B);
-        hovered = item(graphics, font, display.station(), null, arrowX + 2, arrowY - 18, mouseX, mouseY, hovered);
+        graphics.fill(arrowX, arrowY + 4, arrowX + 10, arrowY + 6, 0xFF6B6B6B);
+        for (int i = 0; i < 5; i++) graphics.fill(arrowX + 10 + i, arrowY + i, arrowX + 11 + i, arrowY + 10 - i, 0xFF6B6B6B);
+        hovered = item(graphics, font, display.station(), null, arrowX - 2, arrowY - 18, mouseX, mouseY, hovered);
 
         // Results: one column, up to three rows (washer has several possible finds).
-        int outX = arrowX + 30;
+        int outX = arrowX + 18;
         List<Slot> outputs = display.outputs();
         int count = Math.min(outputs.size(), 6);
         for (int i = 0; i < count; i++) {
-            int sx = outX + (i / 3) * (SLOT + 2);
+            int sx = outX + (i / 3) * SLOT;
             int sy = (count == 1 ? gridY + SLOT : gridY + (i % 3) * SLOT);
             drawSlot(graphics, sx, sy);
             Slot slot = outputs.get(i);

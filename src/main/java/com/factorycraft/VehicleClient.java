@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"tools", "upgrades", "powered", "processing", "mechanic", "excavator"};
+    private static final String[] DEMO_CHAPTERS = {"tools", "upgrades", "powered", "powered:last", "processing:last", "mechanic", "mechanic:last", "excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -85,10 +85,10 @@ public final class VehicleClient {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return; // recipes need a world (item components, tags)
         demoTicks++;
-        if (demoTicks % 100 == 0 && demoTicks / 100 <= DEMO_CHAPTERS.length) {
-            String chapter = DEMO_CHAPTERS[demoTicks / 100 - 1];
+        if (demoTicks % 160 == 0 && demoTicks / 160 <= DEMO_CHAPTERS.length) {
+            String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
-            mc.gui.setScreen(GuideScreen.atRecipes(chapter));
+            mc.gui.setScreen(GuideScreen.atRecipes(chapter.replace(":last", ""), chapter.endsWith(":last")));
         }
     }
 

@@ -33,10 +33,10 @@ public final class GuideScreen extends Screen {
     }
 
     /** Opens a chapter at its first recipe page (used by the CI screenshot demo). */
-    static GuideScreen atRecipes(String chapterName) {
+    static GuideScreen atRecipes(String chapterName, boolean last) {
         GuideScreen screen = new GuideScreen();
         screen.chapter = java.util.Arrays.asList(CHAPTERS).indexOf(chapterName);
-        screen.page = -1;
+        screen.page = last ? Integer.MAX_VALUE : -1;
         return screen;
     }
 
@@ -138,11 +138,11 @@ public final class GuideScreen extends Screen {
     }
 
     private int recipeColumns() {
-        return Math.max(1, (bookWidth() - 24 + 8) / (GuideRecipes.WIDTH + 8));
+        return Math.max(1, (bookWidth() - 16 + 6) / (GuideRecipes.WIDTH + 6));
     }
 
     private int recipeRows() {
-        return Math.max(1, (bookHeight() - HEADER - FOOTER - 22 + 6) / (GuideRecipes.HEIGHT + 6));
+        return Math.max(1, (bookHeight() - HEADER - FOOTER - 17 + 5) / (GuideRecipes.HEIGHT + 5));
     }
 
     @Override
@@ -169,14 +169,14 @@ public final class GuideScreen extends Screen {
                 lineY += LINE;
             }
             if (!current.recipes().isEmpty()) {
-                graphics.text(this.font, Component.translatable("gui.factorycraft.guide.recipes"), x + 16, y + HEADER + 8, 0xFF8A5A00, false);
+                graphics.text(this.font, Component.translatable("gui.factorycraft.guide.recipes"), x + 16, y + HEADER + 5, 0xFF8A5A00, false);
                 int columns = recipeColumns();
                 int used = Math.min(columns, current.recipes().size());
-                int startX = x + (w - (used * GuideRecipes.WIDTH + (used - 1) * 8)) / 2;
+                int startX = x + (w - (used * GuideRecipes.WIDTH + (used - 1) * 6)) / 2;
                 ItemStack hovered = ItemStack.EMPTY;
                 for (int i = 0; i < current.recipes().size(); i++) {
-                    int bx = startX + (i % columns) * (GuideRecipes.WIDTH + 8);
-                    int by = y + HEADER + 22 + (i / columns) * (GuideRecipes.HEIGHT + 6);
+                    int bx = startX + (i % columns) * (GuideRecipes.WIDTH + 6);
+                    int by = y + HEADER + 17 + (i / columns) * (GuideRecipes.HEIGHT + 5);
                     ItemStack over = GuideRecipes.draw(graphics, this.font, current.recipes().get(i), bx, by, mouseX, mouseY);
                     if (!over.isEmpty()) hovered = over;
                 }

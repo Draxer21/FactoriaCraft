@@ -79,13 +79,13 @@ jobs:
           ./gradlew runServer --no-configuration-cache > server2.log 2>&1 &
           for i in $(seq 1 120); do grep -q 'Done (' server2.log && break; sleep 3; done
           echo "server2: $(grep -c 'Done (' server2.log)"
-          printf 'onboardAccessibility:false\nnarrator:0\nsoundDevice:""\nguiScale:2\n' > run/client/options.txt
+          printf 'onboardAccessibility:false\nnarrator:0\nsoundDevice:""\nguiScale:2\ntutorialStep:none\n' > run/client/options.txt
           ./gradlew runClient --no-configuration-cache > client.log 2>&1 &
           PID=$!
           taken=""
           for i in $(seq 1 300); do
-            for c in $(grep -o 'GUIDE_DEMO [a-z_]*' client.log | awk '{print $2}'); do
-              case " $taken " in *" $c "*) ;; *) sleep 3; import -window root "shots/$c.png" && taken="$taken $c";; esac
+            for c in $(grep -o 'GUIDE_DEMO [a-z_:]*' client.log | awk '{print $2}'); do
+              case " $taken " in *" $c "*) ;; *) sleep 3; import -window root "shots/${c/:/_}.png" && taken="$taken $c";; esac
             done
             if echo "$taken" | grep -q excavator; then echo "All screenshots taken"; break; fi
             if ! kill -0 $PID 2>/dev/null; then echo "Client process ended"; break; fi
