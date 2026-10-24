@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * The FactoryCraft manual: an index of chapters (one per machine or system)
@@ -22,10 +23,21 @@ public final class GuideScreen extends Screen {
     /** -1 = index. */
     private int chapter = -1;
     private int page;
-    private List<List<FormattedCharSequence>> pages = List.of();
+    /** A page is either text lines or a set of recipes. */
+    private record Page(List<FormattedCharSequence> lines, List<GuideRecipes.Display> recipes) {}
+
+    private List<Page> pages = List.of();
 
     public GuideScreen() {
         super(Component.translatable("item.factorycraft.guide_book"));
+    }
+
+    /** Opens a chapter at its first recipe page (used by the CI screenshot demo). */
+    static GuideScreen atRecipes(String chapterName, boolean last) {
+        GuideScreen screen = new GuideScreen();
+        screen.chapter = java.util.Arrays.asList(CHAPTERS).indexOf(chapterName);
+        screen.page = last ? Integer.MAX_VALUE : -1;
+        return screen;
     }
 
     @Override
@@ -106,13 +118,31 @@ public final class GuideScreen extends Screen {
         List<FormattedCharSequence> lines = this.font.split(
                 Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".text"), bookWidth() - 32);
         int perPage = Math.max(1, (bookHeight() - HEADER - FOOTER - 12) / LINE);
-        List<List<FormattedCharSequence>> result = new ArrayList<>();
+        List<Page> result = new ArrayList<>();
         for (int i = 0; i < lines.size(); i += perPage) {
-            result.add(lines.subList(i, Math.min(lines.size(), i + perPage)));
+            result.add(new Page(lines.subList(i, Math.min(lines.size(), i + perPage)), List.of()));
         }
-        if (result.isEmpty()) result.add(List.of());
+        // Recipe pages follow the text, as many blocks as fit.
+        List<GuideRecipes.Display> recipes = GuideRecipes.forChapter(CHAPTERS[chapter]);
+        int perRecipePage = recipeColumns() * recipeRows();
+        for (int i = 0; i < recipes.size(); i += perRecipePage) {
+            result.add(new Page(List.of(), recipes.subList(i, Math.min(recipes.size(), i + perRecipePage))));
+        }
+        if (result.isEmpty()) result.add(new Page(List.of(), List.of()));
+        if (page < 0) { // jump to the first recipe page
+            page = 0;
+            while (page < result.size() - 1 && result.get(page).recipes().isEmpty()) page++;
+        }
         pages = result;
         page = Math.min(page, pages.size() - 1);
+    }
+
+    private int recipeColumns() {
+        return Math.max(1, (bookWidth() - 16 + 6) / (GuideRecipes.WIDTH + 6));
+    }
+
+    private int recipeRows() {
+        return Math.max(1, (bookHeight() - HEADER - FOOTER - 17 + 5) / (GuideRecipes.HEIGHT + 5));
     }
 
     @Override
@@ -132,10 +162,25 @@ public final class GuideScreen extends Screen {
         graphics.centeredText(this.font, heading, x + w / 2, y + 8, 0xFFE8A21C);
 
         if (chapter >= 0 && !pages.isEmpty()) {
+            Page current = pages.get(page);
             int lineY = y + HEADER + 10;
-            for (FormattedCharSequence line : pages.get(page)) {
+            for (FormattedCharSequence line : current.lines()) {
                 graphics.text(this.font, line, x + 16, lineY, 0xFF2A2D31, false);
                 lineY += LINE;
+            }
+            if (!current.recipes().isEmpty()) {
+                graphics.text(this.font, Component.translatable("gui.factorycraft.guide.recipes"), x + 16, y + HEADER + 5, 0xFF8A5A00, false);
+                int columns = recipeColumns();
+                int used = Math.min(columns, current.recipes().size());
+                int startX = x + (w - (used * GuideRecipes.WIDTH + (used - 1) * 6)) / 2;
+                ItemStack hovered = ItemStack.EMPTY;
+                for (int i = 0; i < current.recipes().size(); i++) {
+                    int bx = startX + (i % columns) * (GuideRecipes.WIDTH + 6);
+                    int by = y + HEADER + 17 + (i / columns) * (GuideRecipes.HEIGHT + 5);
+                    ItemStack over = GuideRecipes.draw(graphics, this.font, current.recipes().get(i), bx, by, mouseX, mouseY);
+                    if (!over.isEmpty()) hovered = over;
+                }
+                if (!hovered.isEmpty()) graphics.setTooltipForNextFrame(this.font, hovered, mouseX, mouseY);
             }
             String number = (page + 1) + " / " + pages.size();
             graphics.text(this.font, number, x + w / 2 - this.font.width(number) / 2, y + h - 20, 0xFF6B6B6B, false);

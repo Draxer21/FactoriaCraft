@@ -13,9 +13,9 @@ import org.jspecify.annotations.Nullable;
 
 /** Hydraulic press: ingots into plates, plates into gears, plus a few handy squeezes. */
 public final class PressBlockEntity extends PoweredMachineBlockEntity {
-    private record Pressing(Supplier<Item> input, int count, Supplier<Item> output, int outCount) {}
+    record Pressing(Supplier<Item> input, int count, Supplier<Item> output, int outCount) {}
 
-    private static final List<Pressing> RECIPES = List.of(
+    static final List<Pressing> RECIPES = List.of(
             new Pressing(() -> Items.IRON_INGOT, 1, () -> FactoryCraft.IRON_PLATE.value(), 1),
             new Pressing(() -> Items.COPPER_INGOT, 1, () -> FactoryCraft.COPPER_PLATE.value(), 1),
             new Pressing(() -> Items.GOLD_INGOT, 1, () -> FactoryCraft.GOLD_PLATE.value(), 1),
