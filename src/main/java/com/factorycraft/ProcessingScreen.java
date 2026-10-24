@@ -33,6 +33,11 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
         int y = this.topPos;
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
+        if (menu.isBig()) {
+            extractBig(graphics, x, y);
+            return;
+        }
+
         // Replace the big single output slot with a 2x2 grid of normal slots.
         graphics.fill(x + 108, y + 22, x + 152, y + 66, PANEL);
         for (int[] pos : ProcessingMenu.OUTPUT_POS) {
@@ -68,5 +73,26 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
 
         int w = Mth.ceil(menu.progress() * 24.0F);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BURN_SPRITE, 24, 16, 0, 0, x + 79, y + 34, w, 16);
+    }
+
+    /** Big machines: 3x2 inputs, arrow, 4x2 outputs; energy bar under the inputs when powered. */
+    private void extractBig(GuiGraphicsExtractor graphics, int x, int y) {
+        graphics.fill(x + 7, y + 14, x + 169, y + 76, PANEL);
+        for (int[] pos : ProcessingMenu.INPUT_POS[ProcessingMenu.BIG_INPUTS - 1]) {
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
+        }
+        for (int[] pos : ProcessingMenu.BIG_OUTPUT_POS) {
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
+        }
+        if (menu.isPowered()) {
+            graphics.fill(x + 13, y + 57, x + 67, y + 65, 0xFF373737);
+            graphics.fill(x + 14, y + 58, x + 66, y + 64, 0xFF1E2124);
+            int w = Math.round(menu.energy() * 52.0F);
+            graphics.fill(x + 14, y + 58, x + 14 + w, y + 64, menu.energy() > 0.25F ? 0xFF3AC8D8 : 0xFFD9443A);
+        }
+        // Empty arrow from the furnace texture, then the progress on top.
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 71, y + 34, 79.0F, 34.0F, 24, 17, 256, 256);
+        int w = Mth.ceil(menu.progress() * 24.0F);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BURN_SPRITE, 24, 16, 0, 0, x + 71, y + 34, w, 16);
     }
 }

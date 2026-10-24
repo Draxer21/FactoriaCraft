@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"nuclear", "nuclear:2", "nuclear:3", "reactor", "weapons", "tools"};
+    private static final String[] DEMO_CHAPTERS = {"weapons:2", "screen:crusher"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -89,7 +89,22 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
+<<<<<<< ours
             mc.setScreen(GuideScreen.atRecipes(parts[0], parts.length > 1 ? parts[1] : ""));
+=======
+            if (parts[0].equals("screen")) {
+                var inv = mc.player.getInventory();
+                ProcessingMenu menu = switch (parts[1]) {
+                    case "crusher" -> ProcessingMenu.crusher(0, inv);
+                    case "washer" -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), 0, inv,
+                            ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS);
+                    default -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), 0, inv, 4);
+                };
+                mc.setScreen(new ProcessingScreen(menu, inv, net.minecraft.network.chat.Component.literal(parts[1])));
+            } else {
+                mc.setScreen(GuideScreen.atRecipes(parts[0], parts.length > 1 ? parts[1] : ""));
+            }
+>>>>>>> theirs
         }
     }
 

@@ -24,16 +24,16 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /**
- * Smelts {@link #BATCH} items at a time using normal furnace recipes, twice as
- * fast as a furnace and with the same fuel cost per item.
+ * Smelts {@link #BATCH} items at a time using normal furnace recipes, 40 ticks
+ * per batch (a furnace does 1 item in 200), with the same fuel cost per item.
  * Slot 0 = input, 1 = fuel, 2..5 = output.
  */
 public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity implements MenuProvider {
-    public static final int BATCH = 4;
-    /** Ticks per batch: half of a normal furnace's 200. */
-    private static final int BATCH_TIME = 100;
+    public static final int BATCH = 8;
+    /** Ticks per batch. */
+    private static final int BATCH_TIME = 40;
     /** Fuel ticks burned per working tick: keeps 1 coal = 8 items, like a furnace. */
-    private static final int FUEL_PER_TICK = 8;
+    private static final int FUEL_PER_TICK = 40;
 
     private final RecipeManager.CachedCheck<SingleRecipeInput, SmeltingRecipe> recipes =
             RecipeManager.createCheck(RecipeType.SMELTING);

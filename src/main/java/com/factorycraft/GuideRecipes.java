@@ -78,7 +78,8 @@ final class GuideRecipes {
                     "plutonium_ingot", "uranium_block", "thorium_block", "lead_block", "plutonium_block",
                     "lead_helmet", "lead_chestplate", "lead_leggings", "lead_boots", "machine:nuclear"}),
             Map.entry("reactor", new String[] {"nuclear_reactor", "upgrade_nuclear_engine", "machine:rods"}),
-            Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "mini_nuke"}),
+            Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
+                    "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
             Map.entry("power", new String[] {"generator", "solar_generator", "cable"}),
             Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
@@ -93,7 +94,7 @@ final class GuideRecipes {
                     "stone_chainsaw", "copper_chainsaw", "iron_chainsaw", "diamond_chainsaw", "netherite_chainsaw_smithing",
                     "stone_hammer", "copper_hammer", "iron_hammer", "diamond_hammer", "netherite_hammer_smithing",
                     "stone_excavating_shovel", "copper_excavating_shovel", "iron_excavating_shovel", "diamond_excavating_shovel",
-                    "netherite_excavating_shovel_smithing", "wrench",
+                    "netherite_excavating_shovel_smithing", "wrench", "repair_station",
                     "trade:mechanic/4/prototype_drill", "trade:mechanic/4/industrial_chainsaw", "trade:mechanic/4/titan_hammer"}));
 
     private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
@@ -240,6 +241,13 @@ final class GuideRecipes {
                     if (d.inputs().get(4).shown().is(Nuclear.DEPLETED_FUEL_ROD.value())) result.add(d);
                 }
             }
+            case "centrifuge" -> {
+                ItemStack station = item("factorycraft:centrifuge");
+                for (CentrifugeBlockEntity.Stage stage : CentrifugeBlockEntity.STAGES) {
+                    result.add(single(new ItemStack(stage.input().get(), stage.count()),
+                            List.of(Slot.of(new ItemStack(stage.output().get()))), station));
+                }
+            }
             case "rods" -> {
                 List<Display> press = new ArrayList<>();
                 machine("press", press);
@@ -295,6 +303,14 @@ final class GuideRecipes {
         JsonObject object = element.getAsJsonObject();
         ItemStack stack = item(object.get("id").getAsString());
         if (object.has("count")) stack.setCount(Math.max(1, (int) object.get("count").getAsDouble()));
+        if (object.has("components") && object.getAsJsonObject("components").has("minecraft:custom_data")) {
+            JsonElement data = object.getAsJsonObject("components").get("minecraft:custom_data");
+            if (data.isJsonObject() && data.getAsJsonObject().has("Yield")) {
+                int yield = data.getAsJsonObject().get("Yield").getAsInt();
+                net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                        stack, tag -> tag.putInt("Yield", yield));
+            }
+        }
         return stack;
     }
 
@@ -316,6 +332,10 @@ final class GuideRecipes {
         ItemStack main = display.outputs().isEmpty() ? ItemStack.EMPTY : display.outputs().get(0).shown();
         if (display.outputs().size() > 1 && display.inputs().size() > 4) main = display.inputs().get(4).shown();
         String name = main.getHoverName().getString();
+        if (main.getItem() instanceof MiniNukeItem) {
+            name += " · " + net.minecraft.network.chat.Component.translatable(
+                    "tooltip.factorycraft.mini_nuke.yield." + MiniNukeItem.coreGrade(main)).getString();
+        }
         String title = font.width(name) <= WIDTH - 8 ? name : font.plainSubstrByWidth(name, WIDTH - 8 - font.width("…")) + "…";
         graphics.text(font, title, x + 4, y + 3, 0xFF3A4047, false);
 

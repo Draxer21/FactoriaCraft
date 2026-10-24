@@ -129,6 +129,19 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         return product.isEmpty();
     }
 
+    /**
+     * Saves from before the 6-in/8-out update had 1 input + 4 outputs (slots 1-4):
+     * move those outputs to where the outputs live now.
+     */
+    protected void migrateToBigLayout(ValueInput input, int inputs) {
+        if (input.getIntOr("Layout", 1) >= 2) return;
+        for (int old = 4; old >= 1; old--) {
+            ItemStack stack = items.get(old);
+            items.set(old, ItemStack.EMPTY);
+            items.set(inputs + old - 1, stack);
+        }
+    }
+
     // ---------------------------------------------------------------- hand interaction
 
     /** Right-click with a stack: put as much of it in as fits. Returns true if anything went in. */

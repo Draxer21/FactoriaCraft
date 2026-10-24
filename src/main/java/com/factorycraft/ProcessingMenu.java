@@ -20,24 +20,37 @@ import net.minecraft.world.item.ItemStack;
 public final class ProcessingMenu extends AbstractContainerMenu {
     public static final int DATA_COUNT = 5;
     public static final int OUTPUTS = 4;
-    /** Input slot positions for 1, 2 or 3 inputs, shared with the screen. */
+    /** Big machines (crusher, ore washer): 6 inputs and 8 outputs. */
+    public static final int BIG_INPUTS = 6;
+    public static final int BIG_OUTPUTS = 8;
+    /** Input slot positions for 1, 2, 3, 4 or 6 inputs, shared with the screen. */
     public static final int[][][] INPUT_POS = {
             {{56, 17}},
             {{47, 17}, {65, 17}},
-            {{38, 17}, {56, 17}, {74, 17}}};
+            {{38, 17}, {56, 17}, {74, 17}},
+            {{20, 17}, {38, 17}, {20, 35}, {38, 35}},
+            {},
+            {{14, 17}, {32, 17}, {50, 17}, {14, 35}, {32, 35}, {50, 35}}};
     /** Output grid positions (2x2), shared with the screen. */
     public static final int[][] OUTPUT_POS = {{112, 26}, {130, 26}, {112, 44}, {130, 44}};
+    /** Output grid for the big machines (4x2). */
+    public static final int[][] BIG_OUTPUT_POS = {{98, 26}, {116, 26}, {134, 26}, {152, 26}, {98, 44}, {116, 44}, {134, 44}, {152, 44}};
+
+    public static int[][] outputPos(int outputs) {
+        return outputs == BIG_OUTPUTS ? BIG_OUTPUT_POS : OUTPUT_POS;
+    }
 
     private final Container machine;
     private final ContainerData data;
     private final boolean hasFuel;
     private final int inputs;
+    private final int outputs;
     private final int machineSlots;
 
     /** Client side: empty stand-ins, filled in by the server's sync. */
     public static ProcessingMenu crusher(int id, Inventory inventory) {
         return new ProcessingMenu(FactoryCraft.CRUSHER_MENU.value(), id, inventory,
-                new SimpleContainer(1 + OUTPUTS), new SimpleContainerData(DATA_COUNT), false);
+                new SimpleContainer(BIG_INPUTS + BIG_OUTPUTS), new SimpleContainerData(DATA_COUNT), false, BIG_INPUTS, BIG_OUTPUTS);
     }
 
     public static ProcessingMenu furnace(int id, Inventory inventory) {
@@ -47,8 +60,12 @@ public final class ProcessingMenu extends AbstractContainerMenu {
 
     /** Client side for powered machines with {@code inputs} input slots. */
     public static ProcessingMenu powered(MenuType<?> type, int id, Inventory inventory, int inputs) {
-        return new ProcessingMenu(type, id, inventory, new SimpleContainer(inputs + OUTPUTS),
-                new SimpleContainerData(DATA_COUNT), false, inputs);
+        return powered(type, id, inventory, inputs, OUTPUTS);
+    }
+
+    public static ProcessingMenu powered(MenuType<?> type, int id, Inventory inventory, int inputs, int outputs) {
+        return new ProcessingMenu(type, id, inventory, new SimpleContainer(inputs + outputs),
+                new SimpleContainerData(DATA_COUNT), false, inputs, outputs);
     }
 
     public ProcessingMenu(MenuType<?> type, int id, Inventory inventory, Container machine, ContainerData data, boolean hasFuel) {
@@ -57,8 +74,14 @@ public final class ProcessingMenu extends AbstractContainerMenu {
 
     public ProcessingMenu(MenuType<?> type, int id, Inventory inventory, Container machine, ContainerData data,
                           boolean hasFuel, int inputs) {
+        this(type, id, inventory, machine, data, hasFuel, inputs, OUTPUTS);
+    }
+
+    public ProcessingMenu(MenuType<?> type, int id, Inventory inventory, Container machine, ContainerData data,
+                          boolean hasFuel, int inputs, int outputs) {
         super(type, id);
-        checkContainerSize(machine, inputs + (hasFuel ? 1 : 0) + OUTPUTS);
+        checkContainerSize(machine, inputs + (hasFuel ? 1 : 0) + outputs);
+        this.outputs = outputs;
         this.machine = machine;
         this.data = data;
         this.hasFuel = hasFuel;
@@ -75,8 +98,9 @@ public final class ProcessingMenu extends AbstractContainerMenu {
             addSlot(new MachineSlot(machine, inputs, 56, 53));
             firstOutput = inputs + 1;
         }
-        for (int i = 0; i < OUTPUTS; i++) {
-            addSlot(new OutputSlot(machine, firstOutput + i, OUTPUT_POS[i][0], OUTPUT_POS[i][1]));
+        int[][] outPos = outputPos(outputs);
+        for (int i = 0; i < outputs; i++) {
+            addSlot(new OutputSlot(machine, firstOutput + i, outPos[i][0], outPos[i][1]));
         }
         addStandardInventorySlots(inventory, 8, 84);
         addDataSlots(data);
@@ -88,6 +112,15 @@ public final class ProcessingMenu extends AbstractContainerMenu {
 
     public int inputs() {
         return inputs;
+    }
+
+    public int outputs() {
+        return outputs;
+    }
+
+    /** 6-in / 8-out layout. */
+    public boolean isBig() {
+        return inputs == BIG_INPUTS;
     }
 
     /** Runs on power from generators (shows an energy bar instead of a flame). */

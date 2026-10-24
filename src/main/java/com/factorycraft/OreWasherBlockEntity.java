@@ -36,34 +36,56 @@ public final class OreWasherBlockEntity extends PoweredMachineBlockEntity {
                     new Find(() -> Nuclear.LEAD_DUST.value(), 0.40F), new Find(() -> Nuclear.URANIUM_DUST.value(), 0.20F)));
 
     public OreWasherBlockEntity(BlockPos pos, BlockState state) {
-        super(FactoryCraft.ORE_WASHER_BLOCK_ENTITY.value(), pos, state, 1);
+        super(FactoryCraft.ORE_WASHER_BLOCK_ENTITY.value(), pos, state, ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS);
     }
 
-    @Override protected int time() { return 30; }
+    private static final int INPUTS = ProcessingMenu.BIG_INPUTS;
+
+    @Override protected int time() { return 20; }
     @Override protected int energyPerTick() { return 20; }
     @Override protected MenuType<ProcessingMenu> menuType() { return FactoryCraft.ORE_WASHER_MENU.value(); }
     @Override protected String nameKey() { return "block.factorycraft.ore_washer"; }
 
     @Override
     protected boolean accepts(int slot, ItemStack stack) {
-        return slot == 0 && TABLE.containsKey(stack.getItem());
+        return slot < INPUTS && TABLE.containsKey(stack.getItem());
     }
 
+    /** Washes one item from every input slot at once. */
     @Override
     protected @Nullable Operation find(Level level) {
-        List<Find> finds = TABLE.get(items.get(0).getItem());
-        if (finds == null || items.get(0).isEmpty()) return null;
+        int[] consume = new int[INPUTS];
         List<ItemStack> max = new ArrayList<>();
-        for (Find find : finds) max.add(new ItemStack(find.item().get()));
-        return new Operation(new int[] {1}, max);
+        for (int i = 0; i < INPUTS; i++) {
+            List<Find> finds = TABLE.get(items.get(i).getItem());
+            if (finds == null || items.get(i).isEmpty()) continue;
+            consume[i] = 1;
+            for (Find find : finds) max.add(new ItemStack(find.item().get()));
+        }
+        return max.isEmpty() ? null : new Operation(consume, max);
     }
 
     @Override
     protected List<ItemStack> produce(Level level, Operation operation) {
         List<ItemStack> out = new ArrayList<>();
-        for (Find find : TABLE.get(items.get(0).getItem())) {
-            if (level.getRandom().nextFloat() < find.chance()) out.add(new ItemStack(find.item().get()));
+        for (int i = 0; i < INPUTS; i++) {
+            if (operation.consume()[i] == 0) continue;
+            for (Find find : TABLE.get(items.get(i).getItem())) {
+                if (level.getRandom().nextFloat() < find.chance()) out.add(new ItemStack(find.item().get()));
+            }
         }
         return out;
+    }
+
+    @Override
+    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput input) {
+        super.loadAdditional(input);
+        migrateToBigLayout(input, INPUTS);
+    }
+
+    @Override
+    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput output) {
+        super.saveAdditional(output);
+        output.putInt("Layout", 2);
     }
 }

@@ -28,6 +28,7 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     protected record Operation(int[] consume, List<ItemStack> maxOutputs) {}
 
     private final int inputs;
+    private final int outputs;
     private final Energy.Link link = new Energy.Link(this);
     private int progress;
     private int networkStored;
@@ -63,8 +64,13 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     };
 
     protected PoweredMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int inputs) {
-        super(type, pos, state, inputs + ProcessingMenu.OUTPUTS);
+        this(type, pos, state, inputs, ProcessingMenu.OUTPUTS);
+    }
+
+    protected PoweredMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int inputs, int outputs) {
+        super(type, pos, state, inputs + outputs);
         this.inputs = inputs;
+        this.outputs = outputs;
     }
 
     // ---------------------------------------------------------------- per machine
@@ -125,7 +131,7 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new ProcessingMenu(menuType(), id, inventory, this, data, false, inputs);
+        return new ProcessingMenu(menuType(), id, inventory, this, data, false, inputs, outputs);
     }
 
     @Override
