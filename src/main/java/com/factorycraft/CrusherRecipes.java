@@ -13,9 +13,10 @@ import org.jspecify.annotations.Nullable;
 
 /** What the crusher turns things into. Ores and raw metals give double yield. */
 public final class CrusherRecipes {
-    private record Entry(Predicate<ItemStack> input, Supplier<Item> output, int count) {}
+    /** {@code source} is the Item or TagKey shown in the guide. */
+    record Entry(Predicate<ItemStack> input, Supplier<Item> output, int count, Object source) {}
 
-    private static final List<Entry> ENTRIES = new ArrayList<>();
+    static final List<Entry> ENTRIES = new ArrayList<>();
 
     static {
         // Raw metals: 1 -> 2 dust. Ore blocks (silk touch): 1 -> 4 dust.
@@ -53,11 +54,11 @@ public final class CrusherRecipes {
     private CrusherRecipes() {}
 
     private static void add(Item input, Supplier<Item> output, int count) {
-        ENTRIES.add(new Entry(stack -> stack.is(input), output, count));
+        ENTRIES.add(new Entry(stack -> stack.is(input), output, count, input));
     }
 
     private static void add(TagKey<Item> input, Supplier<Item> output, int count) {
-        ENTRIES.add(new Entry(stack -> stack.is(input), output, count));
+        ENTRIES.add(new Entry(stack -> stack.is(input), output, count, input));
     }
 
     /** The product of crushing one {@code input}, or null if it can't be crushed. */

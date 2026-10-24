@@ -242,5 +242,6 @@
   "hud.factorycraft.lights.on": "On",
   "hud.factorycraft.lights.off": "Off",
   "message.factorycraft.lights": "Headlights: %s",
-  "gui.factorycraft.modules": "Upg."
+  "gui.factorycraft.modules": "Upg.",
+  "gui.factorycraft.guide.recipes": "How to make it"
 }

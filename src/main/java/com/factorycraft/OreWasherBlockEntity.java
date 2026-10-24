@@ -19,9 +19,9 @@ import org.jspecify.annotations.Nullable;
  * but turns the tunneler's rubble into something useful.
  */
 public final class OreWasherBlockEntity extends PoweredMachineBlockEntity {
-    private record Find(Supplier<Item> item, float chance) {}
+    record Find(Supplier<Item> item, float chance) {}
 
-    private static final Map<Item, List<Find>> TABLE = Map.of(
+    static final Map<Item, List<Find>> TABLE = Map.of(
             Items.GRAVEL, List.of(new Find(() -> Items.FLINT, 0.30F), new Find(() -> Items.IRON_NUGGET, 0.25F),
                     new Find(() -> FactoryCraft.IRON_DUST.value(), 0.06F), new Find(() -> FactoryCraft.COPPER_DUST.value(), 0.10F)),
             Items.SAND, List.of(new Find(() -> Items.CLAY_BALL, 0.25F), new Find(() -> Items.GOLD_NUGGET, 0.12F),

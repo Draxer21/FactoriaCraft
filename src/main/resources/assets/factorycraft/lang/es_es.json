@@ -242,5 +242,6 @@
   "hud.factorycraft.lights.on": "Encendidas",
   "hud.factorycraft.lights.off": "Apagadas",
   "message.factorycraft.lights": "Luces: %s",
-  "gui.factorycraft.modules": "Mód."
+  "gui.factorycraft.modules": "Mód.",
+  "gui.factorycraft.guide.recipes": "Cómo se fabrica"
 }
