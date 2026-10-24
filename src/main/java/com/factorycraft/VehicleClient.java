@@ -88,12 +88,8 @@ public final class VehicleClient {
         if (demoTicks % 160 == 0 && demoTicks / 160 <= DEMO_CHAPTERS.length) {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
-<<<<<<< ours
-            mc.setScreen(GuideScreen.atRecipes(chapter.replace(":last", ""), chapter.endsWith(":last")));
-=======
             String[] parts = chapter.split(":");
             mc.setScreen(GuideScreen.atRecipes(parts[0], parts.length > 1 ? parts[1] : ""));
->>>>>>> theirs
         }
     }
 
