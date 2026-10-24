@@ -78,18 +78,12 @@ public final class VehicleClient {
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
     private static final String[] DEMO_CHAPTERS = {"tools", "upgrades", "powered", "processing", "mechanic", "excavator"};
     private static int demoTicks;
-    private static boolean demoTitleSeen;
 
-    @SubscribeEvent
-    public static void onScreenOpening(net.neoforged.neoforge.client.event.ScreenEvent.Opening event) {
-        if (event.getNewScreen() instanceof net.minecraft.client.gui.screens.TitleScreen) demoTitleSeen = true;
-    }
-
-    /** CI: once the title screen is up, show one chapter's recipes every 5 seconds. */
+    /** CI: once in a world, show one chapter's recipes every 5 seconds. */
     private static void guideDemo() {
         if (!GUIDE_DEMO) return;
         Minecraft mc = Minecraft.getInstance();
-        if (!demoTitleSeen) return;
+        if (mc.player == null) return; // recipes need a world (item components, tags)
         demoTicks++;
         if (demoTicks % 100 == 0 && demoTicks / 100 <= DEMO_CHAPTERS.length) {
             String chapter = DEMO_CHAPTERS[demoTicks / 100 - 1];

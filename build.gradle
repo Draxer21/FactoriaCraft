@@ -20,6 +20,10 @@ runs {
     client {
         // CI only: flips through the manual's recipe pages for screenshots.
         systemProperty 'factorycraft.guideDemo', System.getenv('GUIDE_DEMO') ?: 'false'
+        if (System.getenv('GUIDE_DEMO')) {
+            argument '--quickPlayMultiplayer'
+            argument 'localhost:25565'
+        }
     }
     server { argument '--nogui' }
 }
