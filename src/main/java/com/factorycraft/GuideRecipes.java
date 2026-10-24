@@ -280,7 +280,9 @@ final class GuideRecipes {
         graphics.fill(x, y, x + WIDTH, y + 1, 0xFFB9AE92);
 
         // Title: the result's name.
+        // Title: the result's name (or the input's, when one input gives several possible finds).
         ItemStack main = display.outputs().isEmpty() ? ItemStack.EMPTY : display.outputs().get(0).shown();
+        if (display.outputs().size() > 1 && display.inputs().size() > 4) main = display.inputs().get(4).shown();
         String title = font.plainSubstrByWidth(main.getHoverName().getString(), WIDTH - 8);
         graphics.text(font, title, x + 4, y + 3, 0xFF3A4047, false);
 
@@ -308,9 +310,10 @@ final class GuideRecipes {
         int outX = arrowX + 18;
         List<Slot> outputs = display.outputs();
         int count = Math.min(outputs.size(), 6);
+        int rows = (count + 1) / 2;
         for (int i = 0; i < count; i++) {
-            int sx = outX + (i / 3) * SLOT;
-            int sy = (count == 1 ? gridY + SLOT : gridY + (i % 3) * SLOT);
+            int sx = count == 1 ? outX : outX + (i % 2) * SLOT;
+            int sy = count == 1 ? gridY + SLOT : gridY + SLOT + SLOT / 2 - rows * SLOT / 2 + (i / 2) * SLOT;
             drawSlot(graphics, sx, sy);
             Slot slot = outputs.get(i);
             hovered = item(graphics, font, slot.shown(), slot.note(), sx, sy, mouseX, mouseY, hovered);
@@ -334,10 +337,14 @@ final class GuideRecipes {
                                   int x, int y, int mouseX, int mouseY, ItemStack hovered) {
         if (stack.isEmpty()) return hovered;
         graphics.item(stack, x + 1, y + 1);
+        graphics.itemDecorations(font, stack, x + 1, y + 1);
         if (note != null) {
-            graphics.itemDecorations(font, stack, x + 1, y + 1, note);
-        } else {
-            graphics.itemDecorations(font, stack, x + 1, y + 1);
+            // Small (half size) label in the slot's bottom-right corner, e.g. a drop chance.
+            graphics.pose().pushMatrix();
+            graphics.pose().translate(x + SLOT - 1 - font.width(note) / 2.0F, y + SLOT - 5);
+            graphics.pose().scale(0.5F, 0.5F);
+            graphics.text(font, note, 0, 0, 0xFFFFFFFF, true);
+            graphics.pose().popMatrix();
         }
         boolean over = mouseX >= x && mouseX < x + SLOT && mouseY >= y && mouseY < y + SLOT;
         return over ? stack : hovered;
