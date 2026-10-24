@@ -89,9 +89,6 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
-<<<<<<< ours
-            mc.setScreen(GuideScreen.atRecipes(parts[0], parts.length > 1 ? parts[1] : ""));
-=======
             if (parts[0].equals("screen")) {
                 var inv = mc.player.getInventory();
                 ProcessingMenu menu = switch (parts[1]) {
@@ -104,7 +101,6 @@ public final class VehicleClient {
             } else {
                 mc.setScreen(GuideScreen.atRecipes(parts[0], parts.length > 1 ? parts[1] : ""));
             }
->>>>>>> theirs
         }
     }
 
