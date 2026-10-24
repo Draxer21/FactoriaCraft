@@ -33,10 +33,11 @@ public final class GuideScreen extends Screen {
     }
 
     /** Opens a chapter at its first recipe page (used by the CI screenshot demo). */
-    static GuideScreen atRecipes(String chapterName, boolean last) {
+    /** {@code which}: "" first recipe page, "last" last page, or "N" the N-th recipe page. */
+    static GuideScreen atRecipes(String chapterName, String which) {
         GuideScreen screen = new GuideScreen();
         screen.chapter = java.util.Arrays.asList(CHAPTERS).indexOf(chapterName);
-        screen.page = last ? Integer.MAX_VALUE : -1;
+        screen.page = which.equals("last") ? Integer.MAX_VALUE : which.isEmpty() ? -1 : -Integer.parseInt(which);
         return screen;
     }
 
@@ -129,9 +130,11 @@ public final class GuideScreen extends Screen {
             result.add(new Page(List.of(), recipes.subList(i, Math.min(recipes.size(), i + perRecipePage))));
         }
         if (result.isEmpty()) result.add(new Page(List.of(), List.of()));
-        if (page < 0) { // jump to the first recipe page
+        if (page < 0) { // jump to the first (or -page-th) recipe page
+            int skip = -page - 1;
             page = 0;
             while (page < result.size() - 1 && result.get(page).recipes().isEmpty()) page++;
+            page = Math.min(result.size() - 1, page + skip);
         }
         pages = result;
         page = Math.min(page, pages.size() - 1);

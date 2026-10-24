@@ -10,6 +10,7 @@
     "factorycraft:pump",
     "factorycraft:packager",
     "factorycraft:robot_arm",
-    "factorycraft:control_station"
+    "factorycraft:control_station",
+    "factorycraft:solar_generator"
   ]
 }

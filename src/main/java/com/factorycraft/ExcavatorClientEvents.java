@@ -34,6 +34,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.CRUSHER_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.INDUSTRIAL_FURNACE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.GENERATOR_MENU.value(), GeneratorScreen::new);
+        event.register(FactoryCraft.SOLAR_GENERATOR_MENU.value(), GeneratorScreen::new);
         event.register(FactoryCraft.VEHICLE_MENU.value(), VehicleScreen::new);
         event.register(FactoryCraft.ORE_WASHER_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.PRESS_MENU.value(), ProcessingScreen::new);

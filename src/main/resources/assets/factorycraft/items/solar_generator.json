@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "factorycraft:block/solar_generator"
+  }
+}

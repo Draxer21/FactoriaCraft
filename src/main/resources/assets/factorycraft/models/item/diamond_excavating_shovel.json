@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "factorycraft:item/diamond_excavating_shovel"
+  }
+}

@@ -84,7 +84,7 @@ jobs:
           PID=$!
           taken=""
           for i in $(seq 1 300); do
-            for c in $(grep -o 'GUIDE_DEMO [a-z_:]*' client.log | awk '{print $2}'); do
+            for c in $(grep -o 'GUIDE_DEMO [a-z_:0-9]*' client.log | awk '{print $2}'); do
               case " $taken " in *" $c "*) ;; *) sleep 3; import -window root "shots/${c/:/_}.png" && taken="$taken $c";; esac
             done
             if echo "$taken" | grep -q excavator; then echo "All screenshots taken"; break; fi

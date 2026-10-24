@@ -34,7 +34,20 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
         graphics.fill(x + 54, y + 15, x + 74, y + 35, PANEL);
         graphics.fill(x + 78, y + 15, x + 150, y + 70, PANEL);
 
-        if (menu.isBurning()) {
+        if (menu.isSolar()) {
+            // Sun: brighter and bigger the stronger the light.
+            int cx = x + 63;
+            int cy = y + 43;
+            int r = 2 + Math.round(4 * menu.burn());
+            int color = menu.rate() > 0 ? 0xFFFFD23A : 0xFF6B6B6B;
+            graphics.fill(cx - r, cy - r, cx + r, cy + r, color);
+            if (menu.rate() > 0) {
+                graphics.fill(cx - 1, cy - r - 3, cx + 1, cy - r - 1, color);
+                graphics.fill(cx - 1, cy + r + 1, cx + 1, cy + r + 3, color);
+                graphics.fill(cx - r - 3, cy - 1, cx - r - 1, cy + 1, color);
+                graphics.fill(cx + r + 1, cy - 1, cx + r + 3, cy + 1, color);
+            }
+        } else if (menu.isBurning()) {
             int h = Mth.ceil(menu.burn() * 13.0F) + 1;
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, LIT_SPRITE, 14, 14, 0, 14 - h, x + 56, y + 36 + 14 - h, 14, h);
         }
@@ -54,7 +67,9 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
         super.extractLabels(graphics, mouseX, mouseY);
         String value = String.format("%,d E", menu.energyValue());
         graphics.text(this.font, value, 90, 34, 0xFF404040, false);
-        graphics.text(this.font, Component.translatable("gui.factorycraft.generator.rate", GeneratorBlockEntity.OUTPUT),
-                90, 46, 0xFF404040, false);
+        Component rate = menu.isSolar()
+                ? Component.translatable(menu.rate() > 0 ? "gui.factorycraft.solar.rate" : "gui.factorycraft.solar.dark", menu.rate())
+                : Component.translatable("gui.factorycraft.generator.rate", GeneratorBlockEntity.OUTPUT);
+        graphics.text(this.font, rate, 90, 46, 0xFF404040, false);
     }
 }

@@ -253,6 +253,15 @@ public final class FactoryCraft {
     public static final DeferredHolder<Item, Item> IRON_GEAR = ITEMS.registerItem("iron_gear", Item::new);
     public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> GENERATOR_MENU = MENUS.register("generator",
             () -> new MenuType<>(GeneratorMenu::client, FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<Block, Block> SOLAR_GENERATOR = BLOCKS.register("solar_generator", () ->
+            new SimpleMachineBlock(machineProperties("solar_generator").lightLevel(state -> 0), () -> FactoryCraft.SOLAR_GENERATOR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> SOLAR_GENERATOR_ITEM = ITEMS.registerItem("solar_generator",
+            properties -> new BlockItem(SOLAR_GENERATOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarGeneratorBlockEntity>> SOLAR_GENERATOR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("solar_generator", () -> new BlockEntityType<>(SolarGeneratorBlockEntity::new, SOLAR_GENERATOR.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> SOLAR_GENERATOR_MENU = MENUS.register("solar_generator",
+            () -> new MenuType<>(GeneratorMenu::solarClient, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ORE_WASHER_MENU = MENUS.register("ore_washer",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> PRESS_MENU = MENUS.register("press",
@@ -384,19 +393,33 @@ public final class FactoryCraft {
                     new SimpleContainer(DumpTruckEntity.CAPACITY), DumpTruckEntity.ROWS), FeatureFlags.VANILLA_SET));
 
     public static final DeferredHolder<Item, Item> STONE_HAMMER = registerHammer("stone_hammer", ToolMaterial.STONE);
+    public static final DeferredHolder<Item, Item> COPPER_HAMMER = registerHammer("copper_hammer", ToolMaterial.COPPER);
     public static final DeferredHolder<Item, Item> IRON_HAMMER = registerHammer("iron_hammer", ToolMaterial.IRON);
     public static final DeferredHolder<Item, Item> DIAMOND_HAMMER = registerHammer("diamond_hammer", ToolMaterial.DIAMOND);
     public static final DeferredHolder<Item, Item> NETHERITE_HAMMER = registerHammer("netherite_hammer", ToolMaterial.NETHERITE);
 
     public static final DeferredHolder<Item, Item> STONE_DRILL = registerDrill("stone_drill", ToolMaterial.STONE);
+    public static final DeferredHolder<Item, Item> COPPER_DRILL = registerDrill("copper_drill", ToolMaterial.COPPER);
     public static final DeferredHolder<Item, Item> IRON_DRILL = registerDrill("iron_drill", ToolMaterial.IRON);
     public static final DeferredHolder<Item, Item> DIAMOND_DRILL = registerDrill("diamond_drill", ToolMaterial.DIAMOND);
     public static final DeferredHolder<Item, Item> NETHERITE_DRILL = registerDrill("netherite_drill", ToolMaterial.NETHERITE);
 
     public static final DeferredHolder<Item, Item> STONE_CHAINSAW = registerChainsaw("stone_chainsaw", ToolMaterial.STONE);
+    public static final DeferredHolder<Item, Item> COPPER_CHAINSAW = registerChainsaw("copper_chainsaw", ToolMaterial.COPPER);
     public static final DeferredHolder<Item, Item> IRON_CHAINSAW = registerChainsaw("iron_chainsaw", ToolMaterial.IRON);
     public static final DeferredHolder<Item, Item> DIAMOND_CHAINSAW = registerChainsaw("diamond_chainsaw", ToolMaterial.DIAMOND);
     public static final DeferredHolder<Item, Item> NETHERITE_CHAINSAW = registerChainsaw("netherite_chainsaw", ToolMaterial.NETHERITE);
+
+    public static final DeferredHolder<Item, Item> STONE_EXCAVATING_SHOVEL = registerShovel("stone_excavating_shovel", ToolMaterial.STONE);
+    public static final DeferredHolder<Item, Item> COPPER_EXCAVATING_SHOVEL = registerShovel("copper_excavating_shovel", ToolMaterial.COPPER);
+    public static final DeferredHolder<Item, Item> IRON_EXCAVATING_SHOVEL = registerShovel("iron_excavating_shovel", ToolMaterial.IRON);
+    public static final DeferredHolder<Item, Item> DIAMOND_EXCAVATING_SHOVEL = registerShovel("diamond_excavating_shovel", ToolMaterial.DIAMOND);
+    public static final DeferredHolder<Item, Item> NETHERITE_EXCAVATING_SHOVEL = registerShovel("netherite_excavating_shovel", ToolMaterial.NETHERITE);
+
+    private static DeferredHolder<Item, Item> registerShovel(String id, ToolMaterial material) {
+        return ITEMS.registerItem(id, properties -> new ExcavatingShovelItem(material, 2.0F, -3.2F,
+                material == ToolMaterial.NETHERITE ? properties.fireResistant() : properties));
+    }
 
     private static DeferredHolder<Item, Item> registerHammer(String id, ToolMaterial material) {
         return ITEMS.registerItem(id, properties -> new HammerItem(properties.pickaxe(material, 2.0F, -3.2F)));
@@ -417,17 +440,25 @@ public final class FactoryCraft {
                     .icon(() -> IRON_HAMMER.value().getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         output.accept(STONE_HAMMER.value());
+                        output.accept(COPPER_HAMMER.value());
                         output.accept(IRON_HAMMER.value());
                         output.accept(DIAMOND_HAMMER.value());
                         output.accept(NETHERITE_HAMMER.value());
                         output.accept(STONE_DRILL.value());
+                        output.accept(COPPER_DRILL.value());
                         output.accept(IRON_DRILL.value());
                         output.accept(DIAMOND_DRILL.value());
                         output.accept(NETHERITE_DRILL.value());
                         output.accept(STONE_CHAINSAW.value());
+                        output.accept(COPPER_CHAINSAW.value());
                         output.accept(IRON_CHAINSAW.value());
                         output.accept(DIAMOND_CHAINSAW.value());
                         output.accept(NETHERITE_CHAINSAW.value());
+                        output.accept(STONE_EXCAVATING_SHOVEL.value());
+                        output.accept(COPPER_EXCAVATING_SHOVEL.value());
+                        output.accept(IRON_EXCAVATING_SHOVEL.value());
+                        output.accept(DIAMOND_EXCAVATING_SHOVEL.value());
+                        output.accept(NETHERITE_EXCAVATING_SHOVEL.value());
                         output.accept(EXCAVATOR_ITEM.value());
                         output.accept(TUNNELER_ITEM.value());
                         output.accept(DUMP_TRUCK_ITEM.value());
@@ -447,6 +478,7 @@ public final class FactoryCraft {
                         output.accept(INDUSTRIAL_CHAINSAW.value());
                         output.accept(TITAN_HAMMER.value());
                         output.accept(GENERATOR_ITEM.value());
+                        output.accept(SOLAR_GENERATOR_ITEM.value());
                         output.accept(CABLE_ITEM.value());
                         output.accept(ORE_WASHER_ITEM.value());
                         output.accept(PRESS_ITEM.value());

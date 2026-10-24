@@ -36,6 +36,7 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
                 case 1 -> CAPACITY / 10;
                 case 2 -> burnLeft;
                 case 3 -> burnMax;
+                case 4 -> burnLeft > 0 && energy + OUTPUT <= CAPACITY ? OUTPUT : 0;
                 default -> 0;
             };
         }

@@ -82,6 +82,18 @@ public final class DrillItem extends Item {
         CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putInt("Energy", Math.max(0, Math.min(capacity(), energy))));
     }
 
+    /** Puts up to {@code max} energy into a drill; returns how much it took (0 if it isn't a drill or is full). */
+    public static int charge(ItemStack stack, int max) {
+        if (!(stack.getItem() instanceof DrillItem drill)) return 0;
+        int taken = Math.max(0, Math.min(drill.capacity() - energy(stack), max));
+        if (taken > 0) drill.setEnergy(stack, energy(stack) + taken);
+        return taken;
+    }
+
+    public static boolean isFull(ItemStack stack) {
+        return stack.getItem() instanceof DrillItem drill && energy(stack) >= drill.capacity();
+    }
+
     private boolean use(ItemStack stack, int amount) {
         int energy = energy(stack);
         if (energy < amount) return false;

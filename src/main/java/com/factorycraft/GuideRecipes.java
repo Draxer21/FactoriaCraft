@@ -72,7 +72,7 @@ final class GuideRecipes {
                     "iron_ingot_from_iron_dust_blasting", "gold_ingot_from_gold_dust_blasting",
                     "copper_ingot_from_copper_dust_blasting", "machine:crusher"}),
             Map.entry("well_drill", new String[] {"well_drill"}),
-            Map.entry("power", new String[] {"generator", "cable"}),
+            Map.entry("power", new String[] {"generator", "solar_generator", "cable"}),
             Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
             Map.entry("station", new String[] {"control_station"}),
@@ -82,9 +82,11 @@ final class GuideRecipes {
                     "trade:mechanic/3/emerald_solar_panel", "trade:mechanic/3/emerald_magnet",
                     "trade:mechanic/4/prototype_drill", "trade:mechanic/4/industrial_chainsaw", "trade:mechanic/4/titan_hammer",
                     "trade:mechanic/5/turbo_ii", "trade:mechanic/5/fortune_ii", "trade:mechanic/5/fusion_engine"}),
-            Map.entry("tools", new String[] {"stone_drill", "iron_drill", "diamond_drill", "netherite_drill_smithing",
-                    "stone_chainsaw", "iron_chainsaw", "diamond_chainsaw", "netherite_chainsaw_smithing",
-                    "stone_hammer", "iron_hammer", "diamond_hammer", "netherite_hammer_smithing", "wrench",
+            Map.entry("tools", new String[] {"stone_drill", "copper_drill", "iron_drill", "diamond_drill", "netherite_drill_smithing",
+                    "stone_chainsaw", "copper_chainsaw", "iron_chainsaw", "diamond_chainsaw", "netherite_chainsaw_smithing",
+                    "stone_hammer", "copper_hammer", "iron_hammer", "diamond_hammer", "netherite_hammer_smithing",
+                    "stone_excavating_shovel", "copper_excavating_shovel", "iron_excavating_shovel", "diamond_excavating_shovel",
+                    "netherite_excavating_shovel_smithing", "wrench",
                     "trade:mechanic/4/prototype_drill", "trade:mechanic/4/industrial_chainsaw", "trade:mechanic/4/titan_hammer"}));
 
     private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
