@@ -90,7 +90,7 @@ public final class GammaRifleItem extends Item implements ItemEnergy.Chargeable 
             end = targetHit;
             target.hurtServer(level, level.damageSources().playerAttack(player), DAMAGE);
             target.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 1));
-            level.sendParticles(ParticleTypes.FLASH, end.x, end.y, end.z, 1, 0, 0, 0, 0);
+            level.sendParticles(ParticleTypes.EXPLOSION, end.x, end.y, end.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
 
         // The beam.
