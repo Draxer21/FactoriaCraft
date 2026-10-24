@@ -90,6 +90,8 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
             int w = Math.round(menu.energy() * 52.0F);
             graphics.fill(x + 14, y + 58, x + 14 + w, y + 64, menu.energy() > 0.25F ? 0xFF3AC8D8 : 0xFFD9443A);
         }
+        // Empty arrow from the furnace texture, then the progress on top.
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 71, y + 34, 79.0F, 34.0F, 24, 17, 256, 256);
         int w = Mth.ceil(menu.progress() * 24.0F);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BURN_SPRITE, 24, 16, 0, 0, x + 71, y + 34, w, 16);
     }

@@ -332,6 +332,10 @@ final class GuideRecipes {
         ItemStack main = display.outputs().isEmpty() ? ItemStack.EMPTY : display.outputs().get(0).shown();
         if (display.outputs().size() > 1 && display.inputs().size() > 4) main = display.inputs().get(4).shown();
         String name = main.getHoverName().getString();
+        if (main.getItem() instanceof MiniNukeItem) {
+            name += " · " + net.minecraft.network.chat.Component.translatable(
+                    "tooltip.factorycraft.mini_nuke.yield." + MiniNukeItem.coreGrade(main)).getString();
+        }
         String title = font.width(name) <= WIDTH - 8 ? name : font.plainSubstrByWidth(name, WIDTH - 8 - font.width("…")) + "…";
         graphics.text(font, title, x + 4, y + 3, 0xFF3A4047, false);
 

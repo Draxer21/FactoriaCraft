@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"weapons", "weapons:2", "processing:last", "powered:last", "tools:last", "screen:crusher", "screen:washer", "screen:repair"};
+    private static final String[] DEMO_CHAPTERS = {"weapons:2", "screen:crusher"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
