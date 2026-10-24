@@ -10,19 +10,30 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-/** Generator screen: one fuel slot. Data: 0 energy/10, 1 capacity/10, 2 burn left, 3 burn max. */
+/**
+ * Generator screen (diesel and solar): one slot (fuel / drill to charge).
+ * Data: 0 energy/10, 1 capacity/10, 2 burn left (solar: sunlight), 3 burn max, 4 current E/t.
+ */
 public final class GeneratorMenu extends AbstractContainerMenu {
-    public static final int DATA_COUNT = 4;
+    public static final int DATA_COUNT = 5;
 
     private final Container machine;
     private final ContainerData data;
 
     public static GeneratorMenu client(int id, Inventory inventory) {
-        return new GeneratorMenu(id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
+        return new GeneratorMenu(FactoryCraft.GENERATOR_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
+    }
+
+    public static GeneratorMenu solarClient(int id, Inventory inventory) {
+        return new GeneratorMenu(FactoryCraft.SOLAR_GENERATOR_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
     }
 
     public GeneratorMenu(int id, Inventory inventory, Container machine, ContainerData data) {
-        super(FactoryCraft.GENERATOR_MENU.value(), id);
+        this(FactoryCraft.GENERATOR_MENU.value(), id, inventory, machine, data);
+    }
+
+    public GeneratorMenu(net.minecraft.world.inventory.MenuType<GeneratorMenu> type, int id, Inventory inventory, Container machine, ContainerData data) {
+        super(type, id);
         checkContainerSize(machine, 1);
         this.machine = machine;
         this.data = data;
@@ -49,6 +60,15 @@ public final class GeneratorMenu extends AbstractContainerMenu {
     public float burn() {
         int max = data.get(3);
         return max <= 0 ? 0.0F : Math.min(1.0F, (float) data.get(2) / max);
+    }
+
+    /** Energy made per tick right now. */
+    public int rate() {
+        return data.get(4);
+    }
+
+    public boolean isSolar() {
+        return getType() == FactoryCraft.SOLAR_GENERATOR_MENU.value();
     }
 
     public boolean isBurning() {

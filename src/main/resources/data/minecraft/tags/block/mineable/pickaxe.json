@@ -16,6 +16,7 @@
     "factorycraft:robot_arm",
     "factorycraft:fluid_pipe",
     "factorycraft:control_station",
-    "factorycraft:mechanic_bench"
+    "factorycraft:mechanic_bench",
+    "factorycraft:solar_generator"
   ]
 }

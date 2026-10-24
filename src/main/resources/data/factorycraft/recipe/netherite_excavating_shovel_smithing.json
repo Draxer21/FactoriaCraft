@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "factorycraft:diamond_excavating_shovel",
+  "addition": "#minecraft:netherite_tool_materials",
+  "result": {
+    "id": "factorycraft:netherite_excavating_shovel",
+    "count": 1
+  }
+}

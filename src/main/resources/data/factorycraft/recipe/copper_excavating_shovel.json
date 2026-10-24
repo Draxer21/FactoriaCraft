@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "factorycraft_shovel",
+  "pattern": [
+    " MM",
+    " SM",
+    "S  "
+  ],
+  "key": {
+    "M": "#minecraft:copper_tool_materials",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "factorycraft:copper_excavating_shovel",
+    "count": 1
+  }
+}
