@@ -75,8 +75,26 @@ public final class VehicleClient {
 
     // ---------------------------------------------------------------- ticking
 
+    private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
+    private static final String[] DEMO_CHAPTERS = {"tools", "upgrades", "powered", "processing", "mechanic", "excavator"};
+    private static int demoTicks;
+
+    /** CI: once the title screen is up, show one chapter's recipes every 5 seconds. */
+    private static void guideDemo() {
+        if (!GUIDE_DEMO) return;
+        Minecraft mc = Minecraft.getInstance();
+        if (demoTicks == 0 && !(mc.screen instanceof net.minecraft.client.gui.screens.TitleScreen)) return;
+        demoTicks++;
+        if (demoTicks % 100 == 0 && demoTicks / 100 <= DEMO_CHAPTERS.length) {
+            String chapter = DEMO_CHAPTERS[demoTicks / 100 - 1];
+            com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
+            mc.gui.setScreen(GuideScreen.atRecipes(chapter));
+        }
+    }
+
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
+        guideDemo();
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         while (LIGHTS_KEY.consumeClick()) {

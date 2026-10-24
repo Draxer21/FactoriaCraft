@@ -32,6 +32,14 @@ public final class GuideScreen extends Screen {
         super(Component.translatable("item.factorycraft.guide_book"));
     }
 
+    /** Opens a chapter at its first recipe page (used by the CI screenshot demo). */
+    static GuideScreen atRecipes(String chapterName) {
+        GuideScreen screen = new GuideScreen();
+        screen.chapter = java.util.Arrays.asList(CHAPTERS).indexOf(chapterName);
+        screen.page = -1;
+        return screen;
+    }
+
     @Override
     public boolean isPauseScreen() {
         return false;
@@ -121,6 +129,10 @@ public final class GuideScreen extends Screen {
             result.add(new Page(List.of(), recipes.subList(i, Math.min(recipes.size(), i + perRecipePage))));
         }
         if (result.isEmpty()) result.add(new Page(List.of(), List.of()));
+        if (page < 0) { // jump to the first recipe page
+            page = 0;
+            while (page < result.size() - 1 && result.get(page).recipes().isEmpty()) page++;
+        }
         pages = result;
         page = Math.min(page, pages.size() - 1);
     }
