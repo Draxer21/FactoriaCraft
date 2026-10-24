@@ -37,7 +37,11 @@ public enum Upgrade {
     /** Mines and harvests as if with Fortune IV. */
     FORTUNE_II("fortune_ii", e -> FORTUNE.fits(e)),
     /** Never needs fuel. Takes two module slots. */
-    FUSION_ENGINE("fusion_engine", e -> true, 2);
+    FUSION_ENGINE("fusion_engine", e -> true, 2),
+
+    // ---- Nuclear.
+    /** Burns 95% less fuel and gives +20% speed. Takes two module slots. */
+    NUCLEAR_ENGINE("nuclear_engine", e -> true, 2);
 
     private final String id;
     private final Predicate<Entity> fits;

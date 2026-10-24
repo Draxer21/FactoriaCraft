@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "front": "factorycraft:block/nuclear_reactor_front",
+    "side": "factorycraft:block/nuclear_reactor_side",
+    "top": "factorycraft:block/nuclear_reactor_top",
+    "bottom": "factorycraft:block/machine_bottom"
+  }
+}

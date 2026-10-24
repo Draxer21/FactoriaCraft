@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BPB",
+    "GCG",
+    "BRB"
+  ],
+  "key": {
+    "B": "factorycraft:lead_block",
+    "P": "factorycraft:iron_plate",
+    "G": "minecraft:glass",
+    "C": "factorycraft:generator",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:nuclear_reactor",
+    "count": 1
+  }
+}

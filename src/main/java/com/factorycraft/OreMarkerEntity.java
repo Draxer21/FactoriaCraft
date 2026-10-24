@@ -69,6 +69,9 @@ public final class OreMarkerEntity extends Entity {
         if (ore.is(Tags.Blocks.ORES_LAPIS)) return 0x3060FF;
         if (ore.is(Tags.Blocks.ORES_COAL)) return 0x505050;
         if (ore.is(Blocks.ANCIENT_DEBRIS)) return 0xA050C0;
+        if (ore.is(Nuclear.URANIUM_ORE.value()) || ore.is(Nuclear.DEEPSLATE_URANIUM_ORE.value())) return 0x6CFF4A;
+        if (ore.is(Nuclear.THORIUM_ORE.value()) || ore.is(Nuclear.DEEPSLATE_THORIUM_ORE.value())) return 0xC8B46A;
+        if (ore.is(Nuclear.LEAD_ORE.value()) || ore.is(Nuclear.DEEPSLATE_LEAD_ORE.value())) return 0x7A86A8;
         return 0xFFFFFF;
     }
 

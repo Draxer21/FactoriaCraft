@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "U",
+    "N",
+    "L"
+  ],
+  "key": {
+    "U": "factorycraft:uranium_fuel_rod",
+    "N": "minecraft:netherite_sword",
+    "L": "factorycraft:lead_ingot"
+  },
+  "result": {
+    "id": "factorycraft:irradiated_blade",
+    "count": 1
+  }
+}

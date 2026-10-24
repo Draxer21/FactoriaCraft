@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": "factorycraft:uranium_dust",
+  "result": {
+    "id": "factorycraft:uranium_ingot"
+  },
+  "experience": 0.8,
+  "cookingtime": 100
+}

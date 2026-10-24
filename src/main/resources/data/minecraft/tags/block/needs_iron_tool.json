@@ -1,0 +1,12 @@
+{
+  "values": [
+    "factorycraft:uranium_ore",
+    "factorycraft:deepslate_uranium_ore",
+    "factorycraft:thorium_ore",
+    "factorycraft:deepslate_thorium_ore",
+    "factorycraft:uranium_block",
+    "factorycraft:thorium_block",
+    "factorycraft:plutonium_block",
+    "factorycraft:nuclear_reactor"
+  ]
+}

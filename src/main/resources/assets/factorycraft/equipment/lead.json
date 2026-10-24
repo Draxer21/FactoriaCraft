@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "factorycraft:lead"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "factorycraft:lead"
+      }
+    ]
+  }
+}

@@ -35,6 +35,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.INDUSTRIAL_FURNACE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.GENERATOR_MENU.value(), GeneratorScreen::new);
         event.register(FactoryCraft.SOLAR_GENERATOR_MENU.value(), GeneratorScreen::new);
+        event.register(Nuclear.REACTOR_MENU.value(), ReactorScreen::new);
         event.register(FactoryCraft.VEHICLE_MENU.value(), VehicleScreen::new);
         event.register(FactoryCraft.ORE_WASHER_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.PRESS_MENU.value(), ProcessingScreen::new);
@@ -57,6 +58,7 @@ public final class ExcavatorClientEvents {
         event.registerEntityRenderer(FactoryCraft.LOCOMOTIVE.value(), context -> new WorkVehicleRenderer(context, "locomotive",
                 LocomotiveModel.LAYER_LOCATION, 1.5F, LocomotiveModel::new, LocomotiveModel.LAMP_PARTS, LocomotiveModel.BEAM_ORIGINS));
         event.registerEntityRenderer(FactoryCraft.DRONE.value(), DroneRenderer::new);
+        event.registerEntityRenderer(Nuclear.MINI_NUKE_ENTITY.value(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
         event.registerEntityRenderer(FactoryCraft.ORE_MARKER.value(), OreMarkerRenderer::new);
         event.registerEntityRenderer(FactoryCraft.FORESTER.value(), context -> new WorkVehicleRenderer(context, "forester",
                 ForesterModel.LAYER_LOCATION, 1.5F, ForesterModel::new, ForesterModel.LAMP_PARTS, ForesterModel.BEAM_ORIGINS));

@@ -507,7 +507,9 @@ public final class FactoryCraft {
                         output.accept(COPPER_DUST.value());
                     }).build());
 
-    public FactoryCraft(IEventBus modEventBus) {
+    public FactoryCraft(IEventBus modEventBus, net.neoforged.fml.ModContainer container) {
+        Nuclear.init();
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, NuclearConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENUS.register(modEventBus);

@@ -187,6 +187,9 @@ public final class PumpBlockEntity extends MachineBlockEntity implements Energy.
             level.setBlock(pos, full, Block.UPDATE_ALL);
             return true;
         }
+        if (fluid == TankerEntity.Fluid.WATER && level.getBlockEntity(pos) instanceof NuclearReactorBlockEntity reactor) {
+            return reactor.acceptWater();
+        }
         return fluid == TankerEntity.Fluid.LAVA && level.getBlockEntity(pos) instanceof GeneratorBlockEntity generator
                 && generator.acceptLava();
     }

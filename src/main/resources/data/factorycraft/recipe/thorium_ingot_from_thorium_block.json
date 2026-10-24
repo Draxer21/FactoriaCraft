@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "factorycraft:thorium_block"
+  ],
+  "result": {
+    "id": "factorycraft:thorium_ingot",
+    "count": 9
+  }
+}

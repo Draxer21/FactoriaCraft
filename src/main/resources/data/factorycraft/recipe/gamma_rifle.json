@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  D",
+    "LUL",
+    "I  "
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "L": "factorycraft:lead_ingot",
+    "U": "factorycraft:uranium_fuel_rod",
+    "I": "factorycraft:iron_plate"
+  },
+  "result": {
+    "id": "factorycraft:gamma_rifle",
+    "count": 1
+  }
+}

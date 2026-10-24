@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "factorycraft:raw_thorium",
+  "result": {
+    "id": "factorycraft:thorium_ingot"
+  },
+  "experience": 0.8,
+  "cookingtime": 200
+}

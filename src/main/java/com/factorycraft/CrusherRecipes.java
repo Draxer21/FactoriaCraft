@@ -49,6 +49,16 @@ public final class CrusherRecipes {
         add(Items.BONE, () -> Items.BONE_MEAL, 6);
         add(Items.BLAZE_ROD, () -> Items.BLAZE_POWDER, 4);
         add(ItemTags.WOOL, () -> Items.STRING, 4);
+        // Nuclear materials.
+        add(Nuclear.RAW_URANIUM.value(), () -> Nuclear.URANIUM_DUST.value(), 2);
+        add(Nuclear.RAW_THORIUM.value(), () -> Nuclear.THORIUM_DUST.value(), 2);
+        add(Nuclear.RAW_LEAD.value(), () -> Nuclear.LEAD_DUST.value(), 2);
+        add(Nuclear.URANIUM_ORE_ITEM.value(), () -> Nuclear.URANIUM_DUST.value(), 4);
+        add(Nuclear.DEEPSLATE_URANIUM_ORE_ITEM.value(), () -> Nuclear.URANIUM_DUST.value(), 4);
+        add(Nuclear.THORIUM_ORE_ITEM.value(), () -> Nuclear.THORIUM_DUST.value(), 4);
+        add(Nuclear.DEEPSLATE_THORIUM_ORE_ITEM.value(), () -> Nuclear.THORIUM_DUST.value(), 4);
+        add(Nuclear.LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
+        add(Nuclear.DEEPSLATE_LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
     }
 
     private CrusherRecipes() {}
