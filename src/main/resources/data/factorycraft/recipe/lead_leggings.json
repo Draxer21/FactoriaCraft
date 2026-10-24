@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "LLL",
+    "L L",
+    "L L"
+  ],
+  "key": {
+    "L": "factorycraft:lead_ingot"
+  },
+  "result": {
+    "id": "factorycraft:lead_leggings",
+    "count": 1
+  }
+}

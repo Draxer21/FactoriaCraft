@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PLP",
+    "LRL",
+    "PLP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "L": "factorycraft:lead_ingot",
+    "R": "factorycraft:plutonium_fuel_rod"
+  },
+  "result": {
+    "id": "factorycraft:upgrade_nuclear_engine",
+    "count": 1
+  }
+}

@@ -24,7 +24,10 @@ public final class PressBlockEntity extends PoweredMachineBlockEntity {
             new Pressing(() -> Items.SNOWBALL, 4, () -> Items.ICE, 1),
             new Pressing(() -> Items.ICE, 9, () -> Items.PACKED_ICE, 1),
             new Pressing(() -> Items.PACKED_ICE, 9, () -> Items.BLUE_ICE, 1),
-            new Pressing(() -> Items.COAL, 64, () -> Items.DIAMOND, 1));
+            new Pressing(() -> Items.COAL, 64, () -> Items.DIAMOND, 1),
+            new Pressing(() -> Nuclear.THORIUM_INGOT.value(), 4, () -> Nuclear.THORIUM_FUEL_ROD.value(), 1),
+            new Pressing(() -> Nuclear.URANIUM_INGOT.value(), 4, () -> Nuclear.URANIUM_FUEL_ROD.value(), 1),
+            new Pressing(() -> Nuclear.PLUTONIUM_INGOT.value(), 2, () -> Nuclear.PLUTONIUM_FUEL_ROD.value(), 1));
 
     public PressBlockEntity(BlockPos pos, BlockState state) {
         super(FactoryCraft.PRESS_BLOCK_ENTITY.value(), pos, state, 1);

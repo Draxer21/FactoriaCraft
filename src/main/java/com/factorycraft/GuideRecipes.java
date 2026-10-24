@@ -72,6 +72,13 @@ final class GuideRecipes {
                     "iron_ingot_from_iron_dust_blasting", "gold_ingot_from_gold_dust_blasting",
                     "copper_ingot_from_copper_dust_blasting", "machine:crusher"}),
             Map.entry("well_drill", new String[] {"well_drill"}),
+            Map.entry("nuclear", new String[] {"lead_ingot_from_raw_lead_smelting", "uranium_ingot_from_raw_uranium_smelting",
+                    "thorium_ingot_from_raw_thorium_smelting", "uranium_ingot_from_uranium_dust_smelting",
+                    "thorium_ingot_from_thorium_dust_smelting", "lead_ingot_from_lead_dust_smelting",
+                    "plutonium_ingot", "uranium_block", "thorium_block", "lead_block", "plutonium_block",
+                    "lead_helmet", "lead_chestplate", "lead_leggings", "lead_boots", "machine:nuclear"}),
+            Map.entry("reactor", new String[] {"nuclear_reactor", "upgrade_nuclear_engine", "machine:rods"}),
+            Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "mini_nuke"}),
             Map.entry("power", new String[] {"generator", "solar_generator", "cable"}),
             Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
@@ -216,6 +223,29 @@ final class GuideRecipes {
                             }
                             result.add(single(new ItemStack(entry.getKey()), outs, station));
                         });
+            }
+            case "nuclear" -> {
+                List<Display> crusher = new ArrayList<>();
+                machine("crusher", crusher);
+                for (Display d : crusher) {
+                    ItemStack in = d.inputs().get(4).shown();
+                    if (in.getItem() instanceof Radiation.Source || in.is(Nuclear.RAW_LEAD.value())
+                            || in.is(Nuclear.LEAD_ORE_ITEM.value()) || in.is(Nuclear.DEEPSLATE_LEAD_ORE_ITEM.value())) {
+                        result.add(d);
+                    }
+                }
+                List<Display> washer = new ArrayList<>();
+                machine("washer", washer);
+                for (Display d : washer) {
+                    if (d.inputs().get(4).shown().is(Nuclear.DEPLETED_FUEL_ROD.value())) result.add(d);
+                }
+            }
+            case "rods" -> {
+                List<Display> press = new ArrayList<>();
+                machine("press", press);
+                for (Display d : press) {
+                    if (d.outputs().get(0).shown().getItem() instanceof Radiation.Source) result.add(d);
+                }
             }
             default -> { }
         }

@@ -70,7 +70,7 @@ public final class SolarGeneratorBlockEntity extends MachineBlockEntity implemen
 
     @Override
     protected boolean accepts(int slot, ItemStack stack) {
-        return slot == 0 && stack.getItem() instanceof DrillItem;
+        return slot == 0 && ItemEnergy.canCharge(stack);
     }
 
     /** Current production, 0..OUTPUT. */
@@ -90,7 +90,7 @@ public final class SolarGeneratorBlockEntity extends MachineBlockEntity implemen
         // Charge the drill in the slot.
         ItemStack tool = items.get(0);
         if (!tool.isEmpty() && energy > 0) {
-            int taken = DrillItem.charge(tool, Math.min(CHARGE_RATE, energy));
+            int taken = ItemEnergy.charge(tool, Math.min(CHARGE_RATE, energy));
             if (taken > 0) {
                 energy -= taken;
                 setChanged();

@@ -64,7 +64,16 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
-        // Always open the machine's screen (handled below), whatever is in hand.
+        // Water buckets cool the reactor.
+        if (stack.is(net.minecraft.world.item.Items.WATER_BUCKET)
+                && level.getBlockEntity(pos) instanceof NuclearReactorBlockEntity reactor) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            if (!reactor.acceptWater()) return InteractionResult.FAIL;
+            if (!player.isCreative()) player.setItemInHand(hand, new ItemStack(net.minecraft.world.item.Items.BUCKET));
+            level.playSound(null, pos, net.minecraft.sounds.SoundEvents.BUCKET_EMPTY, net.minecraft.sounds.SoundSource.BLOCKS, 1.0F, 1.0F);
+            return InteractionResult.SUCCESS_SERVER;
+        }
+        // Otherwise always open the machine's screen (handled below), whatever is in hand.
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "factorycraft:lead_ingot"
+  },
+  "result": {
+    "id": "factorycraft:lead_block",
+    "count": 1
+  }
+}

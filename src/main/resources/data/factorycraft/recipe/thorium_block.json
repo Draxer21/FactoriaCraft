@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "factorycraft:thorium_ingot"
+  },
+  "result": {
+    "id": "factorycraft:thorium_block",
+    "count": 1
+  }
+}

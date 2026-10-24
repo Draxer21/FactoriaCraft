@@ -235,8 +235,9 @@ public final class VehicleEngine {
 
     /** Top speed multiplier. */
     public double speedFactor() {
-        if (has(Upgrade.TURBO_II)) return 1.7;
-        return has(Upgrade.TURBO) ? 1.35 : 1.0;
+        double nuclear = has(Upgrade.NUCLEAR_ENGINE) ? 1.2 : 1.0;
+        if (has(Upgrade.TURBO_II)) return 1.7 * nuclear;
+        return (has(Upgrade.TURBO) ? 1.35 : 1.0) * nuclear;
     }
 
     /** Module slots in use (the fusion engine takes two). */
@@ -257,6 +258,7 @@ public final class VehicleEngine {
         if (has(Upgrade.TURBO_II)) factor *= 2.0;
         if (has(Upgrade.EFFICIENT_ENGINE)) factor *= 0.6;
         if (has(Upgrade.HYBRID_ENGINE)) factor *= 0.75;
+        if (has(Upgrade.NUCLEAR_ENGINE)) factor *= 0.05;
         return factor;
     }
 
