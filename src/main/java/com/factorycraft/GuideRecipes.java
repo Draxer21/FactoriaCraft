@@ -285,7 +285,8 @@ final class GuideRecipes {
         // Title: the result's name (or the input's, when one input gives several possible finds).
         ItemStack main = display.outputs().isEmpty() ? ItemStack.EMPTY : display.outputs().get(0).shown();
         if (display.outputs().size() > 1 && display.inputs().size() > 4) main = display.inputs().get(4).shown();
-        String title = font.plainSubstrByWidth(main.getHoverName().getString(), WIDTH - 8);
+        String name = main.getHoverName().getString();
+        String title = font.width(name) <= WIDTH - 8 ? name : font.plainSubstrByWidth(name, WIDTH - 8 - font.width("…")) + "…";
         graphics.text(font, title, x + 4, y + 3, 0xFF3A4047, false);
 
         int gridX = x + 4;
