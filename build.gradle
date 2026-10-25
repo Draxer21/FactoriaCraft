@@ -37,7 +37,7 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     compileOnly "mezz.jei:jei-${jei_mc}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_mc}-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${jei_mc}-neoforge:${jei_version}"
+    if (minecraft_version == jei_mc) runtimeOnly "mezz.jei:jei-${jei_mc}-neoforge:${jei_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {

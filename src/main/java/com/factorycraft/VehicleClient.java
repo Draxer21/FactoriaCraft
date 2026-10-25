@@ -94,8 +94,9 @@ public final class VehicleClient {
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");
                 mc.player.connection.sendCommand("gamemode spectator");
-                mc.player.connection.sendCommand("tp @s ~ 120 ~ 0 12");
-                mc.player.connection.sendCommand("summon factorycraft:" + parts[1] + " ^ ^-2 ^9 {NoGravity:1b,Rotation:[60f,0f]}");
+                mc.player.connection.sendCommand("tp @s ~ 121 ~ 0 18");
+                mc.player.connection.sendCommand("fill ~-8 117 ~3 ~8 117 ~18 minecraft:smooth_stone");
+                mc.player.connection.sendCommand("summon factorycraft:" + parts[1] + " ~ 118 ~10 {Rotation:[60f,0f]}");
             } else if (parts[0].equals("screen")) {
                 var inv = mc.player.getInventory();
                 ProcessingMenu menu = switch (parts[1]) {
