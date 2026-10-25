@@ -32,7 +32,8 @@ public final class OreWasherBlockEntity extends PoweredMachineBlockEntity {
             Items.MUD, List.of(new Find(() -> Items.CLAY_BALL, 0.40F)),
             Items.SOUL_SAND, List.of(new Find(() -> Items.QUARTZ, 0.20F), new Find(() -> Items.GOLD_NUGGET, 0.15F)),
             Items.COBBLED_DEEPSLATE, List.of(new Find(() -> Items.IRON_NUGGET, 0.15F), new Find(() -> Items.LAPIS_LAZULI, 0.05F)),
-            Nuclear.DEPLETED_FUEL_ROD.value(), List.of(new Find(() -> Nuclear.PLUTONIUM_NUGGET.value(), 0.60F),
+            Nuclear.DEPLETED_FUEL_ROD.value(), List.of(new Find(() -> Nuclear.NUCLEAR_WASTE.value(), 1.0F),
+                    new Find(() -> Nuclear.PLUTONIUM_NUGGET.value(), 0.60F),
                     new Find(() -> Nuclear.LEAD_DUST.value(), 0.40F), new Find(() -> Nuclear.URANIUM_DUST.value(), 0.20F)));
 
     public OreWasherBlockEntity(BlockPos pos, BlockState state) {

@@ -148,6 +148,24 @@ public final class Nuclear {
     public static final DeferredHolder<MenuType<?>, MenuType<ReactorMenu>> REACTOR_MENU = MENUS.register("nuclear_reactor",
             () -> new MenuType<>(ReactorMenu::client, FeatureFlags.VANILLA_SET));
 
+    // ---------------------------------------------------------------- waste & contamination
+
+    public static final DeferredHolder<Item, Item> NUCLEAR_WASTE = ITEMS.registerItem("nuclear_waste",
+            properties -> new RadioactiveItem(properties, 6.0F));
+    public static final DeferredHolder<Block, Block> CONTAMINATED_SOIL = BLOCKS.register("contaminated_soil", () ->
+            new ContaminatedSoilBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "contaminated_soil")))
+                    .strength(0.6F).sound(SoundType.GRAVEL).lightLevel(state -> 2)));
+    public static final DeferredHolder<Item, Item> CONTAMINATED_SOIL_ITEM = blockItem("contaminated_soil", CONTAMINATED_SOIL, 0.5F);
+    public static final DeferredHolder<Block, Block> WASTE_BARREL = BLOCKS.register("waste_barrel", () ->
+            new SimpleMachineBlock(props("waste_barrel").strength(4.0F, 8.0F).sound(SoundType.METAL).lightLevel(state -> 0),
+                    () -> Nuclear.WASTE_BARREL_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> WASTE_BARREL_ITEM = blockItem("waste_barrel", WASTE_BARREL);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WasteBarrelBlockEntity>> WASTE_BARREL_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("waste_barrel", () -> new BlockEntityType<>(WasteBarrelBlockEntity::new, WASTE_BARREL.value()));
+    public static final DeferredHolder<Item, Item> GEIGER_COUNTER = ITEMS.registerItem("geiger_counter", GeigerCounterItem::new);
+    public static final DeferredHolder<Item, Item> DECONTAMINATION_KIT = ITEMS.registerItem("decontamination_kit", DecontaminationKitItem::new);
+
     // ---------------------------------------------------------------- centrifuge
 
     public static final DeferredHolder<Block, Block> CENTRIFUGE = BLOCKS.register("centrifuge", () ->
@@ -208,6 +226,7 @@ public final class Nuclear {
                                 RAW_LEAD, LEAD_DUST, LEAD_INGOT, LEAD_BLOCK_ITEM,
                                 PLUTONIUM_NUGGET, PLUTONIUM_INGOT, PLUTONIUM_BLOCK_ITEM,
                                 CENTRIFUGE_ITEM, ENRICHED_URANIUM_1, ENRICHED_URANIUM_2, ENRICHED_URANIUM_3,
+                                NUCLEAR_WASTE, WASTE_BARREL_ITEM, CONTAMINATED_SOIL_ITEM, GEIGER_COUNTER, DECONTAMINATION_KIT,
                                 THORIUM_FUEL_ROD, URANIUM_FUEL_ROD, PLUTONIUM_FUEL_ROD, DEPLETED_FUEL_ROD,
                                 REACTOR_ITEM, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS,
                                 GAMMA_RIFLE, IRRADIATED_BLADE, MINI_NUKE)) {

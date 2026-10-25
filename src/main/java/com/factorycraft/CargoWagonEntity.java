@@ -35,7 +35,7 @@ import org.jspecify.annotations.Nullable;
  * bar, including up and down sloped tunnels. The tunneler fills its own bay
  * first and then the wagons, front to back.
  */
-public final class CargoWagonEntity extends AbstractChestBoat {
+public class CargoWagonEntity extends AbstractChestBoat {
     private static final EntityDataAccessor<Byte> FILL =
             SynchedEntityData.defineId(CargoWagonEntity.class, EntityDataSerializers.BYTE);
 
@@ -62,6 +62,10 @@ public final class CargoWagonEntity extends AbstractChestBoat {
 
     public CargoWagonEntity(EntityType<? extends CargoWagonEntity> type, Level level) {
         super(type, level, () -> FactoryCraft.CARGO_WAGON_ITEM.value());
+    }
+
+    protected CargoWagonEntity(EntityType<? extends CargoWagonEntity> type, Level level, java.util.function.Supplier<net.minecraft.world.item.Item> drop) {
+        super(type, level, drop);
     }
 
     @Override
@@ -96,7 +100,11 @@ public final class CargoWagonEntity extends AbstractChestBoat {
         return entityData.get(FILL) / 100.0F;
     }
 
-    private void updateFill() {
+    protected void setFill(float fraction) {
+        entityData.set(FILL, (byte) Math.round(100.0F * Math.max(0.0F, Math.min(1.0F, fraction))));
+    }
+
+    protected void updateFill() {
         float total = 0.0F;
         for (ItemStack stack : cargo) {
             if (!stack.isEmpty()) total += (float) stack.getCount() / stack.getMaxStackSize();

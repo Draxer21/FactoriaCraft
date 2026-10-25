@@ -66,8 +66,8 @@ final class GuideRecipes {
             Map.entry("tower_crane", new String[] {"tower_crane"}),
             Map.entry("locomotive", new String[] {"locomotive", "cargo_wagon"}),
             Map.entry("drone", new String[] {"drone", "drone_controller"}),
-            Map.entry("belts", new String[] {"conveyor", "sorter", "elevator"}),
-            Map.entry("processing", new String[] {"crusher", "industrial_furnace", "iron_ingot_from_iron_dust_smelting",
+            Map.entry("belts", new String[] {"conveyor", "fast_conveyor", "express_conveyor", "sorter", "elevator"}),
+            Map.entry("processing", new String[] {"crusher", "industrial_furnace", "machine_upgrade_speed", "machine_upgrade_efficiency", "machine_upgrade_output", "iron_ingot_from_iron_dust_smelting",
                     "gold_ingot_from_gold_dust_smelting", "copper_ingot_from_copper_dust_smelting",
                     "iron_ingot_from_iron_dust_blasting", "gold_ingot_from_gold_dust_blasting",
                     "copper_ingot_from_copper_dust_blasting", "machine:crusher"}),
@@ -78,9 +78,12 @@ final class GuideRecipes {
                     "plutonium_ingot", "uranium_block", "thorium_block", "lead_block", "plutonium_block",
                     "lead_helmet", "lead_chestplate", "lead_leggings", "lead_boots", "machine:nuclear"}),
             Map.entry("reactor", new String[] {"nuclear_reactor", "upgrade_nuclear_engine", "machine:rods"}),
+            Map.entry("clean_power", new String[] {"chimney_filter", "air_purifier", "waste_barrel", "plant_inspector", "geiger_counter", "decontamination_kit"}),
+            Map.entry("logistics", new String[] {"loading_station", "unloading_station", "tank_wagon", "route_beacon", "upgrade_autopilot"}),
+            Map.entry("aircraft", new String[] {"helicopter", "submarine"}),
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
-            Map.entry("power", new String[] {"generator", "solar_generator", "cable"}),
+            Map.entry("power", new String[] {"generator", "solar_generator", "windmill", "geothermal_generator", "steam_turbine", "lightning_collector", "copper_coil", "copper_radiator", "battery", "energy_meter", "cable"}),
             Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
             Map.entry("station", new String[] {"control_station"}),
@@ -94,7 +97,7 @@ final class GuideRecipes {
                     "stone_chainsaw", "copper_chainsaw", "iron_chainsaw", "diamond_chainsaw", "netherite_chainsaw_smithing",
                     "stone_hammer", "copper_hammer", "iron_hammer", "diamond_hammer", "netherite_hammer_smithing",
                     "stone_excavating_shovel", "copper_excavating_shovel", "iron_excavating_shovel", "diamond_excavating_shovel",
-                    "netherite_excavating_shovel_smithing", "wrench", "repair_station",
+                    "netherite_excavating_shovel_smithing", "wrench", "repair_station", "giant_drill", "jetpack", "magnet", "industrial_chest",
                     "trade:mechanic/4/prototype_drill", "trade:mechanic/4/industrial_chainsaw", "trade:mechanic/4/titan_hammer"}));
 
     private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
@@ -193,6 +196,17 @@ final class GuideRecipes {
         in.add(Slot.of(stack(json.get("wants"))));
         if (json.has("additional_wants")) in.add(Slot.of(stack(json.get("additional_wants"))));
         return new Display(in, List.of(Slot.of(stack(json.get("gives")))), item("factorycraft:mechanic_bench"));
+    }
+
+    /** Machine conversions for recipe viewers (crusher, washer, press, centrifuge). */
+    static List<Display> machineDisplays(String which) {
+        List<Display> result = new ArrayList<>();
+        machine(which, result);
+        return result;
+    }
+
+    static ItemStack itemStack(String id) {
+        return item(id);
     }
 
     private static void machine(String which, List<Display> result) {

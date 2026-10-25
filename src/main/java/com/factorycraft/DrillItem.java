@@ -41,7 +41,8 @@ import net.neoforged.neoforge.common.Tags;
  */
 public final class DrillItem extends Item {
     public static final int CAPACITY = 40_000;
-    private final boolean prototype;
+    /** 0 normal, 1 prototype (Mechanic), 2 giant excavation drill. */
+    private final int tier;
     private static final int ENERGY_PER_BLOCK = 25;
     private static final int SCAN_COST = 1_500;
     private static final int VEIN_MAX = 64;
@@ -55,12 +56,17 @@ public final class DrillItem extends Item {
 
     /** {@code prototype}: the Mechanic's version, with double battery, 128-block veins and a 3x3 tunnel. */
     public DrillItem(Properties properties, boolean prototype) {
+        this(properties, prototype ? 1 : 0);
+    }
+
+    /** Tier 2: giant excavation drill, x4 battery, 256-block veins and a 5x5 tunnel 4 deep. */
+    public DrillItem(Properties properties, int tier) {
         super(properties);
-        this.prototype = prototype;
+        this.tier = tier;
     }
 
     private int capacity() {
-        return prototype ? CAPACITY * 2 : CAPACITY;
+        return tier == 2 ? CAPACITY * 4 : tier == 1 ? CAPACITY * 2 : CAPACITY;
     }
 
     // ---------------------------------------------------------------- stored data
@@ -127,7 +133,7 @@ public final class DrillItem extends Item {
         List<BlockPos> vein = new ArrayList<>();
         seen.add(start);
         queue.add(start);
-        while (!queue.isEmpty() && vein.size() < (prototype ? VEIN_MAX * 2 : VEIN_MAX)) {
+        while (!queue.isEmpty() && vein.size() < (VEIN_MAX << tier)) {
             BlockPos pos = queue.poll();
             for (BlockPos next : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
                 if (seen.contains(next)) continue;
@@ -156,9 +162,10 @@ public final class DrillItem extends Item {
         Direction dir = Direction.fromYRot(player.getYRot());
         Direction side = dir.getClockWise();
         int floor = player.blockPosition().getY();
-        int halfWidth = prototype ? 1 : 0;
-        int height = prototype ? 3 : 2;
-        for (int d = 0; d < TUNNEL_DEPTH; d++) {
+        int halfWidth = tier;
+        int height = tier == 2 ? 5 : tier == 1 ? 3 : 2;
+        int depth = tier == 2 ? TUNNEL_DEPTH + 1 : TUNNEL_DEPTH;
+        for (int d = 0; d < depth; d++) {
             BlockPos column = hit.relative(dir, d);
             for (int w = -halfWidth; w <= halfWidth; w++) {
                 for (int h = 0; h < height; h++) {

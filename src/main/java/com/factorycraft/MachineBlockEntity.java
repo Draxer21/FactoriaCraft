@@ -142,6 +142,92 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         }
     }
 
+    // ---------------------------------------------------------------- upgrade modules
+
+    /** Machine upgrade modules: right-click the machine with one to install it (wrench takes them out). */
+    public enum MachineUpgrade { SPEED, EFFICIENCY, OUTPUT }
+
+    public static final int MAX_UPGRADES = 4;
+    protected final int[] upgrades = new int[MachineUpgrade.values().length];
+
+    /** Processing machines take upgrades; generators, batteries etc. don't. */
+    public boolean supportsUpgrades() {
+        return false;
+    }
+
+    public int upgradeCount() {
+        int total = 0;
+        for (int n : upgrades) total += n;
+        return total;
+    }
+
+    public int upgrades(MachineUpgrade type) {
+        return upgrades[type.ordinal()];
+    }
+
+    public boolean installUpgrade(MachineUpgrade type) {
+        if (!supportsUpgrades() || upgradeCount() >= MAX_UPGRADES) return false;
+        upgrades[type.ordinal()]++;
+        setChanged();
+        return true;
+    }
+
+    /** Takes all modules out; returns them as items. */
+    public java.util.List<ItemStack> removeUpgrades() {
+        java.util.List<ItemStack> out = new java.util.ArrayList<>();
+        for (MachineUpgrade type : MachineUpgrade.values()) {
+            int n = upgrades[type.ordinal()];
+            if (n > 0) out.add(new ItemStack(MachineUpgradeItem.item(type), n));
+            upgrades[type.ordinal()] = 0;
+        }
+        setChanged();
+        return out;
+    }
+
+    /** Multiplier for the time an operation takes (speed modules and the server config). */
+    protected double speedFactor() {
+        return Math.pow(0.7, upgrades[MachineUpgrade.SPEED.ordinal()]) / FactoryConfig.machineSpeed();
+    }
+
+    /** Multiplier for energy/fuel per tick: efficiency saves, speed costs a bit more. */
+    protected double energyFactor() {
+        return Math.pow(0.7, upgrades[MachineUpgrade.EFFICIENCY.ordinal()])
+                * (1.0 + 0.25 * upgrades[MachineUpgrade.SPEED.ordinal()]) * FactoryConfig.machineEnergy();
+    }
+
+    protected int scaledTime(int base) {
+        return Math.max(1, (int) Math.round(base * speedFactor()));
+    }
+
+    /** Output modules: each gives a 25% chance per product to come out doubled. */
+    protected java.util.List<ItemStack> boost(Level level, java.util.List<ItemStack> results) {
+        int output = upgrades[MachineUpgrade.OUTPUT.ordinal()];
+        if (output == 0) return results;
+        java.util.List<ItemStack> boosted = new java.util.ArrayList<>();
+        for (ItemStack stack : results) {
+            ItemStack copy = stack.copy();
+            if (level.getRandom().nextFloat() < 0.25F * output) copy.setCount(Math.min(copy.getMaxStackSize(), copy.getCount() * 2));
+            boosted.add(copy);
+        }
+        return boosted;
+    }
+
+    /** " [Speed 2 · Eff. 1]" after the machine's name in its screen. */
+    protected net.minecraft.network.chat.Component withUpgrades(net.minecraft.network.chat.Component name) {
+        if (upgradeCount() == 0) return name;
+        net.minecraft.network.chat.MutableComponent text = name.copy().append(" [");
+        boolean first = true;
+        for (MachineUpgrade type : MachineUpgrade.values()) {
+            int n = upgrades[type.ordinal()];
+            if (n == 0) continue;
+            if (!first) text.append(" · ");
+            text.append(net.minecraft.network.chat.Component.translatable("upgrade.factorycraft.machine." + type.name().toLowerCase() + ".short"))
+                    .append(" " + n);
+            first = false;
+        }
+        return text.append("]");
+    }
+
     // ---------------------------------------------------------------- hand interaction
 
     /** Right-click with a stack: put as much of it in as fits. Returns true if anything went in. */
@@ -245,11 +331,17 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         super.loadAdditional(input);
         items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(input, items);
+        for (MachineUpgrade type : MachineUpgrade.values()) {
+            upgrades[type.ordinal()] = input.getIntOr("Upgrade" + type.name(), 0);
+        }
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         ContainerHelper.saveAllItems(output, items);
+        for (MachineUpgrade type : MachineUpgrade.values()) {
+            if (upgrades[type.ordinal()] > 0) output.putInt("Upgrade" + type.name(), upgrades[type.ordinal()]);
+        }
     }
 }

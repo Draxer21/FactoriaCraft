@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "factorycraft:block/waste_barrel_side",
+    "top": "factorycraft:block/waste_barrel_top",
+    "bottom": "factorycraft:block/waste_barrel_top"
+  }
+}

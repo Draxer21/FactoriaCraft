@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "P P",
+    "PBP",
+    "WWW"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "B": "minecraft:bucket",
+    "W": "factorycraft:cargo_wagon"
+  },
+  "result": {
+    "id": "factorycraft:tank_wagon",
+    "count": 1
+  }
+}

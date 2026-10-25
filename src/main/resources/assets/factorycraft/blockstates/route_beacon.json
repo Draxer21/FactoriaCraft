@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "stop=false": {
+      "model": "factorycraft:block/route_beacon"
+    },
+    "stop=true": {
+      "model": "factorycraft:block/route_beacon_stop"
+    }
+  }
+}

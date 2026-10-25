@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "DEB",
+    "PPP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "G": "minecraft:glass",
+    "D": "factorycraft:iron_drill",
+    "E": "minecraft:conduit",
+    "B": "minecraft:bucket"
+  },
+  "result": {
+    "id": "factorycraft:submarine",
+    "count": 1
+  }
+}

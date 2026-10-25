@@ -90,11 +90,20 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
             }
         }
         if (burnLeft <= 0) return false;
+        // Smog unless a chimney filter sits on top.
+        if (level.getGameTime() % 200 == 0 && level instanceof net.minecraft.server.level.ServerLevel server
+                && !hasFilter(level)) {
+            Pollution.smog(server, worldPosition);
+        }
         if (energy + OUTPUT > CAPACITY) return true; // full: idle, keep the fire
         burnLeft--;
         energy += OUTPUT;
         setChanged();
         return true;
+    }
+
+    public boolean hasFilter(Level level) {
+        return level.getBlockState(worldPosition.above()).is(FactoryCraft.CHIMNEY_FILTER.value());
     }
 
     /** A bucket of lava piped in by a pump: burns like a lava bucket. */
@@ -121,6 +130,11 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
     @Override
     public int stored() {
         return energy;
+    }
+
+    @Override
+    public int rate() {
+        return burnLeft > 0 && energy + OUTPUT <= CAPACITY ? OUTPUT : 0;
     }
 
     @Override

@@ -47,6 +47,22 @@ jobs:
             echo '```'
           } > report.md
           gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@report.md
+      - name: Publish release (jar downloadable without login)
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/mc-26.1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MC: ${{ matrix.mc }}
+        run: |
+          ver=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
+          jar=$(ls build/libs/*.jar | grep -v -E 'sources|javadoc' | head -1)
+          tag="v${ver}-mc${MC}"
+          notes="FactoryCraft ${ver} para Minecraft ${MC} (NeoForge). Se actualiza automáticamente con cada cambio; último commit: ${GITHUB_SHA::7}."
+          if gh release view "$tag" > /dev/null 2>&1; then
+            gh release edit "$tag" --notes "$notes"
+          else
+            gh release create "$tag" --title "FactoryCraft ${ver} — Minecraft ${MC}" --notes "$notes" --target "$GITHUB_SHA"
+          fi
+          gh release upload "$tag" "$jar" --clobber
       - name: Server smoke test
         if: success()
         env:
@@ -105,5 +121,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: factorycraft-0.1.0+mc${{ matrix.mc }}
+          name: factorycraft-mc${{ matrix.mc }}
           path: build/libs/*.jar

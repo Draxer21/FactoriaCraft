@@ -47,6 +47,12 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     private boolean inputBack;
     private double driveSpeed;
     private final VehicleLights lights;
+    private final Autopilot autopilot = new Autopilot();
+
+    /** Whether the autopilot should steer (a locomotive on rails steers itself). */
+    protected boolean autopilotSteers() {
+        return true;
+    }
 
     // Client-side animation.
     private float travelled;
@@ -157,6 +163,13 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
             boolean speedingUp = Math.abs(target) > Math.abs(driveSpeed)
                     && (driveSpeed == 0.0 || Math.signum(target) == Math.signum(driveSpeed));
             driveSpeed = approach(driveSpeed, target, speedingUp ? ACCELERATION : BRAKING);
+            if (horizontalCollision) driveSpeed *= 0.5;
+            Vec3 forward = forward();
+            delta = new Vec3(forward.x * driveSpeed, delta.y, forward.z * driveSpeed);
+            setDeltaMovement(delta);
+        } else if (type == MoverType.SELF && !level().isClientSide()
+                && autopilot.drive(this, engine, maxSpeed() * engine.speedFactor(), autopilotSteers())) {
+            driveSpeed = approach(driveSpeed, autopilot.speed, ACCELERATION);
             if (horizontalCollision) driveSpeed *= 0.5;
             Vec3 forward = forward();
             delta = new Vec3(forward.x * driveSpeed, delta.y, forward.z * driveSpeed);

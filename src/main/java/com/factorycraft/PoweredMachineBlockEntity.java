@@ -39,7 +39,7 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
         public int get(int id) {
             return switch (id) {
                 case 0 -> progress;
-                case 1 -> time();
+                case 1 -> scaledTime(time());
                 case 2 -> networkStored;
                 case 3 -> networkCapacity;
                 case 4 -> 1;
@@ -92,6 +92,11 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     // ---------------------------------------------------------------- machine
 
     @Override
+    public boolean supportsUpgrades() {
+        return true;
+    }
+
+    @Override
     protected boolean isInputSlot(int slot) {
         return slot < inputs;
     }
@@ -112,10 +117,12 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
             progress = 0;
             return false;
         }
-        if (link.draw(level, energyPerTick()) < energyPerTick()) return false; // no power: wait
-        if (++progress >= time()) {
+        int cost = Math.max(1, (int) Math.ceil(energyPerTick() * energyFactor()));
+        if (link.draw(level, cost) < cost) return false; // no power: wait
+        if (++progress >= scaledTime(time())) {
             progress = 0;
-            List<ItemStack> results = produce(level, op);
+            List<ItemStack> results = boost(level, produce(level, op));
+            if (!canStore(results)) results = produce(level, op);
             for (int i = 0; i < inputs; i++) {
                 if (op.consume()[i] > 0) items.get(i).shrink(op.consume()[i]);
             }
@@ -126,7 +133,7 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable(nameKey());
+        return withUpgrades(Component.translatable(nameKey()));
     }
 
     @Override

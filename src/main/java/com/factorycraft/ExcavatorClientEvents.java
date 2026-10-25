@@ -24,6 +24,8 @@ public final class ExcavatorClientEvents {
         event.registerLayerDefinition(TankerModel.LAYER_LOCATION, TankerModel::createLayer);
         event.registerLayerDefinition(ForesterModel.LAYER_LOCATION, ForesterModel::createLayer);
         event.registerLayerDefinition(TowerCraneModel.LAYER_LOCATION, TowerCraneModel::createLayer);
+        event.registerLayerDefinition(HelicopterModel.LAYER_LOCATION, HelicopterModel::createLayer);
+        event.registerLayerDefinition(SubmarineModel.LAYER_LOCATION, SubmarineModel::createLayer);
         event.registerLayerDefinition(LocomotiveModel.LAYER_LOCATION, LocomotiveModel::createLayer);
         event.registerLayerDefinition(DroneModel.LAYER_LOCATION, DroneModel::createLayer);
     }
@@ -35,6 +37,9 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.INDUSTRIAL_FURNACE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.GENERATOR_MENU.value(), GeneratorScreen::new);
         event.register(FactoryCraft.SOLAR_GENERATOR_MENU.value(), GeneratorScreen::new);
+        event.register(FactoryCraft.BATTERY_MENU.value(), GeneratorScreen::new);
+        event.register(FactoryCraft.PASSIVE_GENERATOR_MENU.value(), GeneratorScreen::new);
+        event.register(FactoryCraft.INDUSTRIAL_CHEST_MENU.value(), IndustrialChestScreen::new);
         event.register(Nuclear.REACTOR_MENU.value(), ReactorScreen::new);
         event.register(Nuclear.CENTRIFUGE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.REPAIR_STATION_MENU.value(), ProcessingScreen::new);
@@ -57,6 +62,11 @@ public final class ExcavatorClientEvents {
                 HarvesterModel.LAYER_LOCATION, 1.5F, HarvesterModel::new, HarvesterModel.LAMP_PARTS, HarvesterModel.BEAM_ORIGINS));
         event.registerEntityRenderer(FactoryCraft.CRANE.value(), CraneRenderer::new);
         event.registerEntityRenderer(FactoryCraft.TOWER_CRANE.value(), TowerCraneRenderer::new);
+        event.registerEntityRenderer(FactoryCraft.HELICOPTER.value(), context -> new CraneRenderer(context, "helicopter",
+                HelicopterModel.LAYER_LOCATION, HelicopterModel::new, HelicopterModel.LAMP_PARTS, HelicopterModel.BEAM_ORIGINS));
+        event.registerEntityRenderer(FactoryCraft.SUBMARINE.value(), context -> new WorkVehicleRenderer(context, "submarine",
+                SubmarineModel.LAYER_LOCATION, 1.5F, SubmarineModel::new, SubmarineModel.LAMP_PARTS, SubmarineModel.BEAM_ORIGINS));
+        event.registerEntityRenderer(FactoryCraft.TANK_WAGON.value(), context -> new CargoWagonRenderer(context, "tank_wagon"));
         event.registerEntityRenderer(FactoryCraft.LOCOMOTIVE.value(), context -> new WorkVehicleRenderer(context, "locomotive",
                 LocomotiveModel.LAYER_LOCATION, 1.5F, LocomotiveModel::new, LocomotiveModel.LAMP_PARTS, LocomotiveModel.BEAM_ORIGINS));
         event.registerEntityRenderer(FactoryCraft.DRONE.value(), DroneRenderer::new);

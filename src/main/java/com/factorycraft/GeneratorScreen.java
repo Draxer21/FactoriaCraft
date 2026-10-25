@@ -34,7 +34,27 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
         graphics.fill(x + 54, y + 15, x + 74, y + 35, PANEL);
         graphics.fill(x + 78, y + 15, x + 150, y + 70, PANEL);
 
-        if (menu.isSolar()) {
+        if (menu.isPassive()) {
+            // Lightning bolt, lit while generating.
+            int c = menu.rate() > 0 ? 0xFFFFD23A : 0xFF6B6B6B;
+            int bx = x + 59;
+            int by = y + 36;
+            graphics.fill(bx + 5, by, bx + 9, by + 2, c);
+            graphics.fill(bx + 4, by + 2, bx + 8, by + 5, c);
+            graphics.fill(bx + 2, by + 5, bx + 10, by + 7, c);
+            graphics.fill(bx + 5, by + 7, bx + 9, by + 10, c);
+            graphics.fill(bx + 4, by + 10, bx + 7, by + 13, c);
+            graphics.fill(bx + 3, by + 13, bx + 5, by + 15, c);
+        } else if (menu.isBattery()) {
+            // Battery icon filling up.
+            int bx = x + 57;
+            int by = y + 36;
+            graphics.fill(bx + 4, by - 2, bx + 9, by, 0xFF373737);
+            graphics.fill(bx, by, bx + 13, by + 16, 0xFF373737);
+            graphics.fill(bx + 1, by + 1, bx + 12, by + 15, 0xFF1E2124);
+            int h = Math.round(menu.energy() * 14);
+            graphics.fill(bx + 1, by + 15 - h, bx + 12, by + 15, 0xFF6CE04A);
+        } else if (menu.isSolar()) {
             // Sun: brighter and bigger the stronger the light.
             int cx = x + 63;
             int cy = y + 43;
@@ -67,7 +87,11 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
         super.extractLabels(graphics, mouseX, mouseY);
         String value = String.format("%,d E", menu.energyValue());
         graphics.text(this.font, value, 90, 34, 0xFF404040, false);
-        Component rate = menu.isSolar()
+        Component rate = menu.isPassive()
+                ? Component.translatable("gui.factorycraft.passive.rate", menu.rate())
+                : menu.isBattery()
+                ? Component.translatable("gui.factorycraft.battery.rate", menu.rate())
+                : menu.isSolar()
                 ? Component.translatable(menu.rate() > 0 ? "gui.factorycraft.solar.rate" : "gui.factorycraft.solar.dark", menu.rate())
                 : Component.translatable("gui.factorycraft.generator.rate", GeneratorBlockEntity.OUTPUT);
         graphics.text(this.font, rate, 90, 46, 0xFF404040, false);

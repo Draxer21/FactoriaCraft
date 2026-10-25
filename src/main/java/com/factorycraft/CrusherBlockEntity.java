@@ -30,7 +30,7 @@ public final class CrusherBlockEntity extends MachineBlockEntity implements Menu
         public int get(int id) {
             return switch (id) {
                 case 0 -> progress;
-                case 1 -> CRUSH_TIME;
+                case 1 -> scaledTime(CRUSH_TIME);
                 default -> 0;
             };
         }
@@ -48,7 +48,7 @@ public final class CrusherBlockEntity extends MachineBlockEntity implements Menu
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.factorycraft.crusher");
+        return withUpgrades(Component.translatable("block.factorycraft.crusher"));
     }
 
     @Override
@@ -59,6 +59,11 @@ public final class CrusherBlockEntity extends MachineBlockEntity implements Menu
 
     public CrusherBlockEntity(BlockPos pos, BlockState state) {
         super(FactoryCraft.CRUSHER_BLOCK_ENTITY.value(), pos, state, INPUTS + ProcessingMenu.BIG_OUTPUTS);
+    }
+
+    @Override
+    public boolean supportsUpgrades() {
+        return true;
     }
 
     @Override
@@ -93,12 +98,13 @@ public final class CrusherBlockEntity extends MachineBlockEntity implements Menu
             progress = 0;
             return false;
         }
-        if (++progress >= CRUSH_TIME) {
+        if (++progress >= scaledTime(CRUSH_TIME)) {
             progress = 0;
             for (int i = 0; i < INPUTS; i++) {
                 if (CrusherRecipes.resultFor(items.get(i)) != null) items.get(i).shrink(1);
             }
-            store(results);
+            List<ItemStack> boosted = boost(level, results);
+            store(canStore(boosted) ? boosted : results);
         }
         return true;
     }

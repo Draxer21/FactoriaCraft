@@ -125,6 +125,7 @@ public final class SolarGeneratorBlockEntity extends MachineBlockEntity implemen
     }
 
     @Override public int stored() { return energy; }
+    @Override public int rate() { return rate; }
     @Override public int capacity() { return CAPACITY; }
 
     // ---------------------------------------------------------------- menu & saving

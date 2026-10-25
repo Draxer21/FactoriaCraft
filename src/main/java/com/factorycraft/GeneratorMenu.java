@@ -24,6 +24,14 @@ public final class GeneratorMenu extends AbstractContainerMenu {
         return new GeneratorMenu(FactoryCraft.GENERATOR_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
     }
 
+    public static GeneratorMenu passiveClient(int id, Inventory inventory) {
+        return new GeneratorMenu(FactoryCraft.PASSIVE_GENERATOR_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
+    }
+
+    public static GeneratorMenu batteryClient(int id, Inventory inventory) {
+        return new GeneratorMenu(FactoryCraft.BATTERY_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
+    }
+
     public static GeneratorMenu solarClient(int id, Inventory inventory) {
         return new GeneratorMenu(FactoryCraft.SOLAR_GENERATOR_MENU.value(), id, inventory, new SimpleContainer(1), new SimpleContainerData(DATA_COUNT));
     }
@@ -54,7 +62,7 @@ public final class GeneratorMenu extends AbstractContainerMenu {
     }
 
     public int energyValue() {
-        return data.get(0) * 10;
+        return data.get(0) * (isBattery() ? 1000 : isPassive() ? 100 : 10);
     }
 
     public float burn() {
@@ -65,6 +73,14 @@ public final class GeneratorMenu extends AbstractContainerMenu {
     /** Energy made per tick right now. */
     public int rate() {
         return data.get(4);
+    }
+
+    public boolean isPassive() {
+        return getType() == FactoryCraft.PASSIVE_GENERATOR_MENU.value();
+    }
+
+    public boolean isBattery() {
+        return getType() == FactoryCraft.BATTERY_MENU.value();
     }
 
     public boolean isSolar() {

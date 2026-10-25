@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PHP",
+    "CRC",
+    "PPP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "H": "minecraft:hopper",
+    "C": "factorycraft:conveyor",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:loading_station",
+    "count": 1
+  }
+}

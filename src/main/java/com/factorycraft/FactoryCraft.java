@@ -63,8 +63,23 @@ public final class FactoryCraft {
                     .noOcclusion()));
     public static final DeferredHolder<Item, Item> CONVEYOR_ITEM = ITEMS.registerItem("conveyor",
             properties -> new BlockItem(CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> FAST_CONVEYOR = conveyor("fast_conveyor", 0.25);
+    public static final DeferredHolder<Block, Block> EXPRESS_CONVEYOR = conveyor("express_conveyor", 0.4);
+    public static final DeferredHolder<Item, Item> FAST_CONVEYOR_ITEM = ITEMS.registerItem("fast_conveyor",
+            properties -> new BlockItem(FAST_CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Item, Item> EXPRESS_CONVEYOR_ITEM = ITEMS.registerItem("express_conveyor",
+            properties -> new BlockItem(EXPRESS_CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ConveyorBlockEntity>> CONVEYOR_BLOCK_ENTITY =
-            BLOCK_ENTITY_TYPES.register("conveyor", () -> new BlockEntityType<>(ConveyorBlockEntity::new, CONVEYOR.value()));
+            BLOCK_ENTITY_TYPES.register("conveyor", () -> new BlockEntityType<>(ConveyorBlockEntity::new,
+                    CONVEYOR.value(), FAST_CONVEYOR.value(), EXPRESS_CONVEYOR.value()));
+
+    private static DeferredHolder<Block, Block> conveyor(String id, double speed) {
+        return BLOCKS.register(id, () -> new ConveyorBlock(BlockBehaviour.Properties.of()
+                .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id)))
+                .strength(1.5F, 6.0F)
+                .sound(SoundType.METAL)
+                .noOcclusion(), speed));
+    }
 
     // ---- Processing line: crusher -> industrial furnace, with a sorting belt.
     public static final DeferredHolder<Block, Block> CRUSHER = BLOCKS.register("crusher", () ->
@@ -270,6 +285,134 @@ public final class FactoryCraft {
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> REPAIR_STATION_MENU = MENUS.register("repair_station",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), id, inventory, 4), FeatureFlags.VANILLA_SET));
 
+    public static final DeferredHolder<Block, Block> BATTERY = BLOCKS.register("battery", () ->
+            new SimpleMachineBlock(machineProperties("battery").lightLevel(state -> 0), () -> FactoryCraft.BATTERY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> BATTERY_ITEM = ITEMS.registerItem("battery",
+            properties -> new BlockItem(BATTERY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBlockEntity>> BATTERY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("battery", () -> new BlockEntityType<>(BatteryBlockEntity::new, BATTERY.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> BATTERY_MENU = MENUS.register("battery",
+            () -> new MenuType<>(GeneratorMenu::batteryClient, FeatureFlags.VANILLA_SET));
+    // ---- Clean power: windmill, geothermal, steam turbine; environment: chimney filter, air purifier, inspector.
+    public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> PASSIVE_GENERATOR_MENU = MENUS.register("passive_generator",
+            () -> new MenuType<>(GeneratorMenu::passiveClient, FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> WINDMILL = BLOCKS.register("windmill", () ->
+            new SimpleMachineBlock(machineProperties("windmill").lightLevel(state -> 0), () -> FactoryCraft.WINDMILL_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> WINDMILL_ITEM = ITEMS.registerItem("windmill",
+            properties -> new BlockItem(WINDMILL.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WindmillBlockEntity>> WINDMILL_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("windmill", () -> new BlockEntityType<>(WindmillBlockEntity::new, WINDMILL.value()));
+    public static final DeferredHolder<Block, Block> GEOTHERMAL = BLOCKS.register("geothermal_generator", () ->
+            new SimpleMachineBlock(machineProperties("geothermal_generator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 9 : 0),
+                    () -> FactoryCraft.GEOTHERMAL_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> GEOTHERMAL_ITEM = ITEMS.registerItem("geothermal_generator",
+            properties -> new BlockItem(GEOTHERMAL.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GeothermalGeneratorBlockEntity>> GEOTHERMAL_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("geothermal_generator", () -> new BlockEntityType<>(GeothermalGeneratorBlockEntity::new, GEOTHERMAL.value()));
+    public static final DeferredHolder<Block, Block> STEAM_TURBINE = BLOCKS.register("steam_turbine", () ->
+            new SimpleMachineBlock(machineProperties("steam_turbine").lightLevel(state -> 0), () -> FactoryCraft.STEAM_TURBINE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> STEAM_TURBINE_ITEM = ITEMS.registerItem("steam_turbine",
+            properties -> new BlockItem(STEAM_TURBINE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("steam_turbine", () -> new BlockEntityType<>(SteamTurbineBlockEntity::new, STEAM_TURBINE.value()));
+    public static final DeferredHolder<Block, Block> CHIMNEY_FILTER = BLOCKS.register("chimney_filter", () ->
+            new Block(machineProperties("chimney_filter")));
+    public static final DeferredHolder<Item, Item> CHIMNEY_FILTER_ITEM = ITEMS.registerItem("chimney_filter",
+            properties -> new BlockItem(CHIMNEY_FILTER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> AIR_PURIFIER = BLOCKS.register("air_purifier", () ->
+            new SimpleMachineBlock(machineProperties("air_purifier").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 6 : 0),
+                    () -> FactoryCraft.AIR_PURIFIER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> AIR_PURIFIER_ITEM = ITEMS.registerItem("air_purifier",
+            properties -> new BlockItem(AIR_PURIFIER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AirPurifierBlockEntity>> AIR_PURIFIER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("air_purifier", () -> new BlockEntityType<>(AirPurifierBlockEntity::new, AIR_PURIFIER.value()));
+    public static final DeferredHolder<Item, Item> PLANT_INSPECTOR = ITEMS.registerItem("plant_inspector", PlantInspectorItem::new);
+
+    // ---- Tools & storage: jetpack, magnet, giant drill, industrial chest.
+    public static final ResourceKey<net.minecraft.world.item.equipment.EquipmentAsset> JETPACK_ASSET = ResourceKey.create(
+            net.minecraft.world.item.equipment.EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(MOD_ID, "jetpack"));
+    public static final net.minecraft.world.item.equipment.ArmorMaterial JETPACK_MATERIAL = new net.minecraft.world.item.equipment.ArmorMaterial(
+            25, java.util.Map.of(net.minecraft.world.item.equipment.ArmorType.HELMET, 1, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, 4,
+                    net.minecraft.world.item.equipment.ArmorType.LEGGINGS, 3, net.minecraft.world.item.equipment.ArmorType.BOOTS, 1,
+                    net.minecraft.world.item.equipment.ArmorType.BODY, 4),
+            10, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, Nuclear.LEAD_REPAIR, JETPACK_ASSET);
+    public static final DeferredHolder<Item, Item> JETPACK = ITEMS.registerItem("jetpack",
+            properties -> new JetpackItem(properties.humanoidArmor(JETPACK_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE)
+                    .stacksTo(1)));
+    public static final DeferredHolder<Item, Item> MAGNET = ITEMS.registerItem("magnet", MagnetItem::new);
+    public static final DeferredHolder<Item, Item> GIANT_DRILL = ITEMS.registerItem("giant_drill",
+            properties -> new DrillItem(properties.pickaxe(ToolMaterial.NETHERITE, 2.0F, -2.8F).fireResistant()
+                    .rarity(net.minecraft.world.item.Rarity.EPIC), 2));
+    public static final DeferredHolder<Block, Block> INDUSTRIAL_CHEST = BLOCKS.register("industrial_chest", () ->
+            new SimpleMachineBlock(machineProperties("industrial_chest").lightLevel(state -> 0), () -> FactoryCraft.INDUSTRIAL_CHEST_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> INDUSTRIAL_CHEST_ITEM = ITEMS.registerItem("industrial_chest",
+            properties -> new BlockItem(INDUSTRIAL_CHEST.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IndustrialChestBlockEntity>> INDUSTRIAL_CHEST_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("industrial_chest", () -> new BlockEntityType<>(IndustrialChestBlockEntity::new, INDUSTRIAL_CHEST.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<IndustrialChestMenu>> INDUSTRIAL_CHEST_MENU = MENUS.register("industrial_chest",
+            () -> new MenuType<>(IndustrialChestMenu::client, FeatureFlags.VANILLA_SET));
+
+    // ---- Vehicles & logistics: tank wagon, cargo stations, route beacons, helicopter, submarine.
+    public static final DeferredHolder<EntityType<?>, EntityType<TankWagonEntity>> TANK_WAGON = ENTITY_TYPES.register("tank_wagon", () ->
+            EntityType.Builder.<TankWagonEntity>of(TankWagonEntity::new, MobCategory.MISC)
+                    .sized(2.2F, 1.6F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "tank_wagon"))));
+    public static final DeferredHolder<Item, Item> TANK_WAGON_ITEM = ITEMS.registerItem("tank_wagon",
+            properties -> new CargoWagonItem(properties, TANK_WAGON::value));
+    public static final DeferredHolder<EntityType<?>, EntityType<HelicopterEntity>> HELICOPTER = ENTITY_TYPES.register("helicopter", () ->
+            EntityType.Builder.<HelicopterEntity>of(HelicopterEntity::new, MobCategory.MISC)
+                    .sized(2.7F, 2.4F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "helicopter"))));
+    public static final DeferredHolder<Item, Item> HELICOPTER_ITEM = ITEMS.registerItem("helicopter",
+            properties -> new VehicleItem(properties, HELICOPTER::value));
+    public static final DeferredHolder<EntityType<?>, EntityType<SubmarineEntity>> SUBMARINE = ENTITY_TYPES.register("submarine", () ->
+            EntityType.Builder.<SubmarineEntity>of(SubmarineEntity::new, MobCategory.MISC)
+                    .sized(2.0F, 2.2F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "submarine"))));
+    public static final DeferredHolder<Item, Item> SUBMARINE_ITEM = ITEMS.registerItem("submarine",
+            properties -> new VehicleItem(properties, SUBMARINE::value));
+    public static final DeferredHolder<Block, Block> LOADING_STATION = BLOCKS.register("loading_station", () ->
+            new SimpleMachineBlock(machineProperties("loading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Block, Block> UNLOADING_STATION = BLOCKS.register("unloading_station", () ->
+            new SimpleMachineBlock(machineProperties("unloading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> LOADING_STATION_ITEM = ITEMS.registerItem("loading_station",
+            properties -> new BlockItem(LOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Item, Item> UNLOADING_STATION_ITEM = ITEMS.registerItem("unloading_station",
+            properties -> new BlockItem(UNLOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CargoStationBlockEntity>> CARGO_STATION_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("cargo_station", () -> new BlockEntityType<>(CargoStationBlockEntity::new,
+                    LOADING_STATION.value(), UNLOADING_STATION.value()));
+    public static final DeferredHolder<Block, Block> ROUTE_BEACON = BLOCKS.register("route_beacon", () ->
+            new RouteBeaconBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "route_beacon")))
+                    .strength(1.0F).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 7)));
+    public static final DeferredHolder<Item, Item> ROUTE_BEACON_ITEM = ITEMS.registerItem("route_beacon",
+            properties -> new BlockItem(ROUTE_BEACON.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RouteBeaconBlockEntity>> ROUTE_BEACON_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("route_beacon", () -> new BlockEntityType<>(RouteBeaconBlockEntity::new, ROUTE_BEACON.value()));
+
+    // ---- Copper: coils, reactor radiators, lightning collector.
+    public static final DeferredHolder<Item, Item> COPPER_COIL = ITEMS.registerItem("copper_coil", Item::new);
+    public static final DeferredHolder<Block, Block> COPPER_RADIATOR = BLOCKS.register("copper_radiator", () ->
+            new Block(machineProperties("copper_radiator").sound(SoundType.COPPER)));
+    public static final DeferredHolder<Item, Item> COPPER_RADIATOR_ITEM = ITEMS.registerItem("copper_radiator",
+            properties -> new BlockItem(COPPER_RADIATOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> LIGHTNING_COLLECTOR = BLOCKS.register("lightning_collector", () ->
+            new SimpleMachineBlock(machineProperties("lightning_collector").sound(SoundType.COPPER).lightLevel(state -> state.getValue(MachineBlock.LIT) ? 7 : 0),
+                    () -> FactoryCraft.LIGHTNING_COLLECTOR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> LIGHTNING_COLLECTOR_ITEM = ITEMS.registerItem("lightning_collector",
+            properties -> new BlockItem(LIGHTNING_COLLECTOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightningCollectorBlockEntity>> LIGHTNING_COLLECTOR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("lightning_collector", () -> new BlockEntityType<>(LightningCollectorBlockEntity::new, LIGHTNING_COLLECTOR.value()));
+
+    public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_EFFICIENCY = ITEMS.registerItem("machine_upgrade_efficiency",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.EFFICIENCY));
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_OUTPUT = ITEMS.registerItem("machine_upgrade_output",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.OUTPUT));
+
     public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> SOLAR_GENERATOR_MENU = MENUS.register("solar_generator",
             () -> new MenuType<>(GeneratorMenu::solarClient, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ORE_WASHER_MENU = MENUS.register("ore_washer",
@@ -384,7 +527,7 @@ public final class FactoryCraft {
         return map;
     }
     public static final DeferredHolder<EntityType<?>, EntityType<CargoWagonEntity>> CARGO_WAGON = ENTITY_TYPES.register("cargo_wagon", () ->
-            EntityType.Builder.of(CargoWagonEntity::new, MobCategory.MISC)
+            EntityType.Builder.<CargoWagonEntity>of(CargoWagonEntity::new, MobCategory.MISC)
                     .sized(2.1F, 2.1F)
                     .clientTrackingRange(16)
                     .updateInterval(1)
@@ -490,6 +633,30 @@ public final class FactoryCraft {
                         output.accept(GENERATOR_ITEM.value());
                         output.accept(SOLAR_GENERATOR_ITEM.value());
                         output.accept(REPAIR_STATION_ITEM.value());
+                        output.accept(BATTERY_ITEM.value());
+                        output.accept(COPPER_COIL.value());
+                        output.accept(COPPER_RADIATOR_ITEM.value());
+                        output.accept(LIGHTNING_COLLECTOR_ITEM.value());
+                        output.accept(WINDMILL_ITEM.value());
+                        output.accept(GEOTHERMAL_ITEM.value());
+                        output.accept(STEAM_TURBINE_ITEM.value());
+                        output.accept(CHIMNEY_FILTER_ITEM.value());
+                        output.accept(AIR_PURIFIER_ITEM.value());
+                        output.accept(PLANT_INSPECTOR.value());
+                        output.accept(JETPACK.value());
+                        output.accept(MAGNET.value());
+                        output.accept(GIANT_DRILL.value());
+                        output.accept(INDUSTRIAL_CHEST_ITEM.value());
+                        output.accept(TANK_WAGON_ITEM.value());
+                        output.accept(LOADING_STATION_ITEM.value());
+                        output.accept(UNLOADING_STATION_ITEM.value());
+                        output.accept(ROUTE_BEACON_ITEM.value());
+                        output.accept(HELICOPTER_ITEM.value());
+                        output.accept(SUBMARINE_ITEM.value());
+                        output.accept(ENERGY_METER.value());
+                        output.accept(MACHINE_UPGRADE_SPEED.value());
+                        output.accept(MACHINE_UPGRADE_EFFICIENCY.value());
+                        output.accept(MACHINE_UPGRADE_OUTPUT.value());
                         output.accept(CABLE_ITEM.value());
                         output.accept(ORE_WASHER_ITEM.value());
                         output.accept(PRESS_ITEM.value());
@@ -508,6 +675,8 @@ public final class FactoryCraft {
                         output.accept(CONTROL_STATION_ITEM.value());
                         for (DeferredHolder<Item, Item> module : UPGRADE_ITEMS.values()) output.accept(module.value());
                         output.accept(CONVEYOR_ITEM.value());
+                        output.accept(FAST_CONVEYOR_ITEM.value());
+                        output.accept(EXPRESS_CONVEYOR_ITEM.value());
                         output.accept(SORTER_ITEM.value());
                         output.accept(ELEVATOR_ITEM.value());
                         output.accept(WELL_DRILL_ITEM.value());
@@ -520,7 +689,7 @@ public final class FactoryCraft {
 
     public FactoryCraft(IEventBus modEventBus, net.neoforged.fml.ModContainer container) {
         Nuclear.init();
-        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, NuclearConfig.SPEC);
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENUS.register(modEventBus);

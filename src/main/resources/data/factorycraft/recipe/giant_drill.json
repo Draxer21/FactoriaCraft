@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NDN",
+    "DXD",
+    "NBN"
+  ],
+  "key": {
+    "N": "minecraft:netherite_ingot",
+    "D": "minecraft:diamond_block",
+    "X": "factorycraft:netherite_drill",
+    "B": "factorycraft:battery"
+  },
+  "result": {
+    "id": "factorycraft:giant_drill",
+    "count": 1
+  }
+}

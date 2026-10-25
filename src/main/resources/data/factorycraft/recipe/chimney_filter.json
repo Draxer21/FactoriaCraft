@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PIP",
+    "CWC",
+    "PIP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "I": "minecraft:iron_bars",
+    "C": "minecraft:charcoal",
+    "W": "#minecraft:wool"
+  },
+  "result": {
+    "id": "factorycraft:chimney_filter",
+    "count": 1
+  }
+}
