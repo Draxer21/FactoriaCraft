@@ -36,7 +36,7 @@ import net.minecraft.world.phys.Vec3;
  * It digs out exactly the space its hull is about to occupy, so it never gets
  * stuck on the stair-step edges of a sloped tunnel.
  */
-public final class TunnelerEntity extends AbstractChestBoat implements VehicleLights.Holder, VehicleEngine.Holder {
+public final class TunnelerEntity extends AbstractChestBoat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(TunnelerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
@@ -102,7 +102,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
     @Override
     public boolean canCollideWith(Entity other) {
         // Don't bump into our own cargo wagons.
-        return !(other instanceof CargoWagonEntity) && super.canCollideWith(other);
+        return !(VehicleHitbox.owner(other) instanceof CargoWagonEntity) && super.canCollideWith(other);
     }
 
     @Override
@@ -182,6 +182,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
     public void push(Entity entity) {
         // Our own cargo wagons ride right behind us; never shove each other.
         if (entity instanceof CargoWagonEntity) return;
+        if (!hitbox.touches(entity)) return;
         super.push(entity);
     }
 
@@ -330,5 +331,59 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleLi
     public void openCustomInventoryScreen(Player player) {
         // Inventory key while riding: the machine's screen.
         if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
+    }
+
+    // ---------------------------------------------------------------- segmented collision
+
+    private final VehicleHitbox hitbox = new VehicleHitbox(this, VehicleShapes.of(this));
+
+    @Override
+    public VehicleHitbox hitbox() {
+        return hitbox;
+    }
+
+    @Override
+    public boolean solidFor(net.minecraft.world.entity.Entity other) {
+        return super.canBeCollidedWith(other);
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (hitbox != null) hitbox.setIds(id);
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if (hitbox != null) hitbox.update();
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+        hitbox.update();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
+        return hitbox.parts();
+    }
+
+    /** Clicks land on the segments, not on the big terrain box. */
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
+    /** Others bump into the segments, not into the big terrain box. */
+    @Override
+    public boolean canBeCollidedWith(@org.jspecify.annotations.Nullable net.minecraft.world.entity.Entity other) {
+        return false;
     }
 }

@@ -35,7 +35,7 @@ import org.jspecify.annotations.Nullable;
  * bar, including up and down sloped tunnels. The tunneler fills its own bay
  * first and then the wagons, front to back.
  */
-public class CargoWagonEntity extends AbstractChestBoat {
+public class CargoWagonEntity extends AbstractChestBoat implements VehicleHitbox.Holder {
     private static final EntityDataAccessor<Byte> FILL =
             SynchedEntityData.defineId(CargoWagonEntity.class, EntityDataSerializers.BYTE);
 
@@ -126,12 +126,6 @@ public class CargoWagonEntity extends AbstractChestBoat {
     }
 
     @Override
-    public boolean canBeCollidedWith(@Nullable Entity other) {
-        // Don't block the machines of the same train.
-        return !isTrainVehicle(other) && super.canBeCollidedWith(other);
-    }
-
-    @Override
     public boolean canCollideWith(Entity other) {
         return !isTrainVehicle(other) && super.canCollideWith(other);
     }
@@ -140,6 +134,7 @@ public class CargoWagonEntity extends AbstractChestBoat {
     public void push(Entity entity) {
         // Pushing the tunneler (or another wagon) would make the whole train creep forward.
         if (isTrainVehicle(entity)) return;
+        if (!hitbox.touches(entity)) return;
         super.push(entity);
     }
 
@@ -150,6 +145,7 @@ public class CargoWagonEntity extends AbstractChestBoat {
     }
 
     static boolean isTrainVehicle(@Nullable Entity entity) {
+        entity = VehicleHitbox.owner(entity);
         return entity instanceof TunnelerEntity || entity instanceof LocomotiveEntity || entity instanceof CargoWagonEntity;
     }
 
@@ -314,5 +310,59 @@ public class CargoWagonEntity extends AbstractChestBoat {
     protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
         // Engines and tracks have their own sounds: no boat paddling.
         return null;
+    }
+
+    // ---------------------------------------------------------------- segmented collision
+
+    private final VehicleHitbox hitbox = new VehicleHitbox(this, VehicleShapes.of(this));
+
+    @Override
+    public VehicleHitbox hitbox() {
+        return hitbox;
+    }
+
+    @Override
+    public boolean solidFor(net.minecraft.world.entity.Entity other) {
+        return !isTrainVehicle(other) && super.canBeCollidedWith(other);
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (hitbox != null) hitbox.setIds(id);
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if (hitbox != null) hitbox.update();
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+        hitbox.update();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
+        return hitbox.parts();
+    }
+
+    /** Clicks land on the segments, not on the big terrain box. */
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
+    /** Others bump into the segments, not into the big terrain box. */
+    @Override
+    public boolean canBeCollidedWith(@org.jspecify.annotations.Nullable net.minecraft.world.entity.Entity other) {
+        return false;
     }
 }

@@ -158,7 +158,7 @@ public final class LocomotiveEntity extends WorkVehicleEntity {
 
     @Override
     public boolean canCollideWith(Entity other) {
-        return !(other instanceof CargoWagonEntity) && super.canCollideWith(other);
+        return !(VehicleHitbox.owner(other) instanceof CargoWagonEntity) && super.canCollideWith(other);
     }
 
     @Override

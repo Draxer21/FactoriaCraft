@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
  * a hitbox fitted to the model, and a work step that runs while driving forward.
  * Whatever the bay can't hold goes to a dump truck within range, or drops.
  */
-public abstract class WorkVehicleEntity extends AbstractChestBoat implements VehicleLights.Holder, VehicleEngine.Holder {
+public abstract class WorkVehicleEntity extends AbstractChestBoat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(WorkVehicleEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
@@ -304,5 +304,64 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     public void openCustomInventoryScreen(Player player) {
         // Inventory key while riding: the machine's screen.
         if (!level().isClientSide()) VehicleMenu.open(player, this, this, 3);
+    }
+
+    // ---------------------------------------------------------------- segmented collision
+
+    private final VehicleHitbox hitbox = new VehicleHitbox(this, VehicleShapes.of(this));
+
+    @Override
+    public VehicleHitbox hitbox() {
+        return hitbox;
+    }
+
+    @Override
+    public boolean solidFor(net.minecraft.world.entity.Entity other) {
+        return super.canBeCollidedWith(other);
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (hitbox != null) hitbox.setIds(id);
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if (hitbox != null) hitbox.update();
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+        hitbox.update();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
+        return hitbox.parts();
+    }
+
+    /** Clicks land on the segments, not on the big terrain box. */
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
+    /** Others bump into the segments, not into the big terrain box. */
+    @Override
+    public boolean canBeCollidedWith(@org.jspecify.annotations.Nullable net.minecraft.world.entity.Entity other) {
+        return false;
+    }
+
+    @Override
+    public void push(net.minecraft.world.entity.Entity other) {
+        if (hitbox.touches(other)) super.push(other);
     }
 }
