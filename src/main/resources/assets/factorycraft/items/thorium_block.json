@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "factorycraft:block/thorium_block"
+    "model": "factorycraft:block/thorium_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14865050
+      }
+    ]
   }
 }
