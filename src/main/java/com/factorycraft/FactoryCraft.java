@@ -513,7 +513,7 @@ public final class FactoryCraft {
         return map;
     }
     public static final DeferredHolder<EntityType<?>, EntityType<CargoWagonEntity>> CARGO_WAGON = ENTITY_TYPES.register("cargo_wagon", () ->
-            EntityType.Builder.of(CargoWagonEntity::new, MobCategory.MISC)
+            EntityType.Builder.<CargoWagonEntity>of(CargoWagonEntity::new, MobCategory.MISC)
                     .sized(2.1F, 2.1F)
                     .clientTrackingRange(16)
                     .updateInterval(1)
