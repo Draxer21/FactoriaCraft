@@ -9,9 +9,7 @@ import net.minecraft.world.inventory.Slot;
 /** Industrial chest screen, drawn in the vanilla container style. */
 public final class IndustrialChestScreen extends AbstractContainerScreen<IndustrialChestMenu> {
     public IndustrialChestScreen(IndustrialChestMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
-        this.imageWidth = IndustrialChestMenu.WIDTH;
-        this.imageHeight = IndustrialChestMenu.HEIGHT;
+        super(menu, inventory, title, IndustrialChestMenu.WIDTH, IndustrialChestMenu.HEIGHT);
         this.inventoryLabelX = IndustrialChestMenu.INV_X + 1;
         this.inventoryLabelY = IndustrialChestMenu.INV_Y - 11;
     }
