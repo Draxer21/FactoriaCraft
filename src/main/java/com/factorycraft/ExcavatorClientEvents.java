@@ -82,10 +82,16 @@ public final class ExcavatorClientEvents {
 
     /** Storage blocks use the vanilla iron block texture, tinted per material. */
     @SubscribeEvent
-    public static void blockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
-        event.register((state, level, pos, tint) -> 0x7CFF4A, Nuclear.URANIUM_BLOCK.value());
-        event.register((state, level, pos, tint) -> 0xE2D29A, Nuclear.THORIUM_BLOCK.value());
-        event.register((state, level, pos, tint) -> 0x8E98C4, Nuclear.LEAD_BLOCK.value());
-        event.register((state, level, pos, tint) -> 0xE884E8, Nuclear.PLUTONIUM_BLOCK.value());
+    public static void blockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event) {
+        tint(event, 0x7CFF4A, Nuclear.URANIUM_BLOCK.value());
+        tint(event, 0xE2D29A, Nuclear.THORIUM_BLOCK.value());
+        tint(event, 0x8E98C4, Nuclear.LEAD_BLOCK.value());
+        tint(event, 0xE884E8, Nuclear.PLUTONIUM_BLOCK.value());
+    }
+
+    private static void tint(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event,
+                             int rgb, net.minecraft.world.level.block.Block block) {
+        net.minecraft.client.color.block.BlockTintSource src = state -> 0xFF000000 | rgb;
+        event.register(java.util.List.of(src), block);
     }
 }
