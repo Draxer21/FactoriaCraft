@@ -39,6 +39,7 @@
     "factorycraft:steam_turbine",
     "factorycraft:air_purifier",
     "factorycraft:waste_barrel",
-    "factorycraft:chimney_filter"
+    "factorycraft:chimney_filter",
+    "factorycraft:industrial_chest"
   ]
 }

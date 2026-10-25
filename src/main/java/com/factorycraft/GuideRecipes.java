@@ -95,7 +95,7 @@ final class GuideRecipes {
                     "stone_chainsaw", "copper_chainsaw", "iron_chainsaw", "diamond_chainsaw", "netherite_chainsaw_smithing",
                     "stone_hammer", "copper_hammer", "iron_hammer", "diamond_hammer", "netherite_hammer_smithing",
                     "stone_excavating_shovel", "copper_excavating_shovel", "iron_excavating_shovel", "diamond_excavating_shovel",
-                    "netherite_excavating_shovel_smithing", "wrench", "repair_station",
+                    "netherite_excavating_shovel_smithing", "wrench", "repair_station", "giant_drill", "jetpack", "magnet", "industrial_chest",
                     "trade:mechanic/4/prototype_drill", "trade:mechanic/4/industrial_chainsaw", "trade:mechanic/4/titan_hammer"}));
 
     private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();

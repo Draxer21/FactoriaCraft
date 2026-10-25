@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I I",
+    "R R",
+    "PLP"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "P": "factorycraft:iron_plate",
+    "L": "minecraft:leather"
+  },
+  "result": {
+    "id": "factorycraft:magnet",
+    "count": 1
+  }
+}

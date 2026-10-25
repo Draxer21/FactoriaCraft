@@ -328,6 +328,30 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("air_purifier", () -> new BlockEntityType<>(AirPurifierBlockEntity::new, AIR_PURIFIER.value()));
     public static final DeferredHolder<Item, Item> PLANT_INSPECTOR = ITEMS.registerItem("plant_inspector", PlantInspectorItem::new);
 
+    // ---- Tools & storage: jetpack, magnet, giant drill, industrial chest.
+    public static final ResourceKey<net.minecraft.world.item.equipment.EquipmentAsset> JETPACK_ASSET = ResourceKey.create(
+            net.minecraft.world.item.equipment.EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(MOD_ID, "jetpack"));
+    public static final net.minecraft.world.item.equipment.ArmorMaterial JETPACK_MATERIAL = new net.minecraft.world.item.equipment.ArmorMaterial(
+            25, java.util.Map.of(net.minecraft.world.item.equipment.ArmorType.HELMET, 1, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, 4,
+                    net.minecraft.world.item.equipment.ArmorType.LEGGINGS, 3, net.minecraft.world.item.equipment.ArmorType.BOOTS, 1,
+                    net.minecraft.world.item.equipment.ArmorType.BODY, 4),
+            10, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, Nuclear.LEAD_REPAIR, JETPACK_ASSET);
+    public static final DeferredHolder<Item, Item> JETPACK = ITEMS.registerItem("jetpack",
+            properties -> new JetpackItem(properties.humanoidArmor(JETPACK_MATERIAL, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE)
+                    .stacksTo(1)));
+    public static final DeferredHolder<Item, Item> MAGNET = ITEMS.registerItem("magnet", MagnetItem::new);
+    public static final DeferredHolder<Item, Item> GIANT_DRILL = ITEMS.registerItem("giant_drill",
+            properties -> new DrillItem(properties.pickaxe(ToolMaterial.NETHERITE, 2.0F, -2.8F).fireResistant()
+                    .rarity(net.minecraft.world.item.Rarity.EPIC), 2));
+    public static final DeferredHolder<Block, Block> INDUSTRIAL_CHEST = BLOCKS.register("industrial_chest", () ->
+            new SimpleMachineBlock(machineProperties("industrial_chest").lightLevel(state -> 0), () -> FactoryCraft.INDUSTRIAL_CHEST_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> INDUSTRIAL_CHEST_ITEM = ITEMS.registerItem("industrial_chest",
+            properties -> new BlockItem(INDUSTRIAL_CHEST.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IndustrialChestBlockEntity>> INDUSTRIAL_CHEST_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("industrial_chest", () -> new BlockEntityType<>(IndustrialChestBlockEntity::new, INDUSTRIAL_CHEST.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<IndustrialChestMenu>> INDUSTRIAL_CHEST_MENU = MENUS.register("industrial_chest",
+            () -> new MenuType<>(IndustrialChestMenu::client, FeatureFlags.VANILLA_SET));
+
     public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
     public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
             properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
@@ -563,6 +587,10 @@ public final class FactoryCraft {
                         output.accept(CHIMNEY_FILTER_ITEM.value());
                         output.accept(AIR_PURIFIER_ITEM.value());
                         output.accept(PLANT_INSPECTOR.value());
+                        output.accept(JETPACK.value());
+                        output.accept(MAGNET.value());
+                        output.accept(GIANT_DRILL.value());
+                        output.accept(INDUSTRIAL_CHEST_ITEM.value());
                         output.accept(ENERGY_METER.value());
                         output.accept(MACHINE_UPGRADE_SPEED.value());
                         output.accept(MACHINE_UPGRADE_EFFICIENCY.value());

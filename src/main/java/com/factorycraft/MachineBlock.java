@@ -83,6 +83,13 @@ public abstract class MachineBlock extends BaseEntityBlock {
                 level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SMITHING_TABLE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
                 return InteractionResult.SUCCESS_SERVER;
             }
+            if (stack.getItem() instanceof WrenchItem && machine instanceof IndustrialChestBlockEntity chest) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                boolean on = chest.toggleFilter();
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable(
+                        on ? "message.factorycraft.chest.filter_on" : "message.factorycraft.chest.filter_off"));
+                return InteractionResult.SUCCESS_SERVER;
+            }
             if (stack.getItem() instanceof WrenchItem && machine.upgradeCount() > 0) {
                 if (level.isClientSide()) return InteractionResult.SUCCESS;
                 for (ItemStack out : machine.removeUpgrades()) {
