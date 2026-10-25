@@ -91,6 +91,7 @@ jobs:
           Xvfb :99 -screen 0 1280x720x24 > /dev/null 2>&1 &
           sleep 2
           mkdir -p run/client shots
+          echo '[{"uuid":"380df991-f603-344c-a090-369bad2a924a","name":"Dev","level":4,"bypassesPlayerLimit":false}]' > run/server/ops.json
           # A server to join, so the manual is opened inside a world like in real play.
           ./gradlew runServer --no-configuration-cache > server2.log 2>&1 &
           for i in $(seq 1 120); do grep -q 'Done (' server2.log && break; sleep 3; done

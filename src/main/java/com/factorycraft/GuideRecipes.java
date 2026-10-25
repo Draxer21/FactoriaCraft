@@ -198,6 +198,17 @@ final class GuideRecipes {
         return new Display(in, List.of(Slot.of(stack(json.get("gives")))), item("factorycraft:mechanic_bench"));
     }
 
+    /** Machine conversions for recipe viewers (crusher, washer, press, centrifuge). */
+    static List<Display> machineDisplays(String which) {
+        List<Display> result = new ArrayList<>();
+        machine(which, result);
+        return result;
+    }
+
+    static ItemStack itemStack(String id) {
+        return item(id);
+    }
+
     private static void machine(String which, List<Display> result) {
         switch (which) {
             case "press" -> {

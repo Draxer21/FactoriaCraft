@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"logistics:last", "aircraft:last", "tools:last"};
+    private static final String[] DEMO_CHAPTERS = {"summon:helicopter", "summon:submarine", "summon:tank_wagon", "aircraft:last"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -89,7 +89,13 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
-            if (parts[0].equals("screen")) {
+            if (parts[0].equals("summon")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");
+                mc.player.connection.sendCommand("tp @s ~ ~ ~ -30 15");
+                mc.player.connection.sendCommand("summon factorycraft:" + parts[1] + " ^ ^ ^9");
+            } else if (parts[0].equals("screen")) {
                 var inv = mc.player.getInventory();
                 ProcessingMenu menu = switch (parts[1]) {
                     case "crusher" -> ProcessingMenu.crusher(0, inv);
