@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "factorycraft:block/chimney_filter_side",
+    "end": "factorycraft:block/chimney_filter_top"
+  }
+}

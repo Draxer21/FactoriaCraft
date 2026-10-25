@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "LBL",
+    "BWB",
+    "LBL"
+  ],
+  "key": {
+    "L": "factorycraft:lead_dust",
+    "B": "minecraft:bone_meal",
+    "W": "minecraft:water_bucket"
+  },
+  "result": {
+    "id": "factorycraft:decontamination_kit",
+    "count": 1
+  }
+}

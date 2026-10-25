@@ -293,6 +293,41 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("battery", () -> new BlockEntityType<>(BatteryBlockEntity::new, BATTERY.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> BATTERY_MENU = MENUS.register("battery",
             () -> new MenuType<>(GeneratorMenu::batteryClient, FeatureFlags.VANILLA_SET));
+    // ---- Clean power: windmill, geothermal, steam turbine; environment: chimney filter, air purifier, inspector.
+    public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> PASSIVE_GENERATOR_MENU = MENUS.register("passive_generator",
+            () -> new MenuType<>(GeneratorMenu::passiveClient, FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> WINDMILL = BLOCKS.register("windmill", () ->
+            new SimpleMachineBlock(machineProperties("windmill").lightLevel(state -> 0), () -> FactoryCraft.WINDMILL_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> WINDMILL_ITEM = ITEMS.registerItem("windmill",
+            properties -> new BlockItem(WINDMILL.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WindmillBlockEntity>> WINDMILL_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("windmill", () -> new BlockEntityType<>(WindmillBlockEntity::new, WINDMILL.value()));
+    public static final DeferredHolder<Block, Block> GEOTHERMAL = BLOCKS.register("geothermal_generator", () ->
+            new SimpleMachineBlock(machineProperties("geothermal_generator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 9 : 0),
+                    () -> FactoryCraft.GEOTHERMAL_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> GEOTHERMAL_ITEM = ITEMS.registerItem("geothermal_generator",
+            properties -> new BlockItem(GEOTHERMAL.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GeothermalGeneratorBlockEntity>> GEOTHERMAL_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("geothermal_generator", () -> new BlockEntityType<>(GeothermalGeneratorBlockEntity::new, GEOTHERMAL.value()));
+    public static final DeferredHolder<Block, Block> STEAM_TURBINE = BLOCKS.register("steam_turbine", () ->
+            new SimpleMachineBlock(machineProperties("steam_turbine").lightLevel(state -> 0), () -> FactoryCraft.STEAM_TURBINE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> STEAM_TURBINE_ITEM = ITEMS.registerItem("steam_turbine",
+            properties -> new BlockItem(STEAM_TURBINE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("steam_turbine", () -> new BlockEntityType<>(SteamTurbineBlockEntity::new, STEAM_TURBINE.value()));
+    public static final DeferredHolder<Block, Block> CHIMNEY_FILTER = BLOCKS.register("chimney_filter", () ->
+            new Block(machineProperties("chimney_filter")));
+    public static final DeferredHolder<Item, Item> CHIMNEY_FILTER_ITEM = ITEMS.registerItem("chimney_filter",
+            properties -> new BlockItem(CHIMNEY_FILTER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> AIR_PURIFIER = BLOCKS.register("air_purifier", () ->
+            new SimpleMachineBlock(machineProperties("air_purifier").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 6 : 0),
+                    () -> FactoryCraft.AIR_PURIFIER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> AIR_PURIFIER_ITEM = ITEMS.registerItem("air_purifier",
+            properties -> new BlockItem(AIR_PURIFIER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AirPurifierBlockEntity>> AIR_PURIFIER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("air_purifier", () -> new BlockEntityType<>(AirPurifierBlockEntity::new, AIR_PURIFIER.value()));
+    public static final DeferredHolder<Item, Item> PLANT_INSPECTOR = ITEMS.registerItem("plant_inspector", PlantInspectorItem::new);
+
     public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
     public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
             properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
@@ -522,6 +557,12 @@ public final class FactoryCraft {
                         output.accept(SOLAR_GENERATOR_ITEM.value());
                         output.accept(REPAIR_STATION_ITEM.value());
                         output.accept(BATTERY_ITEM.value());
+                        output.accept(WINDMILL_ITEM.value());
+                        output.accept(GEOTHERMAL_ITEM.value());
+                        output.accept(STEAM_TURBINE_ITEM.value());
+                        output.accept(CHIMNEY_FILTER_ITEM.value());
+                        output.accept(AIR_PURIFIER_ITEM.value());
+                        output.accept(PLANT_INSPECTOR.value());
                         output.accept(ENERGY_METER.value());
                         output.accept(MACHINE_UPGRADE_SPEED.value());
                         output.accept(MACHINE_UPGRADE_EFFICIENCY.value());

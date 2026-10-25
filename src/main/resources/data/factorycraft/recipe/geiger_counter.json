@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    " C ",
+    "LRL",
+    "LGL"
+  ],
+  "key": {
+    "C": "factorycraft:copper_plate",
+    "L": "factorycraft:lead_ingot",
+    "R": "minecraft:redstone",
+    "G": "minecraft:glass_pane"
+  },
+  "result": {
+    "id": "factorycraft:geiger_counter",
+    "count": 1
+  }
+}

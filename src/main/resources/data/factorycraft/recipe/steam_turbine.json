@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "GCG",
+    "PRP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "G": "factorycraft:iron_gear",
+    "C": "factorycraft:copper_plate",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:steam_turbine",
+    "count": 1
+  }
+}

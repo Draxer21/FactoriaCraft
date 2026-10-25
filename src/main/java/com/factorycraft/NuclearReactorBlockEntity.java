@@ -44,6 +44,14 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
     private int heat;
     private int water;
     private int rate;
+    private int turbinesThisTick;
+    private int shielding = -1;
+
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> SHIELDING =
+            net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                    net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "radiation_shielding"));
+    /** Shielding blocks needed among the 26 around the reactor for it to count as contained. */
+    public static final int SHIELDING_NEEDED = 16;
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -99,10 +107,39 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         return true;
     }
 
+    /** Steam for an adjacent turbine: returns the reactor's output, or 0. Uses extra water and takes heat away. */
+    public int takeSteam() {
+        if (rate <= 0 || water <= 0 || turbinesThisTick >= 4) return 0;
+        turbinesThisTick++;
+        water = Math.max(0, water - heatRate);
+        heat = Math.max(0, heat - 4);
+        setChanged();
+        return rate;
+    }
+
+    /** How many of the 26 blocks around are radiation shielding (lead, concrete, obsidian). */
+    public int shielding(Level level) {
+        int count = 0;
+        for (BlockPos p : BlockPos.betweenClosed(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 1, 1))) {
+            if (p.equals(worldPosition)) continue;
+            if (level.getBlockState(p).is(SHIELDING)) count++;
+        }
+        return count;
+    }
+
+    public boolean contained(Level level) {
+        return shielding(level) >= SHIELDING_NEEDED;
+    }
+
+    public int water() { return water; }
+    public int heatPercent() { return heat * 100 / MAX_HEAT; }
+    public boolean running() { return rate > 0; }
+
     @Override
     protected boolean work(Level level) {
         boolean scram = level.hasNeighborSignal(worldPosition);
         rate = 0;
+        turbinesThisTick = 0;
         // Load a new rod when the last one is spent and there's room for the power.
         if (!scram && burnLeft <= 0 && energy < CAPACITY && items.get(1).getCount() < items.get(1).getMaxStackSize()) {
             ItemStack rod = items.get(0);
@@ -142,6 +179,19 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
                         worldPosition.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.02);
                 level.playSound(null, worldPosition, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 1.5F,
                         heat > MAX_HEAT * 9 / 10 ? 2.0F : 1.2F);
+            }
+            // Radiation leak when the reactor isn't shielded.
+            if (running && level.getGameTime() % 100 == 0) {
+                shielding = shielding(level);
+                if (shielding < SHIELDING_NEEDED) {
+                    Pollution.contaminate(server, worldPosition, 8, 3);
+                    for (net.minecraft.world.entity.LivingEntity e : level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                            new net.minecraft.world.phys.AABB(worldPosition).inflate(6))) {
+                        float exposure = e instanceof Player p ? Radiation.exposure(p) : 1.0F;
+                        if (e instanceof Player p && (p.isCreative() || p.isSpectator())) continue;
+                        if (exposure > 0) Radiation.apply(e, 20.0F * exposure);
+                    }
+                }
             }
             if (running && water > 0 && level.getGameTime() % 30 == 0) {
                 server.sendParticles(ParticleTypes.CLOUD, worldPosition.getX() + 0.5, worldPosition.getY() + 1.05,
@@ -184,6 +234,7 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         cloud.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 0));
         cloud.addEffect(new MobEffectInstance(MobEffects.WITHER, 100, 0));
         level.addFreshEntity(cloud);
+        Pollution.contaminate(level, BlockPos.containing(x, y, z), Math.round(radius * 1.5F), Math.round(radius * 6));
         level.playSound(null, x, y, z, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 4.0F, 0.5F);
     }
 

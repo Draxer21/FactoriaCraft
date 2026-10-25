@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    " I ",
+    "PBP",
+    " R "
+  ],
+  "key": {
+    "I": "minecraft:ink_sac",
+    "P": "minecraft:paper",
+    "B": "minecraft:book",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:plant_inspector",
+    "count": 1
+  }
+}

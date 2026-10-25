@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LLL",
+    "L L",
+    "LLL"
+  ],
+  "key": {
+    "L": "factorycraft:lead_ingot"
+  },
+  "result": {
+    "id": "factorycraft:waste_barrel",
+    "count": 1
+  }
+}

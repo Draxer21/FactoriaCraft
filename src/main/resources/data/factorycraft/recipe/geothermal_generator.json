@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PNP",
+    "CRC",
+    "PNP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "N": "minecraft:nether_bricks",
+    "C": "factorycraft:copper_plate",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:geothermal_generator",
+    "count": 1
+  }
+}

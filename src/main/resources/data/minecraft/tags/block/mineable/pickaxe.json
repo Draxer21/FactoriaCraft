@@ -33,6 +33,12 @@
     "factorycraft:repair_station",
     "factorycraft:battery",
     "factorycraft:fast_conveyor",
-    "factorycraft:express_conveyor"
+    "factorycraft:express_conveyor",
+    "factorycraft:windmill",
+    "factorycraft:geothermal_generator",
+    "factorycraft:steam_turbine",
+    "factorycraft:air_purifier",
+    "factorycraft:waste_barrel",
+    "factorycraft:chimney_filter"
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PFP",
+    "LRL",
+    "PCP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "F": "factorycraft:chimney_filter",
+    "L": "#minecraft:leaves",
+    "R": "minecraft:redstone_block",
+    "C": "factorycraft:cable"
+  },
+  "result": {
+    "id": "factorycraft:air_purifier",
+    "count": 1
+  }
+}

@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
  * the language files (guide.factorycraft.<chapter>.title / .text).
  */
 public final class GuideScreen extends Screen {
-    private static final String[] CHAPTERS = {"intro", "engine", "upgrades", "excavator", "tunneler", "dump_truck", "paver", "harvester", "bulldozer", "tanker", "forester", "crane", "tower_crane", "locomotive", "drone", "belts", "processing", "well_drill", "power", "powered", "automation", "station", "mechanic", "tools", "nuclear", "reactor", "weapons"};
+    private static final String[] CHAPTERS = {"intro", "engine", "upgrades", "excavator", "tunneler", "dump_truck", "paver", "harvester", "bulldozer", "tanker", "forester", "crane", "tower_crane", "locomotive", "drone", "belts", "processing", "well_drill", "power", "powered", "automation", "station", "mechanic", "tools", "nuclear", "reactor", "weapons", "clean_power"};
     private static final int HEADER = 24;
     private static final int FOOTER = 30;
     private static final int LINE = 11;
