@@ -61,7 +61,9 @@ public final class VehicleHitbox {
         for (int i = 0; i < boxes.length; i++) {
             parts[i] = new VehiclePart(owner, boxes[i]);
         }
-        setIds(owner.getId());
+        // Server entities get their id in the constructor (the segments' come right after it);
+        // on the client the id arrives later with the spawn packet, through setId.
+        if (!owner.level().isClientSide()) setIds(owner.getId());
         update();
     }
 
