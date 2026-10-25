@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "GEG",
+    "PPP"
+  ],
+  "key": {
+    "S": "minecraft:iron_ingot",
+    "G": "minecraft:glass",
+    "E": "factorycraft:upgrade_turbo",
+    "P": "factorycraft:iron_plate"
+  },
+  "result": {
+    "id": "factorycraft:helicopter",
+    "count": 1
+  }
+}

@@ -15,8 +15,16 @@ public final class CargoWagonItem extends Item {
     /** How far from the placed wagon a tunneler or wagon can be to hitch on placement. */
     private static final double PLACE_HITCH_RANGE = 8.0;
 
+    private final java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends CargoWagonEntity>> type;
+
     public CargoWagonItem(Properties properties) {
+        this(properties, FactoryCraft.CARGO_WAGON::value);
+    }
+
+    public CargoWagonItem(Properties properties,
+                          java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends CargoWagonEntity>> type) {
         super(properties.stacksTo(16));
+        this.type = type;
     }
 
     @Override
@@ -25,7 +33,7 @@ public final class CargoWagonItem extends Item {
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         BlockPos placeAt = context.getClickedPos().relative(context.getClickedFace());
-        CargoWagonEntity wagon = FactoryCraft.CARGO_WAGON.value().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+        CargoWagonEntity wagon = type.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
         if (wagon == null) return InteractionResult.FAIL;
 
         Player player = context.getPlayer();

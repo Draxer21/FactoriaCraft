@@ -168,8 +168,14 @@ public final class PumpBlockEntity extends MachineBlockEntity implements Energy.
                 }
             }
         }
-        // Tanker trucks parked against any pipe.
+        // Tanker trucks and tank wagons parked against any pipe.
         for (BlockPos pipe : pipes) {
+            for (TankWagonEntity wagon : level.getEntitiesOfClass(TankWagonEntity.class, new AABB(pipe).inflate(1.5))) {
+                if (wagon.receive(fluid)) {
+                    take();
+                    return true;
+                }
+            }
             for (TankerEntity tanker : level.getEntitiesOfClass(TankerEntity.class, new AABB(pipe).inflate(1.0))) {
                 if (tanker.receive(fluid)) {
                     take();

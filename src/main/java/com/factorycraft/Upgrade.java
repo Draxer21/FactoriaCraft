@@ -41,7 +41,9 @@ public enum Upgrade {
 
     // ---- Nuclear.
     /** Burns 95% less fuel and gives +20% speed. Takes two module slots. */
-    NUCLEAR_ENGINE("nuclear_engine", e -> true, 2);
+    NUCLEAR_ENGINE("nuclear_engine", e -> true, 2),
+    /** Drives the vehicle along route beacons when nobody is driving. */
+    AUTOPILOT("autopilot", e -> e instanceof WorkVehicleEntity || e instanceof DumpTruckEntity);
 
     private final String id;
     private final Predicate<Entity> fits;

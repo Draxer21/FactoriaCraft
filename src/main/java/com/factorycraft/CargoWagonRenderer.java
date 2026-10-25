@@ -20,7 +20,11 @@ public final class CargoWagonRenderer extends AbstractBoatRenderer {
     private final EntityModel<BoatRenderState> model;
 
     public CargoWagonRenderer(EntityRendererProvider.Context context) {
-        super(context, Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "textures/entity/cargo_wagon.png"));
+        this(context, "cargo_wagon");
+    }
+
+    public CargoWagonRenderer(EntityRendererProvider.Context context, String texture) {
+        super(context, Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "textures/entity/" + texture + ".png"));
         this.model = new CargoWagonModel(context.bakeLayer(CargoWagonModel.LAYER_LOCATION));
         this.shadowRadius = 1.2F;
     }

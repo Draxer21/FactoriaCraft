@@ -1,0 +1,106 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "factorycraft:block/route_beacon_post",
+    "post": "factorycraft:block/route_beacon_post",
+    "lamp": "factorycraft:block/route_beacon_lamp_go"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        2,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#post"
+        },
+        "south": {
+          "texture": "#post"
+        },
+        "east": {
+          "texture": "#post"
+        },
+        "west": {
+          "texture": "#post"
+        },
+        "up": {
+          "texture": "#post"
+        },
+        "down": {
+          "texture": "#post"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        2,
+        7
+      ],
+      "to": [
+        9,
+        12,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#post"
+        },
+        "south": {
+          "texture": "#post"
+        },
+        "east": {
+          "texture": "#post"
+        },
+        "west": {
+          "texture": "#post"
+        },
+        "up": {
+          "texture": "#post"
+        },
+        "down": {
+          "texture": "#post"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        12,
+        5.5
+      ],
+      "to": [
+        10.5,
+        16,
+        10.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lamp"
+        },
+        "south": {
+          "texture": "#lamp"
+        },
+        "east": {
+          "texture": "#lamp"
+        },
+        "west": {
+          "texture": "#lamp"
+        },
+        "up": {
+          "texture": "#lamp"
+        },
+        "down": {
+          "texture": "#lamp"
+        }
+      }
+    }
+  ]
+}

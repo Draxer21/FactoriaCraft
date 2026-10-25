@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "L",
+    "I",
+    "P"
+  ],
+  "key": {
+    "L": "minecraft:redstone_lamp",
+    "I": "minecraft:iron_bars",
+    "P": "factorycraft:iron_plate"
+  },
+  "result": {
+    "id": "factorycraft:route_beacon",
+    "count": 4
+  }
+}

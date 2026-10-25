@@ -88,6 +88,7 @@ public final class DumpTruckEntity extends AbstractChestBoat implements VehicleL
     private boolean inputForward;
     private boolean inputBack;
     private double driveSpeed;
+    private final Autopilot autopilot = new Autopilot();
     private int dumpTicks;
     private final VehicleLights lights = new VehicleLights(this, 2.9, 1.2, 2.0, 5.0, 8.0, 11.0);
 
@@ -189,6 +190,13 @@ public final class DumpTruckEntity extends AbstractChestBoat implements VehicleL
             boolean speedingUp = Math.abs(target) > Math.abs(driveSpeed)
                     && (driveSpeed == 0.0 || Math.signum(target) == Math.signum(driveSpeed));
             driveSpeed = approach(driveSpeed, target, speedingUp ? ACCELERATION : BRAKING);
+            if (horizontalCollision) driveSpeed *= 0.5;
+            Vec3 forward = forward();
+            delta = new Vec3(forward.x * driveSpeed, delta.y, forward.z * driveSpeed);
+            setDeltaMovement(delta);
+        } else if (type == MoverType.SELF && !level().isClientSide()
+                && autopilot.drive(this, engine, MAX_SPEED * engine.speedFactor(), true)) {
+            driveSpeed = approach(driveSpeed, autopilot.speed, ACCELERATION);
             if (horizontalCollision) driveSpeed *= 0.5;
             Vec3 forward = forward();
             delta = new Vec3(forward.x * driveSpeed, delta.y, forward.z * driveSpeed);

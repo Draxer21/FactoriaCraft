@@ -26,7 +26,7 @@ public class CraneRenderer extends WorkVehicleRenderer {
                 CraneModel.LAMP_PARTS, CraneModel.BEAM_ORIGINS);
     }
 
-    protected CraneRenderer(EntityRendererProvider.Context context, String name, net.minecraft.client.model.geom.ModelLayerLocation layer,
+    public CraneRenderer(EntityRendererProvider.Context context, String name, net.minecraft.client.model.geom.ModelLayerLocation layer,
                             java.util.function.Function<net.minecraft.client.model.geom.ModelPart,
                                     net.minecraft.client.model.EntityModel<BoatRenderState>> model,
                             String[] lamps, float[][] beams) {

@@ -78,6 +78,11 @@ public final class LocomotiveEntity extends WorkVehicleEntity {
     }
 
     @Override
+    protected boolean autopilotSteers() {
+        return !onRails();
+    }
+
+    @Override
     public void tick() {
         if (isLocalInstanceAuthoritative()) followRails();
         super.tick();

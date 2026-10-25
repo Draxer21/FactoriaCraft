@@ -379,6 +379,15 @@ public final class VehicleEngine {
         }
     }
 
+    /** The autopilot starts the engine; returns false without fuel. */
+    public boolean autopilotStart() {
+        if (getFuel() > 0 || isFusion()) {
+            setRunning(true);
+            return true;
+        }
+        return false;
+    }
+
     /** Engine key pressed by the driver. */
     public void toggle(Player driver) {
         if (isRunning()) {

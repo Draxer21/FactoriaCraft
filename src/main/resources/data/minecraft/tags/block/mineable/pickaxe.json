@@ -40,6 +40,9 @@
     "factorycraft:air_purifier",
     "factorycraft:waste_barrel",
     "factorycraft:chimney_filter",
-    "factorycraft:industrial_chest"
+    "factorycraft:industrial_chest",
+    "factorycraft:loading_station",
+    "factorycraft:unloading_station",
+    "factorycraft:route_beacon"
   ]
 }

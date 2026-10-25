@@ -352,6 +352,45 @@ public final class FactoryCraft {
     public static final DeferredHolder<MenuType<?>, MenuType<IndustrialChestMenu>> INDUSTRIAL_CHEST_MENU = MENUS.register("industrial_chest",
             () -> new MenuType<>(IndustrialChestMenu::client, FeatureFlags.VANILLA_SET));
 
+    // ---- Vehicles & logistics: tank wagon, cargo stations, route beacons, helicopter, submarine.
+    public static final DeferredHolder<EntityType<?>, EntityType<TankWagonEntity>> TANK_WAGON = ENTITY_TYPES.register("tank_wagon", () ->
+            EntityType.Builder.<TankWagonEntity>of(TankWagonEntity::new, MobCategory.MISC)
+                    .sized(2.2F, 1.6F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "tank_wagon"))));
+    public static final DeferredHolder<Item, Item> TANK_WAGON_ITEM = ITEMS.registerItem("tank_wagon",
+            properties -> new CargoWagonItem(properties, TANK_WAGON::value));
+    public static final DeferredHolder<EntityType<?>, EntityType<HelicopterEntity>> HELICOPTER = ENTITY_TYPES.register("helicopter", () ->
+            EntityType.Builder.<HelicopterEntity>of(HelicopterEntity::new, MobCategory.MISC)
+                    .sized(2.7F, 2.4F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "helicopter"))));
+    public static final DeferredHolder<Item, Item> HELICOPTER_ITEM = ITEMS.registerItem("helicopter",
+            properties -> new VehicleItem(properties, HELICOPTER::value));
+    public static final DeferredHolder<EntityType<?>, EntityType<SubmarineEntity>> SUBMARINE = ENTITY_TYPES.register("submarine", () ->
+            EntityType.Builder.<SubmarineEntity>of(SubmarineEntity::new, MobCategory.MISC)
+                    .sized(2.0F, 2.2F).clientTrackingRange(16).updateInterval(2)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "submarine"))));
+    public static final DeferredHolder<Item, Item> SUBMARINE_ITEM = ITEMS.registerItem("submarine",
+            properties -> new VehicleItem(properties, SUBMARINE::value));
+    public static final DeferredHolder<Block, Block> LOADING_STATION = BLOCKS.register("loading_station", () ->
+            new SimpleMachineBlock(machineProperties("loading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Block, Block> UNLOADING_STATION = BLOCKS.register("unloading_station", () ->
+            new SimpleMachineBlock(machineProperties("unloading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> LOADING_STATION_ITEM = ITEMS.registerItem("loading_station",
+            properties -> new BlockItem(LOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Item, Item> UNLOADING_STATION_ITEM = ITEMS.registerItem("unloading_station",
+            properties -> new BlockItem(UNLOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CargoStationBlockEntity>> CARGO_STATION_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("cargo_station", () -> new BlockEntityType<>(CargoStationBlockEntity::new,
+                    LOADING_STATION.value(), UNLOADING_STATION.value()));
+    public static final DeferredHolder<Block, Block> ROUTE_BEACON = BLOCKS.register("route_beacon", () ->
+            new RouteBeaconBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "route_beacon")))
+                    .strength(1.0F).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 7)));
+    public static final DeferredHolder<Item, Item> ROUTE_BEACON_ITEM = ITEMS.registerItem("route_beacon",
+            properties -> new BlockItem(ROUTE_BEACON.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RouteBeaconBlockEntity>> ROUTE_BEACON_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("route_beacon", () -> new BlockEntityType<>(RouteBeaconBlockEntity::new, ROUTE_BEACON.value()));
+
     public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
     public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
             properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
@@ -591,6 +630,12 @@ public final class FactoryCraft {
                         output.accept(MAGNET.value());
                         output.accept(GIANT_DRILL.value());
                         output.accept(INDUSTRIAL_CHEST_ITEM.value());
+                        output.accept(TANK_WAGON_ITEM.value());
+                        output.accept(LOADING_STATION_ITEM.value());
+                        output.accept(UNLOADING_STATION_ITEM.value());
+                        output.accept(ROUTE_BEACON_ITEM.value());
+                        output.accept(HELICOPTER_ITEM.value());
+                        output.accept(SUBMARINE_ITEM.value());
                         output.accept(ENERGY_METER.value());
                         output.accept(MACHINE_UPGRADE_SPEED.value());
                         output.accept(MACHINE_UPGRADE_EFFICIENCY.value());

@@ -359,6 +359,35 @@ def drone_mat(g):
     if p.startswith('rotor'): return 'chrome'
     raise Exception(p)
 
+
+def heli_mat(g):
+    p=g['part']
+    if p.startswith('skid') or p.startswith('strut'): return 'darksteel'
+    if p in('cabin_floor','cabin_back','cabin_roof','side_left','side_right','nose','tail_boom','tail_fin'): return 'red'
+    if p.startswith('post'): return 'glassframe'
+    if p=='seat': return 'seat'
+    if p=='controls': return 'console'
+    if p in('engine',): return 'steel'
+    if p=='mast': return 'darksteel'
+    if p in('rotor','rotor_cross','tail_rotor'): return 'black'
+    if p=='winch_cable': return 'black'
+    if p=='winch_hook': return 'chrome'
+    if p.startswith('headlight'): return 'light'
+    if p=='tail_light': return 'red'
+    raise Exception(p)
+
+def sub_mat(g):
+    p=g['part']
+    if p in('hull','hull_top','tower','nose'): return 'yellow'
+    if p in('keel','tower_rim','fin_left','fin_right','rudder','shaft'): return 'darksteel'
+    if p=='stripe': return 'hazard'
+    if p=='periscope': return 'steel'
+    if p=='propeller': return 'chrome'
+    if p=='drill': return 'drill'
+    if p=='drill_tip': return 'drilltip'
+    if p.startswith('headlight'): return 'light'
+    raise Exception(p)
+
 T='src/main/resources/assets/factorycraft/textures/entity/'
 J='src/main/java/com/factorycraft/'
 build(J+'ExcavatorModel.java',exc_mat,T+'excavator.png')

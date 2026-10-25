@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PCP",
+    "RER",
+    "PCP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "C": "minecraft:compass",
+    "R": "minecraft:redstone_block",
+    "E": "minecraft:ender_eye"
+  },
+  "result": {
+    "id": "factorycraft:upgrade_autopilot",
+    "count": 1
+  }
+}
