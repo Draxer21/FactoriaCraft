@@ -32,6 +32,7 @@ public final class ConveyorBlockEntity extends BlockEntity {
     /** Runs on both sides: the server moves items/mobs, the client moves its own player smoothly. */
     public static void tick(Level level, BlockPos pos, BlockState state, ConveyorBlockEntity belt) {
         Direction facing = state.getValue(ConveyorBlock.FACING);
+        double speed = state.getBlock() instanceof ConveyorBlock conveyor ? conveyor.speed() : SPEED;
         ConveyorSlope slope = state.getValue(ConveyorBlock.SLOPE);
         double dirX = facing.getStepX();
         double dirZ = facing.getStepZ();
@@ -51,15 +52,15 @@ public final class ConveyorBlockEntity extends BlockEntity {
             Vec3 motion = entity.getDeltaMovement();
             if (entity instanceof ItemEntity item) {
                 // Items ride exactly on the belt, kept on its centre line.
-                double vx = dirX != 0 ? dirX * SPEED : (centerX - item.getX()) * CENTERING;
-                double vz = dirZ != 0 ? dirZ * SPEED : (centerZ - item.getZ()) * CENTERING;
+                double vx = dirX != 0 ? dirX * speed : (centerX - item.getX()) * CENTERING;
+                double vz = dirZ != 0 ? dirZ * speed : (centerZ - item.getZ()) * CENTERING;
                 double vy = motion.y;
                 if (slope != ConveyorSlope.FLAT) {
                     // Keep the item on the ramp surface: climb (or descend) one block per
                     // block travelled, plus a correction toward the surface and gravity compensation.
                     double progress = Mth.clamp((item.getX() - centerX) * dirX + (item.getZ() - centerZ) * dirZ + 0.5, 0.0, 1.0);
                     double surface = pos.getY() + slope.surfaceAt(progress);
-                    double climb = slope == ConveyorSlope.UP ? SPEED : -SPEED;
+                    double climb = slope == ConveyorSlope.UP ? speed : -speed;
                     vy = climb + (surface - item.getY()) * 0.5 + GRAVITY_COMPENSATION;
                 }
                 item.setDeltaMovement(vx, vy, vz);
@@ -77,11 +78,11 @@ public final class ConveyorBlockEntity extends BlockEntity {
             } else {
                 // Mobs and players: push along the belt but let them step off sideways.
                 double along = motion.x * dirX + motion.z * dirZ;
-                if (along < SPEED) {
-                    double boost = SPEED - along;
+                if (along < speed) {
+                    double boost = speed - along;
                     double vy = motion.y;
                     // Help walkers up a ramp so they ride it instead of hopping the steps.
-                    if (slope == ConveyorSlope.UP && entity.onGround()) vy = Math.max(vy, SPEED);
+                    if (slope == ConveyorSlope.UP && entity.onGround()) vy = Math.max(vy, speed);
                     entity.setDeltaMovement(motion.x + dirX * boost, vy, motion.z + dirZ * boost);
                 }
             }

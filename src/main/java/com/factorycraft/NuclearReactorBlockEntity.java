@@ -170,7 +170,7 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         items.clear();
         level.removeBlock(pos, false);
         level.explode(null, x, y, z, strength, true,
-                NuclearConfig.meltdownBreaksBlocks() ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE);
+                FactoryConfig.meltdownBreaksBlocks() ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE);
         fallout(level, x, y, z, 8.0F, 1200);
     }
 
@@ -200,6 +200,7 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
     }
 
     @Override public int stored() { return energy; }
+    @Override public int rate() { return rate; }
     @Override public int capacity() { return CAPACITY; }
 
     // ---------------------------------------------------------------- menu & saving

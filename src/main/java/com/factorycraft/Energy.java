@@ -26,6 +26,16 @@ public final class Energy {
         int stored();
 
         int capacity();
+
+        /** Energy made per tick right now (for the meter). */
+        default int rate() {
+            return 0;
+        }
+
+        /** Batteries only store: they don't count as generators and don't charge each other. */
+        default boolean isStorage() {
+            return false;
+        }
     }
 
     /** A machine that runs on power (cables connect to it). */
@@ -42,11 +52,18 @@ public final class Energy {
     /** A machine's cached view of the generators it can reach. */
     public static final class Link {
         private final BlockEntity owner;
+        private boolean generatorsOnly;
         private List<BlockPos> sources = List.of();
         private long nextScan;
 
         public Link(BlockEntity owner) {
             this.owner = owner;
+        }
+
+        /** A link that only draws from generators, never from batteries (used by batteries). */
+        public Link generatorsOnly() {
+            this.generatorsOnly = true;
+            return this;
         }
 
         /** Draws up to {@code amount} from the network; returns what it got. */
@@ -55,7 +72,9 @@ public final class Energy {
             int got = 0;
             for (BlockPos pos : sources) {
                 if (got >= amount) break;
-                if (level.getBlockEntity(pos) instanceof Source source) got += source.extract(amount - got);
+                if (level.getBlockEntity(pos) instanceof Source source && !(generatorsOnly && source.isStorage())) {
+                    got += source.extract(amount - got);
+                }
             }
             return got;
         }
@@ -84,6 +103,39 @@ public final class Energy {
             nextScan = level.getGameTime() + RESCAN_TICKS;
             sources = scan(level, owner.getBlockPos());
         }
+    }
+
+    /** Everything on a cable network, for the energy meter. */
+    public record Network(List<BlockPos> sources, List<BlockPos> consumers, int cables) {}
+
+    public static Network survey(Level level, BlockPos start) {
+        List<BlockPos> sources = new ArrayList<>();
+        List<BlockPos> consumers = new ArrayList<>();
+        Set<BlockPos> seen = new HashSet<>();
+        ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+        seen.add(start);
+        queue.add(start);
+        if (level.getBlockEntity(start) instanceof Source) sources.add(start);
+        if (level.getBlockEntity(start) instanceof Consumer) consumers.add(start);
+        int cables = 0;
+        while (!queue.isEmpty() && cables < MAX_CABLES) {
+            BlockPos pos = queue.poll();
+            boolean isCable = pos.equals(start) || level.getBlockState(pos).getBlock() instanceof CableBlock;
+            if (!isCable) continue;
+            for (Direction dir : Direction.values()) {
+                BlockPos next = pos.relative(dir);
+                if (!seen.add(next)) continue;
+                if (level.getBlockState(next).getBlock() instanceof CableBlock) {
+                    queue.add(next);
+                    cables++;
+                } else if (level.getBlockEntity(next) instanceof Source) {
+                    sources.add(next);
+                } else if (level.getBlockEntity(next) instanceof Consumer) {
+                    consumers.add(next);
+                }
+            }
+        }
+        return new Network(sources, consumers, cables);
     }
 
     /** Breadth-first walk over cables from {@code start}, collecting every generator touched. */

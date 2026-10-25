@@ -85,8 +85,16 @@ public final class ConveyorBlock extends BaseEntityBlock {
         };
     }
 
+    private final double speed;
+
     public ConveyorBlock(BlockBehaviour.Properties properties) {
+        this(properties, ConveyorBlockEntity.SPEED);
+    }
+
+    /** {@code speed}: blocks per tick (normal 0.125, fast 0.25, express 0.4). */
+    public ConveyorBlock(BlockBehaviour.Properties properties, double speed) {
         super(properties);
+        this.speed = speed;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(SLOPE, ConveyorSlope.FLAT)
                 .setValue(TURN, ConveyorTurn.STRAIGHT));
     }
@@ -216,6 +224,10 @@ public final class ConveyorBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new ConveyorBlockEntity(pos, state);
+    }
+
+    public double speed() {
+        return speed;
     }
 
     @Override

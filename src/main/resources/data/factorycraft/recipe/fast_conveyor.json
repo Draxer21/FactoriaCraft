@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CCC",
+    "GRG"
+  ],
+  "key": {
+    "C": "factorycraft:conveyor",
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:fast_conveyor",
+    "count": 3
+  }
+}

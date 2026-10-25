@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    " G ",
+    "CRC",
+    " I "
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:copper_plate",
+    "R": "minecraft:redstone",
+    "I": "minecraft:iron_ingot"
+  },
+  "result": {
+    "id": "factorycraft:energy_meter",
+    "count": 1
+  }
+}

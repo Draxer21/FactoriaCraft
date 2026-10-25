@@ -30,6 +30,9 @@
     "factorycraft:plutonium_block",
     "factorycraft:nuclear_reactor",
     "factorycraft:centrifuge",
-    "factorycraft:repair_station"
+    "factorycraft:repair_station",
+    "factorycraft:battery",
+    "factorycraft:fast_conveyor",
+    "factorycraft:express_conveyor"
   ]
 }

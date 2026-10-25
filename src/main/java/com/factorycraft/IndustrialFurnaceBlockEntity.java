@@ -47,7 +47,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         public int get(int id) {
             return switch (id) {
                 case 0 -> progress;
-                case 1 -> BATCH_TIME;
+                case 1 -> scaledTime(BATCH_TIME);
                 case 2 -> Math.max(fuelLeft, 0);
                 case 3 -> fuelMax;
                 default -> 0;
@@ -72,7 +72,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.factorycraft.industrial_furnace");
+        return withUpgrades(Component.translatable("block.factorycraft.industrial_furnace"));
     }
 
     @Override
@@ -82,6 +82,11 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
 
     public IndustrialFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(FactoryCraft.INDUSTRIAL_FURNACE_BLOCK_ENTITY.value(), pos, state, 6);
+    }
+
+    @Override
+    public boolean supportsUpgrades() {
+        return true;
     }
 
     @Override
@@ -127,11 +132,13 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         if (fuelLeft <= 0 && !refuel(level)) {
             return false;
         }
-        fuelLeft -= FUEL_PER_TICK;
-        if (++progress >= BATCH_TIME) {
+        // Same fuel per item whatever the speed; efficiency modules save fuel.
+        fuelLeft -= Math.max(1, (int) Math.round(FUEL_PER_TICK * energyFactor() / speedFactor()));
+        if (++progress >= scaledTime(BATCH_TIME)) {
             progress = 0;
             input.shrink(count);
-            store(products);
+            List<ItemStack> boosted = boost(level, products);
+            store(canStore(boosted) ? boosted : products);
         }
         return true;
     }

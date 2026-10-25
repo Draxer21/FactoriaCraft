@@ -64,6 +64,34 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
+        // Machine upgrade modules and the wrench.
+        if (level.getBlockEntity(pos) instanceof MachineBlockEntity machine) {
+            if (stack.getItem() instanceof MachineUpgradeItem module) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                if (!machine.supportsUpgrades()) {
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.machine_upgrade.unsupported"));
+                    return InteractionResult.FAIL;
+                }
+                if (!machine.installUpgrade(module.type())) {
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.machine_upgrade.full",
+                            MachineBlockEntity.MAX_UPGRADES));
+                    return InteractionResult.FAIL;
+                }
+                if (!player.isCreative()) stack.shrink(1);
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.machine_upgrade.installed",
+                        machine.upgradeCount(), MachineBlockEntity.MAX_UPGRADES));
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SMITHING_TABLE_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
+                return InteractionResult.SUCCESS_SERVER;
+            }
+            if (stack.getItem() instanceof WrenchItem && machine.upgradeCount() > 0) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                for (ItemStack out : machine.removeUpgrades()) {
+                    if (!player.getInventory().add(out)) player.drop(out, false);
+                }
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.machine_upgrade.removed"));
+                return InteractionResult.SUCCESS_SERVER;
+            }
+        }
         // Water buckets cool the reactor.
         if (stack.is(net.minecraft.world.item.Items.WATER_BUCKET)
                 && level.getBlockEntity(pos) instanceof NuclearReactorBlockEntity reactor) {

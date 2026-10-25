@@ -253,7 +253,7 @@ public final class VehicleEngine {
     }
 
     private double burnFactor() {
-        double factor = 1.0;
+        double factor = FactoryConfig.vehicleFuel();
         if (has(Upgrade.TURBO)) factor *= 1.5;
         if (has(Upgrade.TURBO_II)) factor *= 2.0;
         if (has(Upgrade.EFFICIENT_ENGINE)) factor *= 0.6;

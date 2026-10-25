@@ -124,6 +124,11 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
     }
 
     @Override
+    public int rate() {
+        return burnLeft > 0 && energy + OUTPUT <= CAPACITY ? OUTPUT : 0;
+    }
+
+    @Override
     public int capacity() {
         return CAPACITY;
     }

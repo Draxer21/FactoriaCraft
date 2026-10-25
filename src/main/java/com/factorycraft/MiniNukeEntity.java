@@ -30,7 +30,7 @@ public final class MiniNukeEntity extends ThrowableItemProjectile {
         if (level() instanceof ServerLevel level) {
             int yield = MiniNukeItem.coreGrade(getItem());
             level.explode(this, getX(), getY(), getZ(), MiniNukeItem.power(yield), true,
-                    NuclearConfig.weaponsBreakBlocks() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
+                    FactoryConfig.weaponsBreakBlocks() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
             NuclearReactorBlockEntity.fallout(level, getX(), getY(), getZ(), 1.0F + 2.0F * yield, 300 + 200 * yield);
             discard();
         }

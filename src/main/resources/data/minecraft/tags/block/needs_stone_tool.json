@@ -16,6 +16,7 @@
     "factorycraft:deepslate_lead_ore",
     "factorycraft:lead_block",
     "factorycraft:centrifuge",
-    "factorycraft:repair_station"
+    "factorycraft:repair_station",
+    "factorycraft:battery"
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PCP",
+    "LRL",
+    "PCP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "C": "factorycraft:copper_plate",
+    "L": "minecraft:lapis_block",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:machine_upgrade_efficiency",
+    "count": 1
+  }
+}

@@ -58,11 +58,11 @@ public final class Radiation {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         if (player.level().isClientSide() || player.tickCount % 40 != 0) return;
-        if (player.isCreative() || player.isSpectator()) return;
+        if (player.isCreative() || player.isSpectator() || !FactoryConfig.radiation()) return;
         Inventory inventory = player.getInventory();
         float total = 0.0F;
         for (int i = 0; i < inventory.getContainerSize(); i++) total += of(inventory.getItem(i));
-        float dose = total * exposure(player);
+        float dose = (float) (total * exposure(player) * FactoryConfig.radiationStrength());
         if (dose < 4.0F) return;
         apply(player, dose);
         if (player.getVehicle() == null) {

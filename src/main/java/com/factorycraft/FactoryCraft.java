@@ -63,8 +63,23 @@ public final class FactoryCraft {
                     .noOcclusion()));
     public static final DeferredHolder<Item, Item> CONVEYOR_ITEM = ITEMS.registerItem("conveyor",
             properties -> new BlockItem(CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> FAST_CONVEYOR = conveyor("fast_conveyor", 0.25);
+    public static final DeferredHolder<Block, Block> EXPRESS_CONVEYOR = conveyor("express_conveyor", 0.4);
+    public static final DeferredHolder<Item, Item> FAST_CONVEYOR_ITEM = ITEMS.registerItem("fast_conveyor",
+            properties -> new BlockItem(FAST_CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Item, Item> EXPRESS_CONVEYOR_ITEM = ITEMS.registerItem("express_conveyor",
+            properties -> new BlockItem(EXPRESS_CONVEYOR.value(), properties.useBlockDescriptionPrefix()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ConveyorBlockEntity>> CONVEYOR_BLOCK_ENTITY =
-            BLOCK_ENTITY_TYPES.register("conveyor", () -> new BlockEntityType<>(ConveyorBlockEntity::new, CONVEYOR.value()));
+            BLOCK_ENTITY_TYPES.register("conveyor", () -> new BlockEntityType<>(ConveyorBlockEntity::new,
+                    CONVEYOR.value(), FAST_CONVEYOR.value(), EXPRESS_CONVEYOR.value()));
+
+    private static DeferredHolder<Block, Block> conveyor(String id, double speed) {
+        return BLOCKS.register(id, () -> new ConveyorBlock(BlockBehaviour.Properties.of()
+                .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id)))
+                .strength(1.5F, 6.0F)
+                .sound(SoundType.METAL)
+                .noOcclusion(), speed));
+    }
 
     // ---- Processing line: crusher -> industrial furnace, with a sorting belt.
     public static final DeferredHolder<Block, Block> CRUSHER = BLOCKS.register("crusher", () ->
@@ -269,6 +284,22 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("repair_station", () -> new BlockEntityType<>(RepairStationBlockEntity::new, REPAIR_STATION.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> REPAIR_STATION_MENU = MENUS.register("repair_station",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), id, inventory, 4), FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<Block, Block> BATTERY = BLOCKS.register("battery", () ->
+            new SimpleMachineBlock(machineProperties("battery").lightLevel(state -> 0), () -> FactoryCraft.BATTERY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> BATTERY_ITEM = ITEMS.registerItem("battery",
+            properties -> new BlockItem(BATTERY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBlockEntity>> BATTERY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("battery", () -> new BlockEntityType<>(BatteryBlockEntity::new, BATTERY.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> BATTERY_MENU = MENUS.register("battery",
+            () -> new MenuType<>(GeneratorMenu::batteryClient, FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_EFFICIENCY = ITEMS.registerItem("machine_upgrade_efficiency",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.EFFICIENCY));
+    public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_OUTPUT = ITEMS.registerItem("machine_upgrade_output",
+            properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.OUTPUT));
 
     public static final DeferredHolder<MenuType<?>, MenuType<GeneratorMenu>> SOLAR_GENERATOR_MENU = MENUS.register("solar_generator",
             () -> new MenuType<>(GeneratorMenu::solarClient, FeatureFlags.VANILLA_SET));
@@ -490,6 +521,11 @@ public final class FactoryCraft {
                         output.accept(GENERATOR_ITEM.value());
                         output.accept(SOLAR_GENERATOR_ITEM.value());
                         output.accept(REPAIR_STATION_ITEM.value());
+                        output.accept(BATTERY_ITEM.value());
+                        output.accept(ENERGY_METER.value());
+                        output.accept(MACHINE_UPGRADE_SPEED.value());
+                        output.accept(MACHINE_UPGRADE_EFFICIENCY.value());
+                        output.accept(MACHINE_UPGRADE_OUTPUT.value());
                         output.accept(CABLE_ITEM.value());
                         output.accept(ORE_WASHER_ITEM.value());
                         output.accept(PRESS_ITEM.value());
@@ -508,6 +544,8 @@ public final class FactoryCraft {
                         output.accept(CONTROL_STATION_ITEM.value());
                         for (DeferredHolder<Item, Item> module : UPGRADE_ITEMS.values()) output.accept(module.value());
                         output.accept(CONVEYOR_ITEM.value());
+                        output.accept(FAST_CONVEYOR_ITEM.value());
+                        output.accept(EXPRESS_CONVEYOR_ITEM.value());
                         output.accept(SORTER_ITEM.value());
                         output.accept(ELEVATOR_ITEM.value());
                         output.accept(WELL_DRILL_ITEM.value());
@@ -520,7 +558,7 @@ public final class FactoryCraft {
 
     public FactoryCraft(IEventBus modEventBus, net.neoforged.fml.ModContainer container) {
         Nuclear.init();
-        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, NuclearConfig.SPEC);
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENUS.register(modEventBus);
