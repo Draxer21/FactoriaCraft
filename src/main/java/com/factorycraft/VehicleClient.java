@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"dump", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"summon:bulldozer", "summon:dump_truck", "summon:helicopter", "summon:locomotive", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -89,9 +89,7 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
-            if (parts[0].equals("dump")) {
-                ModelDump.run();
-            } else if (parts[0].equals("summon")) {
+            if (parts[0].equals("summon")) {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");
@@ -114,9 +112,39 @@ public final class VehicleClient {
         }
     }
 
+    /** CI: outline every vehicle's collision segments with particles, so screenshots show the fit. */
+    private static void outlineSegments() {
+        Minecraft mc = Minecraft.getInstance();
+        if (!GUIDE_DEMO || mc.level == null || mc.player == null || mc.level.getGameTime() % 4 != 0) return;
+        var dust = new net.minecraft.core.particles.DustParticleOptions(0xFF2020, 0.7F);
+        for (Entity entity : mc.level.entitiesForRendering()) {
+            if (!(entity instanceof VehicleHitbox.Holder holder)) continue;
+            for (var part : holder.hitbox().parts()) {
+                net.minecraft.world.phys.AABB b = part.getBoundingBox();
+                double[] xs = {b.minX, b.maxX};
+                double[] ys = {b.minY, b.maxY};
+                double[] zs = {b.minZ, b.maxZ};
+                for (double y : ys) for (double z : zs) edge(mc, dust, b.minX, y, z, b.maxX, y, z);
+                for (double x : xs) for (double z : zs) edge(mc, dust, x, b.minY, z, x, b.maxY, z);
+                for (double x : xs) for (double y : ys) edge(mc, dust, x, y, b.minZ, x, y, b.maxZ);
+            }
+        }
+    }
+
+    private static void edge(Minecraft mc, net.minecraft.core.particles.ParticleOptions particle,
+                             double x0, double y0, double z0, double x1, double y1, double z1) {
+        double length = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0) + (z1 - z0) * (z1 - z0));
+        int steps = Math.max(1, (int) (length / 0.2));
+        for (int i = 0; i <= steps; i++) {
+            double t = (double) i / steps;
+            mc.level.addParticle(particle, x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, z0 + (z1 - z0) * t, 0, 0, 0);
+        }
+    }
+
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         guideDemo();
+        outlineSegments();
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         while (LIGHTS_KEY.consumeClick()) {

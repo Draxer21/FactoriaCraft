@@ -121,7 +121,6 @@ jobs:
           } > client_report.md
           gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@client_report.md
           # Publish the screenshots on the ci-screens branch.
-          cp run/client/models_dump.txt shots/ 2>/dev/null || true
           cd shots && git init -q && git checkout -q -b ci-screens && git add . \
             && git -c user.name=ci -c user.email=ci@local commit -qm "screens ${{ github.sha }}" \
             && git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" ci-screens

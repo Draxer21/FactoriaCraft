@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public final class ExcavatorEntity extends Boat implements VehicleLights.Holder, VehicleEngine.Holder {
+public final class ExcavatorEntity extends Boat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(ExcavatorEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
@@ -202,5 +202,64 @@ public final class ExcavatorEntity extends Boat implements VehicleLights.Holder,
     protected net.minecraft.sounds.@org.jspecify.annotations.Nullable SoundEvent getPaddleSound() {
         // Engines and tracks have their own sounds: no boat paddling.
         return null;
+    }
+
+    // ---------------------------------------------------------------- segmented collision
+
+    private final VehicleHitbox hitbox = new VehicleHitbox(this, VehicleShapes.of(this));
+
+    @Override
+    public VehicleHitbox hitbox() {
+        return hitbox;
+    }
+
+    @Override
+    public boolean solidFor(net.minecraft.world.entity.Entity other) {
+        return super.canBeCollidedWith(other);
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (hitbox != null) hitbox.setIds(id);
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if (hitbox != null) hitbox.update();
+    }
+
+    @Override
+    public void baseTick() {
+        super.baseTick();
+        hitbox.update();
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
+        return hitbox.parts();
+    }
+
+    /** Clicks land on the segments, not on the big terrain box. */
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
+    /** Others bump into the segments, not into the big terrain box. */
+    @Override
+    public boolean canBeCollidedWith(@org.jspecify.annotations.Nullable net.minecraft.world.entity.Entity other) {
+        return false;
+    }
+
+    @Override
+    public void push(net.minecraft.world.entity.Entity other) {
+        if (hitbox.touches(other)) super.push(other);
     }
 }
