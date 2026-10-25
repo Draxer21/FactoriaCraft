@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "factorycraft:item/lead_ingot"
+    "model": "minecraft:item/iron_ingot",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9345220
+      }
+    ]
   }
 }

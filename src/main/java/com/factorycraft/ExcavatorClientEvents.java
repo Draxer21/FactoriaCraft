@@ -79,4 +79,13 @@ public final class ExcavatorClientEvents {
         event.registerEntityRenderer(FactoryCraft.TANKER.value(), context -> new WorkVehicleRenderer(context, "tanker",
                 TankerModel.LAYER_LOCATION, 1.5F, TankerModel::new, TankerModel.LAMP_PARTS, TankerModel.BEAM_ORIGINS));
     }
+
+    /** Storage blocks use the vanilla iron block texture, tinted per material. */
+    @SubscribeEvent
+    public static void blockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tint) -> 0x7CFF4A, Nuclear.URANIUM_BLOCK.value());
+        event.register((state, level, pos, tint) -> 0xE2D29A, Nuclear.THORIUM_BLOCK.value());
+        event.register((state, level, pos, tint) -> 0x8E98C4, Nuclear.LEAD_BLOCK.value());
+        event.register((state, level, pos, tint) -> 0xE884E8, Nuclear.PLUTONIUM_BLOCK.value());
+    }
 }

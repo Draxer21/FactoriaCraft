@@ -1,1 +1,12 @@
-{"model": {"type": "minecraft:model", "model": "factorycraft:item/copper_dust"}}
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "minecraft:item/sugar",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15238474
+      }
+    ]
+  }
+}

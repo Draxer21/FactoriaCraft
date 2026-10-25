@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "factorycraft:block/plutonium_block"
+    "model": "factorycraft:block/plutonium_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15238376
+      }
+    ]
   }
 }

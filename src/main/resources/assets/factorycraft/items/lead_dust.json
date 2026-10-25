@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "factorycraft:item/lead_dust"
+    "model": "minecraft:item/sugar",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 9345220
+      }
+    ]
   }
 }
