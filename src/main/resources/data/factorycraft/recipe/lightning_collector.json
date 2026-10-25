@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BLB",
+    "CRC",
+    "BBB"
+  ],
+  "key": {
+    "B": "minecraft:copper_block",
+    "L": "minecraft:lightning_rod",
+    "C": "factorycraft:copper_coil",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:lightning_collector",
+    "count": 1
+  }
+}

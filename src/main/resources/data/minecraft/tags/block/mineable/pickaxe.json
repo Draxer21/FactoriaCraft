@@ -43,6 +43,8 @@
     "factorycraft:industrial_chest",
     "factorycraft:loading_station",
     "factorycraft:unloading_station",
-    "factorycraft:route_beacon"
+    "factorycraft:route_beacon",
+    "factorycraft:copper_radiator",
+    "factorycraft:lightning_collector"
   ]
 }

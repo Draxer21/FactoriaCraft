@@ -128,5 +128,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: factorycraft-0.1.0+mc26.2
+          name: factorycraft-mc26.2
           path: build/libs/*.jar

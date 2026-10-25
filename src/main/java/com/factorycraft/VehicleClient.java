@@ -93,8 +93,9 @@ public final class VehicleClient {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");
-                mc.player.connection.sendCommand("tp @s ~ ~ ~ -30 15");
-                mc.player.connection.sendCommand("summon factorycraft:" + parts[1] + " ^ ^ ^9");
+                mc.player.connection.sendCommand("gamemode spectator");
+                mc.player.connection.sendCommand("tp @s ~ 120 ~ 0 12");
+                mc.player.connection.sendCommand("summon factorycraft:" + parts[1] + " ^ ^-2 ^9 {NoGravity:1b,Rotation:[60f,0f]}");
             } else if (parts[0].equals("screen")) {
                 var inv = mc.player.getInventory();
                 ProcessingMenu menu = switch (parts[1]) {

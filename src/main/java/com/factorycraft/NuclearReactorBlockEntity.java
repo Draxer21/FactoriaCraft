@@ -167,6 +167,12 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         } else {
             heat -= water > 0 ? 12 : 4; // shut down: it cools off
         }
+        // Copper radiators on the reactor's faces shed extra heat.
+        int radiators = 0;
+        for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
+            if (level.getBlockState(worldPosition.relative(dir)).is(FactoryCraft.COPPER_RADIATOR.value())) radiators++;
+        }
+        heat -= radiators * (running ? 3 : 2);
         heat = Math.max(0, heat);
 
         if (level instanceof ServerLevel server) {

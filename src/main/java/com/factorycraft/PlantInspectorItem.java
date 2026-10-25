@@ -69,6 +69,11 @@ public final class PlantInspectorItem extends Item {
             checks.add(check(emergencySwitch(level, pos), "reactor.scram"));
             checks.add(check(near(level, pos, 8, WasteBarrelBlockEntity.class), "reactor.barrel"));
             checks.add(check(reactor.heatPercent() < 70, "reactor.heat", reactor.heatPercent()));
+            int radiators = 0;
+            for (Direction dir : Direction.values()) {
+                if (level.getBlockState(pos.relative(dir)).is(FactoryCraft.COPPER_RADIATOR.value())) radiators++;
+            }
+            checks.add(check(radiators > 0 || turbines > 0, "reactor.radiators", radiators));
         } else if (be instanceof GeneratorBlockEntity generator) {
             title = "diesel";
             boolean filter = generator.hasFilter(level);

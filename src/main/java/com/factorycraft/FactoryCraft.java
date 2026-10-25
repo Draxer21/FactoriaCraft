@@ -391,6 +391,20 @@ public final class FactoryCraft {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RouteBeaconBlockEntity>> ROUTE_BEACON_BLOCK_ENTITY =
             BLOCK_ENTITY_TYPES.register("route_beacon", () -> new BlockEntityType<>(RouteBeaconBlockEntity::new, ROUTE_BEACON.value()));
 
+    // ---- Copper: coils, reactor radiators, lightning collector.
+    public static final DeferredHolder<Item, Item> COPPER_COIL = ITEMS.registerItem("copper_coil", Item::new);
+    public static final DeferredHolder<Block, Block> COPPER_RADIATOR = BLOCKS.register("copper_radiator", () ->
+            new Block(machineProperties("copper_radiator").sound(SoundType.COPPER)));
+    public static final DeferredHolder<Item, Item> COPPER_RADIATOR_ITEM = ITEMS.registerItem("copper_radiator",
+            properties -> new BlockItem(COPPER_RADIATOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Block, Block> LIGHTNING_COLLECTOR = BLOCKS.register("lightning_collector", () ->
+            new SimpleMachineBlock(machineProperties("lightning_collector").sound(SoundType.COPPER).lightLevel(state -> state.getValue(MachineBlock.LIT) ? 7 : 0),
+                    () -> FactoryCraft.LIGHTNING_COLLECTOR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> LIGHTNING_COLLECTOR_ITEM = ITEMS.registerItem("lightning_collector",
+            properties -> new BlockItem(LIGHTNING_COLLECTOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LightningCollectorBlockEntity>> LIGHTNING_COLLECTOR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("lightning_collector", () -> new BlockEntityType<>(LightningCollectorBlockEntity::new, LIGHTNING_COLLECTOR.value()));
+
     public static final DeferredHolder<Item, Item> ENERGY_METER = ITEMS.registerItem("energy_meter", EnergyMeterItem::new);
     public static final DeferredHolder<Item, Item> MACHINE_UPGRADE_SPEED = ITEMS.registerItem("machine_upgrade_speed",
             properties -> new MachineUpgradeItem(properties, MachineBlockEntity.MachineUpgrade.SPEED));
@@ -620,6 +634,9 @@ public final class FactoryCraft {
                         output.accept(SOLAR_GENERATOR_ITEM.value());
                         output.accept(REPAIR_STATION_ITEM.value());
                         output.accept(BATTERY_ITEM.value());
+                        output.accept(COPPER_COIL.value());
+                        output.accept(COPPER_RADIATOR_ITEM.value());
+                        output.accept(LIGHTNING_COLLECTOR_ITEM.value());
                         output.accept(WINDMILL_ITEM.value());
                         output.accept(GEOTHERMAL_ITEM.value());
                         output.accept(STEAM_TURBINE_ITEM.value());

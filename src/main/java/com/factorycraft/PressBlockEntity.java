@@ -25,6 +25,9 @@ public final class PressBlockEntity extends PoweredMachineBlockEntity {
             new Pressing(() -> Items.ICE, 9, () -> Items.PACKED_ICE, 1),
             new Pressing(() -> Items.PACKED_ICE, 9, () -> Items.BLUE_ICE, 1),
             new Pressing(() -> Items.COAL, 64, () -> Items.DIAMOND, 1),
+            new Pressing(() -> Items.COPPER_BLOCK, 1, () -> FactoryCraft.COPPER_PLATE.value(), 9),
+            new Pressing(() -> Items.IRON_BLOCK, 1, () -> FactoryCraft.IRON_PLATE.value(), 9),
+            new Pressing(() -> Items.GOLD_BLOCK, 1, () -> FactoryCraft.GOLD_PLATE.value(), 9),
             new Pressing(() -> Nuclear.THORIUM_INGOT.value(), 4, () -> Nuclear.THORIUM_FUEL_ROD.value(), 1),
             new Pressing(() -> Nuclear.URANIUM_INGOT.value(), 4, () -> Nuclear.URANIUM_FUEL_ROD.value(), 1),
             new Pressing(() -> Nuclear.PLUTONIUM_INGOT.value(), 2, () -> Nuclear.PLUTONIUM_FUEL_ROD.value(), 1));

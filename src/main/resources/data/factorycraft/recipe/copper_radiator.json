@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BIB",
+    "ICI",
+    "BIB"
+  ],
+  "key": {
+    "B": "minecraft:copper_block",
+    "I": "minecraft:iron_bars",
+    "C": "factorycraft:copper_coil"
+  },
+  "result": {
+    "id": "factorycraft:copper_radiator",
+    "count": 1
+  }
+}

@@ -8,7 +8,7 @@
   ],
   "key": {
     "P": "factorycraft:iron_plate",
-    "C": "factorycraft:copper_plate",
+    "C": "factorycraft:copper_coil",
     "R": "minecraft:redstone_block",
     "L": "factorycraft:lead_block"
   },
