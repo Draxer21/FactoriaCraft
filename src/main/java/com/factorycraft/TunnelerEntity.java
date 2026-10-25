@@ -383,7 +383,7 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleHi
 
     /** Others bump into the segments, not into the big terrain box. */
     @Override
-    public boolean canBeCollidedWith(@org.jspecify.annotations.Nullable net.minecraft.world.entity.Entity other) {
+    public boolean canBeCollidedWith(net.minecraft.world.entity.@org.jspecify.annotations.Nullable Entity other) {
         return false;
     }
 }
