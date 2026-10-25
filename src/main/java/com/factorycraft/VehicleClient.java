@@ -76,7 +76,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"nuclear:2", "nuclear:3", "nuclear:4", "processing:last"};
+    private static final String[] DEMO_CHAPTERS = {"dump", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -89,7 +89,9 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
-            if (parts[0].equals("summon")) {
+            if (parts[0].equals("dump")) {
+                ModelDump.run();
+            } else if (parts[0].equals("summon")) {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");
