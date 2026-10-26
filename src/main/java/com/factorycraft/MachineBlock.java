@@ -118,7 +118,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
             if (!level.isClientSide()) pump.click(player);
             return InteractionResult.SUCCESS;
         }
-        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof AreaMachineBlockEntity.Area area) {
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof AreaMachine area) {
             if (!level.isClientSide()) area.cycleRadius(player);
             return InteractionResult.SUCCESS;
         }

@@ -23,12 +23,7 @@ import org.jspecify.annotations.Nullable;
  * cycles the area size; the border shows with particles. When the job is done it
  * waits and re-checks the area every 10 seconds.
  */
-public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity implements AreaMachineBlockEntity.Area {
-    /** Something whose work area can be cycled by sneak + right-click. */
-    public interface Area {
-        void cycleRadius(Player player);
-    }
-
+public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity implements AreaMachine {
     private final int[] radii;
     protected int radius;
     /** Where the scan is: meaning depends on the machine. */
