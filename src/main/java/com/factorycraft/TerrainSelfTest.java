@@ -159,6 +159,23 @@ public final class TerrainSelfTest {
             com.mojang.logging.LogUtils.getLogger().info("EXOTICTEST features={}/4 soulFuelBurn={} purpurCrushes={} alloyRecipes={}",
                     exotic, level.fuelValues().burnDuration(new ItemStack(Exotic.SOUL_FUEL.value())),
                     CrusherRecipes.resultFor(new ItemStack(Items.PURPUR_BLOCK)), AlloySmelterBlockEntity.RECIPES.size());
+            ItemStack cobalt = new ItemStack(Exotic.COBALT_INGOT.value(), 3);
+            ItemStack drill = ToolForge.forge(ToolForge.Kind.DRILL, cobalt, ToolForge.statsFor(cobalt));
+            ItemStack tin = new ItemStack(Materials.TIN.ingot().value());
+            ItemStack tinHammer = ToolForge.forge(ToolForge.Kind.HAMMER, tin, ToolForge.statsFor(tin));
+            ItemStack igneous = new ItemStack(Exotic.IGNEOUS_CRYSTAL.value());
+            ItemStack multitool = ToolForge.forge(ToolForge.Kind.MULTITOOL, igneous, ToolForge.statsFor(igneous));
+            var smelt = level.recipeAccess().getRecipeFor(net.minecraft.world.item.crafting.RecipeType.SMELTING,
+                    new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON)), level);
+            com.mojang.logging.LogUtils.getLogger().info(
+                    "FORGETEST name={} durability={} cobaltMinesObsidian={} tinMinesObsidian={} tinMinesStone={} multitoolLogs={} multitoolTrait={} stickMaterial={} smeltRawIron={}",
+                    drill.getHoverName().getString(), drill.getMaxDamage(),
+                    drill.isCorrectToolForDrops(net.minecraft.world.level.block.Blocks.OBSIDIAN.defaultBlockState()),
+                    tinHammer.isCorrectToolForDrops(net.minecraft.world.level.block.Blocks.OBSIDIAN.defaultBlockState()),
+                    tinHammer.isCorrectToolForDrops(net.minecraft.world.level.block.Blocks.STONE.defaultBlockState()),
+                    multitool.getDestroySpeed(net.minecraft.world.level.block.Blocks.OAK_LOG.defaultBlockState()),
+                    ToolForge.trait(multitool), ToolForge.statsFor(new ItemStack(Items.STICK)),
+                    smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON)), level.registryAccess()).toString()).orElse("none"));
             com.mojang.logging.LogUtils.getLogger().info("MATERIALSTEST smelter={} oreFeatures={}/4 tinTagged={} pressWire={}",
                     out, ores, new ItemStack(Materials.TIN.ingot().value()).is(tin),
                     PressBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Materials.COPPER_WIRE.value()));

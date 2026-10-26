@@ -50,6 +50,7 @@
     "factorycraft:stainless_steel_block",
     "factorycraft:alloy_smelter",
     "factorycraft:igneous_ore",
-    "factorycraft:sulfur_ore"
+    "factorycraft:sulfur_ore",
+    "factorycraft:tool_forge"
   ]
 }

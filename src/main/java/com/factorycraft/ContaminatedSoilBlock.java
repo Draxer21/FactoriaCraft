@@ -26,7 +26,8 @@ public final class ContaminatedSoilBlock extends Block {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && entity instanceof LivingEntity living && level.getGameTime() % 40 == 0) {
             if (living instanceof Player player && (player.isCreative()
-                    || player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET).is(Nuclear.LEAD_BOOTS.value()))) {
+                    || player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET).is(Nuclear.LEAD_BOOTS.value())
+                    || player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.FEET).is(Gear.WORK_BOOTS.value()))) {
                 return;
             }
             Radiation.apply(living, 14.0F);

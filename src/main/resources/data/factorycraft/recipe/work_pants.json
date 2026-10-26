@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SIS",
+    "I I",
+    "S S"
+  ],
+  "key": {
+    "S": "#c:plates/stainless_steel",
+    "I": "factorycraft:chorus_insulation"
+  },
+  "result": {
+    "id": "factorycraft:work_pants",
+    "count": 1
+  }
+}

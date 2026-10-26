@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I I",
+    "S S"
+  ],
+  "key": {
+    "S": "#c:plates/stainless_steel",
+    "I": "factorycraft:chorus_insulation"
+  },
+  "result": {
+    "id": "factorycraft:work_boots",
+    "count": 1
+  }
+}

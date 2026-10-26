@@ -518,6 +518,33 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("industrial_lamp", () -> new BlockEntityType<>(IndustrialLampBlockEntity::new, INDUSTRIAL_LAMP.value()));
     public static final DeferredHolder<Item, Item> BLUEPRINT = ITEMS.registerItem("blueprint", BlueprintItem::new);
 
+    // ---- Stage 4: tool forge, forged tools and moulds.
+    public static final DeferredHolder<Block, Block> TOOL_FORGE = BLOCKS.register("tool_forge", () ->
+            new SimpleMachineBlock(machineProperties("tool_forge").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
+                    () -> FactoryCraft.TOOL_FORGE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> TOOL_FORGE_ITEM = ITEMS.registerItem("tool_forge",
+            properties -> new BlockItem(TOOL_FORGE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ToolForgeBlockEntity>> TOOL_FORGE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("tool_forge", () -> new BlockEntityType<>(ToolForgeBlockEntity::new, TOOL_FORGE.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> TOOL_FORGE_MENU = MENUS.register("tool_forge",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.TOOL_FORGE_MENU.value(), id, inventory, 3), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Item, Item> FORGED_DRILL = ITEMS.registerItem("forged_drill",
+            properties -> new DrillItem(properties.pickaxe(ToolMaterial.IRON, 1.0F, -2.4F)));
+    public static final DeferredHolder<Item, Item> FORGED_HAMMER = ITEMS.registerItem("forged_hammer",
+            properties -> new HammerItem(properties.pickaxe(ToolMaterial.IRON, 2.0F, -3.2F)));
+    public static final DeferredHolder<Item, Item> FORGED_CHAINSAW = ITEMS.registerItem("forged_chainsaw",
+            properties -> new ChainsawItem(ToolMaterial.IRON, 5.0F, -2.8F, properties));
+    public static final DeferredHolder<Item, Item> FORGED_SHOVEL = ITEMS.registerItem("forged_shovel",
+            properties -> new ExcavatingShovelItem(ToolMaterial.IRON, 2.0F, -3.2F, properties));
+    public static final DeferredHolder<Item, Item> MULTITOOL = ITEMS.registerItem("multitool",
+            properties -> new HammerItem(properties.pickaxe(ToolMaterial.IRON, 3.0F, -2.6F)));
+    public static final java.util.Map<ToolForge.Kind, DeferredHolder<Item, Item>> MOULDS = new java.util.EnumMap<>(ToolForge.Kind.class);
+    static {
+        for (ToolForge.Kind kind : ToolForge.Kind.values()) {
+            MOULDS.put(kind, ITEMS.registerItem(kind.id() + "_mould", properties -> new MouldItem(properties, kind)));
+        }
+    }
+
     public static final DeferredHolder<Block, Block> INCINERATOR = BLOCKS.register("incinerator", () ->
             new SimpleMachineBlock(machineProperties("incinerator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
                     () -> FactoryCraft.INCINERATOR_BLOCK_ENTITY.value()));
@@ -757,6 +784,14 @@ public final class FactoryCraft {
                         output.accept(BUILDER_ITEM.value());
                         output.accept(BLUEPRINT.value());
                         output.accept(INDUSTRIAL_LAMP_ITEM.value());
+                        output.accept(TOOL_FORGE_ITEM.value());
+                        for (DeferredHolder<Item, Item> mould : MOULDS.values()) output.accept(mould.value());
+                        output.accept(Gear.EXOSKELETON.value());
+                        output.accept(Gear.WORK_HELMET.value());
+                        output.accept(Gear.WORK_JACKET.value());
+                        output.accept(Gear.WORK_PANTS.value());
+                        output.accept(Gear.WORK_BOOTS.value());
+                        output.accept(Gear.JETPACK_MK2.value());
                         output.accept(LOCOMOTIVE_ITEM.value());
                         output.accept(DRONE_ITEM.value());
                         output.accept(DRONE_CONTROLLER.value());
@@ -779,6 +814,7 @@ public final class FactoryCraft {
         Nuclear.init();
         Materials.init();
         Exotic.init();
+        Gear.init();
         container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);

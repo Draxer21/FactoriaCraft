@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "CJC",
+    "PLP",
+    "B B"
+  ],
+  "key": {
+    "C": "factorycraft:advanced_circuit",
+    "J": "factorycraft:jetpack",
+    "P": "#c:plates/stainless_steel",
+    "L": "#c:ingots/lithium",
+    "B": "minecraft:blaze_rod"
+  },
+  "result": {
+    "id": "factorycraft:jetpack_mk2",
+    "count": 1
+  }
+}
