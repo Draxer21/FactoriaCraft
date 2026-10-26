@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SAS",
+    "GFG",
+    "SRS"
+  ],
+  "key": {
+    "S": "#c:plates/steel",
+    "A": "minecraft:anvil",
+    "G": "#c:gears/iron",
+    "F": "minecraft:blast_furnace",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:tool_forge",
+    "count": 1
+  }
+}

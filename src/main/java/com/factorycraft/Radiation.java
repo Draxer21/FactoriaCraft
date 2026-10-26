@@ -44,7 +44,8 @@ public final class Radiation {
 
     /** Fraction of radiation that gets through the player's armour. */
     public static float exposure(Player player) {
-        return 1.0F - 0.25F * leadPieces(player);
+        // Lead blocks a quarter per piece; the work suit a fifth per piece (80% with the full suit).
+        return Math.max(0.0F, 1.0F - 0.25F * leadPieces(player) - 0.2F * Gear.suitPieces(player));
     }
 
     public static Component tooltip(float radiation) {

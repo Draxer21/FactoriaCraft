@@ -1,6 +1,9 @@
 {
   "values": [
     "factorycraft:lead_chestplate",
-    "factorycraft:jetpack"
+    "factorycraft:jetpack",
+    "factorycraft:exoskeleton",
+    "factorycraft:work_jacket",
+    "factorycraft:jetpack_mk2"
   ]
 }

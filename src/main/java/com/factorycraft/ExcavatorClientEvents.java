@@ -52,6 +52,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.INCINERATOR_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.FILLER_MENU.value(), ProcessingScreen::new);
         event.register(Materials.ALLOY_SMELTER_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.TOOL_FORGE_MENU.value(), ProcessingScreen::new);
         for (var menu : java.util.List.of(FactoryCraft.LEVELER_MENU, FactoryCraft.QUARRY_MENU, FactoryCraft.DRAIN_MENU,
                 FactoryCraft.PLANTER_MENU, FactoryCraft.BUILDER_MENU)) {
             event.register(menu.value(), ProcessingScreen::new);

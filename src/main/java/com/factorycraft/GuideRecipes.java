@@ -86,6 +86,8 @@ final class GuideRecipes {
                     "tungsten_ingot_from_raw_smelting", "steel_ingot_from_blasting_iron"}),
             Map.entry("exotic", new String[] {"igneous_crystal_from_ore_smelting", "gunpowder_from_sulfur_coal", "cobalt_ingot_from_raw_blasting",
                     "voidnite_ingot_from_raw_blasting", "cobalt_block", "voidnite_block"}),
+            Map.entry("forge", new String[] {"tool_forge", "drill_mould", "hammer_mould", "chainsaw_mould", "shovel_mould", "multitool_mould",
+                    "exoskeleton", "work_helmet", "work_jacket", "work_pants", "work_boots", "jetpack_mk2"}),
             Map.entry("terrain", new String[] {"filler", "leveler", "quarry", "drain", "planter", "blueprint", "builder", "industrial_lamp"}),
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),

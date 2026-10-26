@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I I",
+    "SIS",
+    "SIS"
+  ],
+  "key": {
+    "S": "#c:plates/stainless_steel",
+    "I": "factorycraft:chorus_insulation"
+  },
+  "result": {
+    "id": "factorycraft:work_jacket",
+    "count": 1
+  }
+}

@@ -32,13 +32,25 @@ public final class JetpackItem extends Item implements ItemEnergy.Chargeable {
     public static final int PER_TICK = 20;
     private static final Set<UUID> THRUSTING = ConcurrentHashMap.newKeySet();
 
+    /** 1 = jetpack, 2 = mark II (triple battery, stronger thrust, glides while sneaking). */
+    private final int tier;
+
     public JetpackItem(Properties properties) {
+        this(properties, 1);
+    }
+
+    public JetpackItem(Properties properties, int tier) {
         super(properties);
+        this.tier = tier;
+    }
+
+    public int tier() {
+        return tier;
     }
 
     @Override
     public int energyCapacity() {
-        return CAPACITY;
+        return tier == 2 ? CAPACITY * 3 : CAPACITY;
     }
 
     public static ItemStack worn(Player player) {
@@ -54,7 +66,14 @@ public final class JetpackItem extends Item implements ItemEnergy.Chargeable {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if (player.level().isClientSide() || !THRUSTING.contains(player.getUUID())) return;
+        if (player.level().isClientSide()) return;
+        // Mark II: sneaking in the air glides (no fall damage), using a trickle of power.
+        ItemStack worn = worn(player);
+        if (!worn.isEmpty() && worn.getItem() instanceof JetpackItem jet && jet.tier == 2 && player.isShiftKeyDown()
+                && !player.onGround() && (player.isCreative() || ItemEnergy.use(worn, 4))) {
+            player.resetFallDistance();
+        }
+        if (!THRUSTING.contains(player.getUUID())) return;
         ItemStack jetpack = worn(player);
         if (jetpack.isEmpty() || (!player.isCreative() && !ItemEnergy.use(jetpack, PER_TICK))) {
             THRUSTING.remove(player.getUUID());
@@ -79,7 +98,7 @@ public final class JetpackItem extends Item implements ItemEnergy.Chargeable {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.round(13.0F * ItemEnergy.get(stack) / CAPACITY);
+        return Math.round(13.0F * ItemEnergy.get(stack) / energyCapacity());
     }
 
     @Override
@@ -91,6 +110,7 @@ public final class JetpackItem extends Item implements ItemEnergy.Chargeable {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> tooltip, TooltipFlag flag) {
         tooltip.accept(Component.translatable("tooltip.factorycraft.charge", ItemEnergy.percent(stack)).withStyle(ChatFormatting.GREEN));
-        tooltip.accept(Component.translatable("tooltip.factorycraft.jetpack.help").withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable(tier == 2 ? "tooltip.factorycraft.jetpack_mk2.help" : "tooltip.factorycraft.jetpack.help")
+                .withStyle(ChatFormatting.GRAY));
     }
 }

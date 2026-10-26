@@ -76,6 +76,7 @@
     "factorycraft:cobalt_ore",
     "factorycraft:voidnite_ore",
     "factorycraft:cobalt_block",
-    "factorycraft:voidnite_block"
+    "factorycraft:voidnite_block",
+    "factorycraft:tool_forge"
   ]
 }
