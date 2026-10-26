@@ -32,17 +32,6 @@ public final class MiniNukeItem extends Item implements Radiation.Source {
         return Math.max(1, Math.min(4, y));
     }
 
-    /** Explosion power for each yield (TNT is 4), times the server's mini-nuke multiplier. */
-    public static float power(int yield) {
-        float base = switch (yield) {
-            case 1 -> 10.0F;
-            case 2 -> 16.0F;
-            case 3 -> 22.0F;
-            default -> 30.0F;
-        };
-        return base * (float) FactoryConfig.miniNukePower();
-    }
-
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -63,6 +52,8 @@ public final class MiniNukeItem extends Item implements Radiation.Source {
         tooltip.accept(Radiation.tooltip(radiation()));
         tooltip.accept(Component.translatable("tooltip.factorycraft.mini_nuke.yield",
                 Component.translatable("tooltip.factorycraft.mini_nuke.yield." + coreGrade(stack))).withStyle(ChatFormatting.RED));
+        tooltip.accept(Component.translatable("tooltip.factorycraft.mini_nuke.radius", NukeBlast.radius(coreGrade(stack)))
+                .withStyle(ChatFormatting.GOLD));
         tooltip.accept(Component.translatable("tooltip.factorycraft.mini_nuke.help").withStyle(ChatFormatting.GRAY));
     }
 }
