@@ -83,7 +83,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"summon:paver", "summon:harvester", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"powered:last", "screen:filler", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -120,6 +120,7 @@ public final class VehicleClient {
                     case "washer" -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), 0, inv,
                             ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS);
                     case "tannery" -> ProcessingMenu.powered(FactoryCraft.TANNERY_MENU.value(), 0, inv, 2);
+                    case "filler" -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), 0, inv, ProcessingMenu.BIG_INPUTS, 0);
                     case "incinerator" -> ProcessingMenu.powered(FactoryCraft.INCINERATOR_MENU.value(), 0, inv, 4, 0);
                     default -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), 0, inv, 4);
                 };

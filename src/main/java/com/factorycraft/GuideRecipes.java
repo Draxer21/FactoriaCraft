@@ -85,7 +85,7 @@ final class GuideRecipes {
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
             Map.entry("power", new String[] {"generator", "solar_generator", "windmill", "geothermal_generator", "steam_turbine", "lightning_collector", "copper_coil", "copper_radiator", "battery", "energy_meter", "cable"}),
             Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer",
-                    "tannery", "machine:tannery", "leather_from_rotten_flesh_smoking", "incinerator"}),
+                    "tannery", "machine:tannery", "leather_from_rotten_flesh_smoking", "incinerator", "filler"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
             Map.entry("station", new String[] {"control_station"}),
             Map.entry("mechanic", new String[] {"mechanic_bench", "trade:mechanic/1/emerald_iron_plate", "trade:mechanic/1/emerald_cable",

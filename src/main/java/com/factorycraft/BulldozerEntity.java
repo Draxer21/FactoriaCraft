@@ -18,14 +18,15 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * Bulldozer. While driving forward its blade levels a 5-wide strip at track
  * height: everything up to 4 blocks above the ground is scraped off into the
- * bay, and holes (up to 3 deep, water included) are filled with the dirt and
+ * bay, and holes (down to the bottom, up to 32 deep, water included) are filled with the dirt and
  * rubble it has collected. Drive across rough land and it leaves it flat.
  * Unlike the paver it uses whatever earth it scrapes, so it never needs loading.
  */
 public final class BulldozerEntity extends WorkVehicleEntity {
     private static final int HALF_WIDTH = 2;
     private static final int CLEAR_HEIGHT = 4;
-    private static final int FILL_DEPTH = 3;
+    /** Deepest hole the blade fills, bottom up, so nothing is left hollow. */
+    private static final int FILL_DEPTH = 32;
     /** What the blade fills holes with, in order of preference. */
     private static final List<Item> FILL = List.of(Items.DIRT, Items.COARSE_DIRT, Items.COBBLESTONE,
             Items.COBBLED_DEEPSLATE, Items.NETHERRACK, Items.STONE, Items.DEEPSLATE, Items.TUFF,
@@ -60,7 +61,9 @@ public final class BulldozerEntity extends WorkVehicleEntity {
             // Fill the hole under the blade, deepest first so every block is supported.
             BlockPos surface = columnAt(ahead, side, ground - 1);
             if (!isHole(level.getBlockState(surface))) continue;
-            for (int d = FILL_DEPTH; d >= 1; d--) {
+            int depth = 1;
+            while (depth < FILL_DEPTH && isHole(level.getBlockState(columnAt(ahead, side, ground - depth - 1)))) depth++;
+            for (int d = depth; d >= 1; d--) {
                 BlockPos pos = columnAt(ahead, side, ground - d);
                 if (!isHole(level.getBlockState(pos))) continue;
                 Block fill = takeFill();

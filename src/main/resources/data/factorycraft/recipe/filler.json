@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "GDG",
+    "PRP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "S": "minecraft:iron_shovel",
+    "G": "factorycraft:iron_gear",
+    "D": "minecraft:dispenser",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:filler",
+    "count": 1
+  }
+}

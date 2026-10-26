@@ -82,7 +82,8 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
         for (int[] pos : ProcessingMenu.INPUT_POS[ProcessingMenu.BIG_INPUTS - 1]) {
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
         }
-        for (int[] pos : ProcessingMenu.BIG_OUTPUT_POS) {
+        for (int i = 0; i < Math.min(menu.outputs(), ProcessingMenu.BIG_OUTPUT_POS.length); i++) {
+            int[] pos = ProcessingMenu.BIG_OUTPUT_POS[i];
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
         }
         if (menu.isPowered()) {

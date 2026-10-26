@@ -50,6 +50,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.PACKAGER_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.TANNERY_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.INCINERATOR_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.FILLER_MENU.value(), ProcessingScreen::new);
     }
 
     @SubscribeEvent

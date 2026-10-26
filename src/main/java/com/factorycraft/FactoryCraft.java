@@ -459,6 +459,15 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("tannery", () -> new BlockEntityType<>(TanneryBlockEntity::new, TANNERY.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> TANNERY_MENU = MENUS.register("tannery",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.TANNERY_MENU.value(), id, inventory, 2), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> FILLER = BLOCKS.register("filler", () ->
+            new SimpleMachineBlock(machineProperties("filler"), () -> FactoryCraft.FILLER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> FILLER_ITEM = ITEMS.registerItem("filler",
+            properties -> new BlockItem(FILLER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FillerBlockEntity>> FILLER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("filler", () -> new BlockEntityType<>(FillerBlockEntity::new, FILLER.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> FILLER_MENU = MENUS.register("filler",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), id, inventory,
+                    ProcessingMenu.BIG_INPUTS, 0), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<Block, Block> INCINERATOR = BLOCKS.register("incinerator", () ->
             new SimpleMachineBlock(machineProperties("incinerator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
                     () -> FactoryCraft.INCINERATOR_BLOCK_ENTITY.value()));
@@ -690,6 +699,7 @@ public final class FactoryCraft {
                         output.accept(PACKAGER_ITEM.value());
                         output.accept(TANNERY_ITEM.value());
                         output.accept(INCINERATOR_ITEM.value());
+                        output.accept(FILLER_ITEM.value());
                         output.accept(LOCOMOTIVE_ITEM.value());
                         output.accept(DRONE_ITEM.value());
                         output.accept(DRONE_CONTROLLER.value());
