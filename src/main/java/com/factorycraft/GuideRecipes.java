@@ -84,7 +84,8 @@ final class GuideRecipes {
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
             Map.entry("power", new String[] {"generator", "solar_generator", "windmill", "geothermal_generator", "steam_turbine", "lightning_collector", "copper_coil", "copper_radiator", "battery", "energy_meter", "cable"}),
-            Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer"}),
+            Map.entry("powered", new String[] {"ore_washer", "press", "mixer", "packager", "machine:press", "machine:washer",
+                    "tannery", "machine:tannery", "leather_from_rotten_flesh_smoking", "incinerator"}),
             Map.entry("automation", new String[] {"robot_arm", "pump", "fluid_pipe"}),
             Map.entry("station", new String[] {"control_station"}),
             Map.entry("mechanic", new String[] {"mechanic_bench", "trade:mechanic/1/emerald_iron_plate", "trade:mechanic/1/emerald_cable",
@@ -163,13 +164,14 @@ final class GuideRecipes {
                 for (JsonElement element : json.getAsJsonArray("ingredients")) in.add(ingredient(element));
                 return new Display(in, out, new ItemStack(Items.CRAFTING_TABLE));
             }
-            case "minecraft:smelting", "minecraft:blasting" -> {
+            case "minecraft:smelting", "minecraft:blasting", "minecraft:smoking" -> {
                 in.add(Slot.of(ItemStack.EMPTY));
                 in.add(Slot.of(ItemStack.EMPTY));
                 in.add(Slot.of(ItemStack.EMPTY));
                 in.add(Slot.of(ItemStack.EMPTY));
                 in.add(ingredient(json.get("ingredient")));
-                return new Display(in, out, new ItemStack(type.equals("minecraft:smelting") ? Items.FURNACE : Items.BLAST_FURNACE));
+                return new Display(in, out, new ItemStack(type.equals("minecraft:smelting") ? Items.FURNACE
+                        : type.equals("minecraft:smoking") ? Items.SMOKER : Items.BLAST_FURNACE));
             }
             case "minecraft:smithing_transform" -> {
                 in.add(Slot.of(ItemStack.EMPTY));
@@ -253,6 +255,13 @@ final class GuideRecipes {
                 machine("washer", washer);
                 for (Display d : washer) {
                     if (d.inputs().get(4).shown().is(Nuclear.DEPLETED_FUEL_ROD.value())) result.add(d);
+                }
+            }
+            case "tannery" -> {
+                ItemStack station = item("factorycraft:tannery");
+                for (Item hide : List.of(Items.ROTTEN_FLESH, Items.RABBIT_HIDE)) {
+                    result.add(single(new ItemStack(hide, TanneryBlockEntity.perLeather(hide)),
+                            List.of(Slot.of(new ItemStack(Items.LEATHER))), station));
                 }
             }
             case "centrifuge" -> {

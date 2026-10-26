@@ -25,6 +25,8 @@
     "factorycraft:waste_barrel",
     "factorycraft:chimney_filter",
     "factorycraft:copper_radiator",
-    "factorycraft:lightning_collector"
+    "factorycraft:lightning_collector",
+    "factorycraft:tannery",
+    "factorycraft:incinerator"
   ]
 }

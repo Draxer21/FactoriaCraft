@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "BFB",
+    "PBP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "B": "minecraft:bricks",
+    "F": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "factorycraft:incinerator",
+    "count": 1
+  }
+}

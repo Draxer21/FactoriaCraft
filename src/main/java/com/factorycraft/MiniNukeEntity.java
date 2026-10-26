@@ -29,8 +29,20 @@ public final class MiniNukeEntity extends ThrowableItemProjectile {
         super.onHit(result);
         if (level() instanceof ServerLevel level) {
             int yield = MiniNukeItem.coreGrade(getItem());
-            level.explode(this, getX(), getY(), getZ(), MiniNukeItem.power(yield), true,
-                    FactoryConfig.weaponsBreakBlocks() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
+            float power = MiniNukeItem.power(yield);
+            Level.ExplosionInteraction interaction =
+                    FactoryConfig.weaponsBreakBlocks() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE;
+            level.explode(this, getX(), getY(), getZ(), power, true, interaction);
+            // A ring of secondary blasts fills out the crater: one big explosion alone leaves it ragged.
+            int ring = 4 + 2 * yield;
+            double reach = power * 0.45;
+            for (int i = 0; i < ring; i++) {
+                double angle = Math.PI * 2.0 * i / ring;
+                level.explode(this, getX() + Math.cos(angle) * reach, getY() - power * 0.1, getZ() + Math.sin(angle) * reach,
+                        power * 0.45F, false, interaction);
+            }
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.EXPLOSION_EMITTER,
+                    getX(), getY() + power * 0.3, getZ(), 6, power * 0.3, power * 0.3, power * 0.3, 0.0);
             NuclearReactorBlockEntity.fallout(level, getX(), getY(), getZ(), 1.0F + 2.0F * yield, 300 + 200 * yield);
             discard();
         }

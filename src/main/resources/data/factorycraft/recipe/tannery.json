@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PLP",
+    "GCG",
+    "PRP"
+  ],
+  "key": {
+    "P": "factorycraft:iron_plate",
+    "L": "minecraft:leather",
+    "G": "factorycraft:iron_gear",
+    "C": "minecraft:cauldron",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:tannery",
+    "count": 1
+  }
+}

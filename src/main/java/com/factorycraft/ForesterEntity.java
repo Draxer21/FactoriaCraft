@@ -43,6 +43,7 @@ public final class ForesterEntity extends WorkVehicleEntity {
     @Override protected double hullHalfLength() { return 2.77; }
     @Override protected double hullHalfWidth() { return 1.6; }
     @Override protected int workInterval() { return 4; }
+    @Override public boolean hasTool() { return true; }
 
     @Override
     protected void work(ServerLevel level, Player driver) {

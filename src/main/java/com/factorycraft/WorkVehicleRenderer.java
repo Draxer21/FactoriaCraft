@@ -31,6 +31,8 @@ public class WorkVehicleRenderer extends AbstractBoatRenderer {
 
     /** Boat state plus the distance driven, for rollers and wheels. */
     public static class WorkRenderState extends Headlights.LitBoatRenderState {
+        /** Angle of the machine's tool (the forester's saw); stops when switched off. */
+        public float toolSpin;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class WorkVehicleRenderer extends AbstractBoatRenderer {
         super.extractRenderState(entity, state, partialTicks);
         if (state instanceof WorkRenderState work && entity instanceof WorkVehicleEntity vehicle) {
             work.travelled = vehicle.getTravelled(partialTicks);
+            work.toolSpin = vehicle.toolSpin(partialTicks);
             work.lightsOn = Headlights.areOn(entity);
         }
     }

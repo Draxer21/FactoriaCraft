@@ -449,6 +449,25 @@ public final class FactoryCraft {
             properties -> new BlockItem(FLUID_PIPE.value(), properties.useBlockDescriptionPrefix()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> PACKAGER_MENU = MENUS.register("packager",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.PACKAGER_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
+
+    // ---- Tannery (rotten flesh / rabbit hide into leather) and incinerator (destroys items).
+    public static final DeferredHolder<Block, Block> TANNERY = BLOCKS.register("tannery", () ->
+            new SimpleMachineBlock(machineProperties("tannery"), () -> FactoryCraft.TANNERY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> TANNERY_ITEM = ITEMS.registerItem("tannery",
+            properties -> new BlockItem(TANNERY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TanneryBlockEntity>> TANNERY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("tannery", () -> new BlockEntityType<>(TanneryBlockEntity::new, TANNERY.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> TANNERY_MENU = MENUS.register("tannery",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.TANNERY_MENU.value(), id, inventory, 2), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> INCINERATOR = BLOCKS.register("incinerator", () ->
+            new SimpleMachineBlock(machineProperties("incinerator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
+                    () -> FactoryCraft.INCINERATOR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> INCINERATOR_ITEM = ITEMS.registerItem("incinerator",
+            properties -> new BlockItem(INCINERATOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IncineratorBlockEntity>> INCINERATOR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("incinerator", () -> new BlockEntityType<>(IncineratorBlockEntity::new, INCINERATOR.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> INCINERATOR_MENU = MENUS.register("incinerator",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.INCINERATOR_MENU.value(), id, inventory, 4, 0), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<EntityType<?>, EntityType<LocomotiveEntity>> LOCOMOTIVE = ENTITY_TYPES.register("locomotive", () ->
             EntityType.Builder.of(LocomotiveEntity::new, MobCategory.MISC)
                     .sized(2.6F, 3.4F)
@@ -669,6 +688,8 @@ public final class FactoryCraft {
                         output.accept(PUMP_ITEM.value());
                         output.accept(FLUID_PIPE_ITEM.value());
                         output.accept(PACKAGER_ITEM.value());
+                        output.accept(TANNERY_ITEM.value());
+                        output.accept(INCINERATOR_ITEM.value());
                         output.accept(LOCOMOTIVE_ITEM.value());
                         output.accept(DRONE_ITEM.value());
                         output.accept(DRONE_CONTROLLER.value());

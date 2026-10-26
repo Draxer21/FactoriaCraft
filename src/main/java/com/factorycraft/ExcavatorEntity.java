@@ -262,4 +262,10 @@ public final class ExcavatorEntity extends Boat implements VehicleHitbox.Holder,
     public void push(net.minecraft.world.entity.Entity other) {
         if (hitbox.touches(other)) super.push(other);
     }
+
+    /** Only players drive: mobs bumping into the machine don't climb aboard. */
+    @Override
+    protected boolean canAddPassenger(net.minecraft.world.entity.Entity passenger) {
+        return passenger instanceof net.minecraft.world.entity.player.Player && super.canAddPassenger(passenger);
+    }
 }

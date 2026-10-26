@@ -40,7 +40,8 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
 
         // Replace the big single output slot with a 2x2 grid of normal slots.
         graphics.fill(x + 108, y + 22, x + 152, y + 66, PANEL);
-        for (int[] pos : ProcessingMenu.OUTPUT_POS) {
+        for (int i = 0; i < Math.min(menu.outputs(), ProcessingMenu.OUTPUT_POS.length); i++) {
+            int[] pos = ProcessingMenu.OUTPUT_POS[i];
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
         }
 

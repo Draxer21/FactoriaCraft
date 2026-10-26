@@ -45,6 +45,8 @@
     "factorycraft:unloading_station",
     "factorycraft:route_beacon",
     "factorycraft:copper_radiator",
-    "factorycraft:lightning_collector"
+    "factorycraft:lightning_collector",
+    "factorycraft:tannery",
+    "factorycraft:incinerator"
   ]
 }

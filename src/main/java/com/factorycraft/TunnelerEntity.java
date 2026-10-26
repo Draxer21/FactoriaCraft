@@ -36,11 +36,14 @@ import net.minecraft.world.phys.Vec3;
  * It digs out exactly the space its hull is about to occupy, so it never gets
  * stuck on the stair-step edges of a sloped tunnel.
  */
-public final class TunnelerEntity extends AbstractChestBoat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
+public final class TunnelerEntity extends AbstractChestBoat implements VehicleHitbox.Holder, ToolToggle, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(TunnelerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
             SynchedEntityData.defineId(TunnelerEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> TOOL_ON =
+            SynchedEntityData.defineId(TunnelerEntity.class, EntityDataSerializers.BOOLEAN);
+    private final ToolToggle.Spin drillSpin = new ToolToggle.Spin();
     private static final EntityDataAccessor<Integer> UPGRADES =
             SynchedEntityData.defineId(TunnelerEntity.class, EntityDataSerializers.INT);
     private final VehicleEngine engine = new VehicleEngine(this, ENGINE_ON, FUEL, UPGRADES);
@@ -210,12 +213,13 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleHi
         super.tick();
         engine.tick(pilot, getPaddleState(0) || getPaddleState(1), this);
         lights.tick(engine.lightsWanted(pilot != null, lights.isDark(level())), heading());
+        if (level().isClientSide()) drillSpin.tick(toolOn() && engine.isRunning(), 0.75F);
 
         if (pilot == null) return;
         if (isInWater()) pilot.setAirSupply(pilot.getMaxAirSupply());
 
         boolean movingForward = getPaddleState(0) && getPaddleState(1);
-        if (!movingForward || level().isClientSide() || tickCount % DIG_INTERVAL != 0) return;
+        if (!movingForward || !toolOn() || level().isClientSide() || tickCount % DIG_INTERVAL != 0) return;
         boreAhead(pilot);
     }
 
@@ -295,6 +299,24 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleHi
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         VehicleEngine.define(builder, ENGINE_ON, FUEL, UPGRADES);
+        builder.define(TOOL_ON, true);
+    }
+
+    // ---------------------------------------------------------------- drill switch
+
+    @Override
+    public boolean toolOn() {
+        return entityData.get(TOOL_ON);
+    }
+
+    @Override
+    public void setToolOn(boolean on) {
+        entityData.set(TOOL_ON, on);
+    }
+
+    @Override
+    public float toolSpin(float partialTicks) {
+        return drillSpin.get(partialTicks);
     }
 
     @Override
@@ -313,12 +335,14 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleHi
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         engine.save(output);
+        output.putBoolean("ToolOn", toolOn());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         engine.load(input);
+        setToolOn(input.getBooleanOr("ToolOn", true));
     }
 
     @Override
@@ -385,5 +409,11 @@ public final class TunnelerEntity extends AbstractChestBoat implements VehicleHi
     @Override
     public boolean canBeCollidedWith(net.minecraft.world.entity.@org.jspecify.annotations.Nullable Entity other) {
         return false;
+    }
+
+    /** Only players drive: mobs bumping into the machine don't climb aboard. */
+    @Override
+    protected boolean canAddPassenger(net.minecraft.world.entity.Entity passenger) {
+        return passenger instanceof net.minecraft.world.entity.player.Player && super.canAddPassenger(passenger);
     }
 }
