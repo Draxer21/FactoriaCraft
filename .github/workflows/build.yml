@@ -114,7 +114,7 @@ jobs:
           {
             echo "### Client log (filtered) — screenshots:$taken"
             echo '```'
-            grep -E "joined the game|lost connection|SELFTEST|TERRAINTEST" server2.log | head -6
+            grep -E "joined the game|lost connection|SELFTEST|TERRAINTEST" server2.log | head -8
             grep -E -i -B1 -A3 "factorycraft|guide|missing|unable to|exception|failed|couldn't" client.log \
               | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\.|kqueue" | head -c 60000
             echo '```'
