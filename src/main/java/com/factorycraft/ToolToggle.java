@@ -21,7 +21,7 @@ public interface ToolToggle {
     default void toggleTool(Player player) {
         boolean on = !toolOn();
         setToolOn(on);
-        player.displayClientMessage(Component.translatable(on ? "message.factorycraft.tool_on" : "message.factorycraft.tool_off"), true);
+        player.sendOverlayMessage(Component.translatable(on ? "message.factorycraft.tool_on" : "message.factorycraft.tool_off"));
     }
 
     /** Client-side spin that speeds up and slows down instead of snapping. */
