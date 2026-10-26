@@ -26,7 +26,7 @@ import org.jspecify.annotations.Nullable;
  * column by column, using the dirt, stone and rubble in its six slots.
  * Caves sealed under solid ground are left alone; only open holes are filled.
  */
-public final class FillerBlockEntity extends PoweredMachineBlockEntity implements AreaMachineBlockEntity.Area {
+public final class FillerBlockEntity extends PoweredMachineBlockEntity implements AreaMachine {
     private static final int INPUTS = ProcessingMenu.BIG_INPUTS;
     private static final int[] RADII = {4, 8, 16, 24};
     /** Deepest hole it fills under its own level. */
