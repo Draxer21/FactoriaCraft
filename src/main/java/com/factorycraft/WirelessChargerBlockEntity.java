@@ -30,7 +30,7 @@ public final class WirelessChargerBlockEntity extends MachineBlockEntity impleme
         if (level.getGameTime() % 10 != 0) return getBlockState().getValue(MachineBlock.LIT);
         boolean charged = false;
         for (Player player : level.players()) {
-            if (player.distanceToSqr(worldPosition.getCenter()) > RANGE * RANGE) continue;
+            if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition)) > RANGE * RANGE) continue;
             int budget = PER_PLAYER;
             for (int i = 0; i < player.getInventory().getContainerSize() && budget > 0; i++) {
                 ItemStack stack = player.getInventory().getItem(i);
