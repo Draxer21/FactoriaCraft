@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PAP",
+    "GDG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "A": "minecraft:iron_axe",
+    "G": "#c:gears/iron",
+    "D": "minecraft:diamond_pickaxe",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:leveler",
+    "count": 1
+  }
+}

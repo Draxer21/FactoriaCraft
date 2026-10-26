@@ -46,12 +46,14 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
         }
 
         // Extra input slots (the furnace texture only has one, at 56,17).
-        int[][] inputs = ProcessingMenu.INPUT_POS[menu.inputs() - 1];
         if (menu.inputs() > 1) {
+            int[][] inputs = ProcessingMenu.INPUT_POS[menu.inputs() - 1];
             graphics.fill(x + 36, y + 15, x + 94, y + 35, PANEL);
             for (int[] pos : inputs) {
                 graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
             }
+        } else if (menu.inputs() == 0) {
+            graphics.fill(x + 54, y + 15, x + 74, y + 35, PANEL); // no input slot at all
         }
 
         if (menu.isPowered()) {
@@ -79,7 +81,9 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
     /** Big machines: 3x2 inputs, arrow, 4x2 outputs; energy bar under the inputs when powered. */
     private void extractBig(GuiGraphicsExtractor graphics, int x, int y) {
         graphics.fill(x + 7, y + 14, x + 169, y + 76, PANEL);
-        for (int[] pos : ProcessingMenu.INPUT_POS[ProcessingMenu.BIG_INPUTS - 1]) {
+        int[][] bigInputs = ProcessingMenu.INPUT_POS[ProcessingMenu.BIG_INPUTS - 1];
+        for (int i = 0; i < Math.min(menu.inputs(), bigInputs.length); i++) {
+            int[] pos = bigInputs[i];
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
         }
         for (int i = 0; i < Math.min(menu.outputs(), ProcessingMenu.BIG_OUTPUT_POS.length); i++) {

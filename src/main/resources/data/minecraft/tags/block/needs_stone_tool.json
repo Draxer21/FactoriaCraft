@@ -28,6 +28,12 @@
     "factorycraft:lightning_collector",
     "factorycraft:tannery",
     "factorycraft:incinerator",
-    "factorycraft:filler"
+    "factorycraft:filler",
+    "factorycraft:leveler",
+    "factorycraft:quarry",
+    "factorycraft:drain",
+    "factorycraft:planter",
+    "factorycraft:builder",
+    "factorycraft:industrial_lamp"
   ]
 }

@@ -431,5 +431,21 @@
   "message.factorycraft.tool_off": "Tool off: it stops turning and cutting",
   "tooltip.factorycraft.mini_nuke.radius": "Crater radius: %s blocks",
   "block.factorycraft.filler": "Terrain Filler",
-  "message.factorycraft.filler.area": "Fill area: %sx%s"
+  "message.factorycraft.filler.area": "Fill area: %sx%s",
+  "block.factorycraft.leveler": "Leveller",
+  "block.factorycraft.quarry": "Quarry",
+  "block.factorycraft.drain": "Drain Pump",
+  "block.factorycraft.planter": "Tree Planter",
+  "block.factorycraft.builder": "Builder",
+  "block.factorycraft.industrial_lamp": "Industrial Lamp",
+  "item.factorycraft.blueprint": "Blueprint",
+  "message.factorycraft.area": "Area: %sx%s",
+  "message.factorycraft.blueprint.corner": "First corner set. Right-click the opposite corner.",
+  "message.factorycraft.blueprint.saved": "Blueprint saved: %sx%sx%s, %s blocks",
+  "message.factorycraft.blueprint.too_big": "Too big: at most %s blocks per side and %s blocks in all",
+  "message.factorycraft.blueprint.cleared": "Blueprint cleared",
+  "tooltip.factorycraft.blueprint.size": "%sx%sx%s, %s blocks",
+  "tooltip.factorycraft.blueprint.empty": "Empty: right-click two opposite corners to copy",
+  "guide.factorycraft.terrain.title": "Terrain and building",
+  "guide.factorycraft.terrain.text": "Stationary machines that work a square area around them. Sneak + right-click with an empty hand changes the size (marked with particles). They all use power and, once done, re-check the area every 10 seconds.\n\nLeveller: cuts away everything above its level (hills, trees, buildings without chests), top down, up to 64 high. What it cuts goes out the front onto a belt or into a chest. With the terrain filler it leaves a perfectly flat plain.\n\nQuarry: digs its area layer by layer from under itself down to bedrock and sends everything out the front, ores included. Leaves fluids and chests alone.\n\nDrain pump: empties water and lava from the area, from 8 above its level to 32 below. Also dries waterlogged blocks. Use it before filling or building in a lake.\n\nTree planter: replants the area with the saplings in its 6 slots, one every 3 blocks, on grass or dirt.\n\nBlueprint and builder: with the blueprint, right-click one corner of a building and then the opposite corner (up to 32×32×32). Put the blueprint in the builder's first slot and the blocks in the others: it builds it in front of itself (the panel side), bottom up. Missing a block, it waits for you to add it. It never breaks anything: taken spots are skipped. Sneak + right-click the air clears the blueprint.\n\nIndustrial lamp: full brightness. With power (5 per tick) it stops monsters spawning within 32 blocks.\n\nBridges: the paver already lays road over water and ravines as it drives, with the block it has loaded."
 }

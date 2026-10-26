@@ -120,7 +120,7 @@ public final class ProcessingMenu extends AbstractContainerMenu {
 
     /** 6-in / 8-out layout. */
     public boolean isBig() {
-        return inputs == BIG_INPUTS;
+        return inputs == BIG_INPUTS || outputs == BIG_OUTPUTS;
     }
 
     /** Runs on power from generators (shows an energy bar instead of a flame). */

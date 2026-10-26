@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/industrial_lamp"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/industrial_lamp_on"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/industrial_lamp"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/industrial_lamp_on"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/industrial_lamp"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/industrial_lamp_on"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/industrial_lamp"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/industrial_lamp_on"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "GLG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass",
+    "L": "minecraft:glowstone",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:industrial_lamp",
+    "count": 2
+  }
+}
