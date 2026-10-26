@@ -86,7 +86,7 @@ public final class CrusherRecipes {
      * {@code c:dusts/<metal>}. Our own dusts are preferred when there are several.
      */
     private static @Nullable ItemStack fromCommonTags(ItemStack input) {
-        for (TagKey<Item> tag : (Iterable<TagKey<Item>>) input.getTags()::iterator) {
+        for (TagKey<Item> tag : (Iterable<TagKey<Item>>) input.getItem().builtInRegistryHolder().tags()::iterator) {
             if (!tag.location().getNamespace().equals("c")) continue;
             String path = tag.location().getPath();
             int count;
