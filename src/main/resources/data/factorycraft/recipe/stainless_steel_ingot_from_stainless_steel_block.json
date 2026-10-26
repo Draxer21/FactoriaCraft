@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:storage_blocks/stainless_steel"
+  ],
+  "result": {
+    "id": "factorycraft:stainless_steel_ingot",
+    "count": 9
+  }
+}

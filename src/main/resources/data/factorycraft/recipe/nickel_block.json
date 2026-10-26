@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:ingots/nickel"
+  },
+  "result": {
+    "id": "factorycraft:nickel_block",
+    "count": 1
+  }
+}

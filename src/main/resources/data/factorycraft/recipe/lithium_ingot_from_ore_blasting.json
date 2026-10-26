@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": "#c:ores/lithium",
+  "result": {
+    "id": "factorycraft:lithium_ingot"
+  },
+  "experience": 0.7,
+  "cookingtime": 100
+}

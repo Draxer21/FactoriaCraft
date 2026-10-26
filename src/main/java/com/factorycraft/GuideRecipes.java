@@ -81,6 +81,9 @@ final class GuideRecipes {
             Map.entry("clean_power", new String[] {"chimney_filter", "air_purifier", "waste_barrel", "plant_inspector", "geiger_counter", "decontamination_kit"}),
             Map.entry("logistics", new String[] {"loading_station", "unloading_station", "tank_wagon", "route_beacon", "upgrade_autopilot"}),
             Map.entry("aircraft", new String[] {"helicopter", "submarine"}),
+            Map.entry("materials", new String[] {"alloy_smelter", "machine:alloy", "circuit_board", "advanced_circuit",
+                    "tin_ingot_from_raw_smelting", "nickel_ingot_from_raw_smelting", "lithium_ingot_from_raw_smelting",
+                    "tungsten_ingot_from_raw_smelting", "steel_ingot_from_blasting_iron"}),
             Map.entry("terrain", new String[] {"filler", "leveler", "quarry", "drain", "planter", "blueprint", "builder", "industrial_lamp"}),
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
@@ -258,6 +261,17 @@ final class GuideRecipes {
                     if (d.inputs().get(4).shown().is(Nuclear.DEPLETED_FUEL_ROD.value())) result.add(d);
                 }
             }
+            case "alloy" -> {
+                ItemStack station = item("factorycraft:alloy_smelter");
+                for (AlloySmelterBlockEntity.Alloying r : AlloySmelterBlockEntity.RECIPES) {
+                    List<Slot> in = new ArrayList<>();
+                    for (int i = 0; i < 3; i++) in.add(Slot.of(ItemStack.EMPTY));
+                    in.add(shown(r.shownA(), r.countA()));
+                    in.add(Slot.of(ItemStack.EMPTY));
+                    in.add(shown(r.shownB(), r.countB()));
+                    result.add(new Display(in, List.of(Slot.of(new ItemStack(r.output().get(), r.outCount()))), station));
+                }
+            }
             case "tannery" -> {
                 ItemStack station = item("factorycraft:tannery");
                 for (Item hide : List.of(Items.ROTTEN_FLESH, Items.RABBIT_HIDE)) {
@@ -281,6 +295,14 @@ final class GuideRecipes {
             }
             default -> { }
         }
+    }
+
+    /** An item or a "c:..." tag, shown {@code count} at a time. */
+    private static Slot shown(Object what, int count) {
+        Slot base = what instanceof String tag ? tagSlot(Identifier.parse(tag)) : Slot.of(new ItemStack((Item) what));
+        List<ItemStack> options = new ArrayList<>();
+        for (ItemStack option : base.options()) options.add(option.copyWithCount(count));
+        return new Slot(options, null);
     }
 
     private static Display single(ItemStack input, List<Slot> outputs, ItemStack station) {

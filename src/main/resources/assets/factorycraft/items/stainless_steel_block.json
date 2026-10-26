@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "factorycraft:block/stainless_steel_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14870766
+      }
+    ]
+  }
+}

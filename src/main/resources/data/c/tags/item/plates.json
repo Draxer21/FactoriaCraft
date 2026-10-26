@@ -2,6 +2,9 @@
   "values": [
     "#c:plates/iron",
     "#c:plates/gold",
-    "#c:plates/copper"
+    "#c:plates/copper",
+    "#c:plates/steel",
+    "#c:plates/bronze",
+    "#c:plates/stainless_steel"
   ]
 }

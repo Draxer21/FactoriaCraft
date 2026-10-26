@@ -51,7 +51,7 @@ public final class TerrainSelfTest {
     private static void setUp(ServerLevel level) {
         base = new BlockPos(64, level.getMaxY() - 60, 64);
         // Keep the test scenes ticking even with nobody around.
-        for (int x = base.getX() - 16; x <= base.getX() + 176; x += 16) {
+        for (int x = base.getX() - 16; x <= base.getX() + 216; x += 16) {
             for (int z = base.getZ() - 16; z <= base.getZ() + 16; z += 16) level.setChunkForced(x >> 4, z >> 4, true);
         }
         BlockState stone = Blocks.STONE.defaultBlockState();
@@ -93,12 +93,22 @@ public final class TerrainSelfTest {
         Blueprint blueprint = Blueprint.capture(level, model, model.offset(2, 1, 2));
         ItemStack paper = new ItemStack(FactoryCraft.BLUEPRINT.value());
         if (blueprint != null) blueprint.writeTo(paper);
+        setUpMaterials(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
             be.setItem(0, paper);
             be.setItem(1, new ItemStack(Items.COBBLESTONE, 16));
             be.setItem(2, new ItemStack(Items.OAK_PLANKS, 16));
+        }
+    }
+
+    private static void setUpMaterials(ServerLevel level) {
+        BlockPos smelter = base.offset(200, 0, 0);
+        powered(level, smelter, Materials.ALLOY_SMELTER.value());
+        if (level.getBlockEntity(smelter) instanceof AlloySmelterBlockEntity be) {
+            be.setItem(0, new ItemStack(Items.COAL, 4));
+            be.setItem(1, new ItemStack(Items.IRON_INGOT, 2));
         }
     }
 
@@ -129,6 +139,21 @@ public final class TerrainSelfTest {
                 built, front);
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
             com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST builder {}", be.debugState(level));
+        }
+        if (level.getBlockEntity(base.offset(200, 0, 0)) instanceof AlloySmelterBlockEntity be) {
+            StringBuilder out = new StringBuilder();
+            for (int i = 2; i < be.getContainerSize(); i++) if (!be.getItem(i).isEmpty()) out.append(be.getItem(i)).append(' ');
+            var features = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.PLACED_FEATURE);
+            int ores = 0;
+            for (Materials.Metal m : Materials.METALS) {
+                if (features.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                        net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, m.name() + "_ore"))).isPresent()) ores++;
+            }
+            var tin = net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                    net.minecraft.resources.Identifier.fromNamespaceAndPath("c", "ingots/tin"));
+            com.mojang.logging.LogUtils.getLogger().info("MATERIALSTEST smelter={} oreFeatures={}/4 tinTagged={} pressWire={}",
+                    out, ores, new ItemStack(Materials.TIN.ingot().value()).is(tin),
+                    PressBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Materials.COPPER_WIRE.value()));
         }
     }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GQG",
+    "CLC",
+    "GQG"
+  ],
+  "key": {
+    "G": "#c:plates/gold",
+    "Q": "minecraft:quartz",
+    "C": "factorycraft:circuit_board",
+    "L": "#c:ingots/lithium"
+  },
+  "result": {
+    "id": "factorycraft:advanced_circuit",
+    "count": 1
+  }
+}

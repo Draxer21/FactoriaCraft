@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:ingots/tungsten"
+  },
+  "result": {
+    "id": "factorycraft:tungsten_block",
+    "count": 1
+  }
+}

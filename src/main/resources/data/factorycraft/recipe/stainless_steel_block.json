@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:ingots/stainless_steel"
+  },
+  "result": {
+    "id": "factorycraft:stainless_steel_block",
+    "count": 1
+  }
+}

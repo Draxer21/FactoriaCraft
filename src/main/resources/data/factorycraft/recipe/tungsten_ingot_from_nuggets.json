@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:nuggets/tungsten"
+  },
+  "result": {
+    "id": "factorycraft:tungsten_ingot",
+    "count": 1
+  }
+}

@@ -5,6 +5,10 @@
     "factorycraft:thorium_ore",
     "factorycraft:deepslate_thorium_ore",
     "factorycraft:lead_ore",
-    "factorycraft:deepslate_lead_ore"
+    "factorycraft:deepslate_lead_ore",
+    "#c:ores/tin",
+    "#c:ores/nickel",
+    "#c:ores/lithium",
+    "#c:ores/tungsten"
   ]
 }

@@ -38,7 +38,8 @@ public final class JeiCompat implements IModPlugin {
             machine("washer", "factorycraft:ore_washer"),
             machine("press", "factorycraft:press"),
             machine("centrifuge", "factorycraft:centrifuge"),
-            machine("tannery", "factorycraft:tannery"));
+            machine("tannery", "factorycraft:tannery"),
+            machine("alloy", "factorycraft:alloy_smelter"));
 
     private static Machine machine(String id, String block) {
         return new Machine(id, block, IRecipeType.create(FactoryCraft.MOD_ID, id, MachineRecipe.class));

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "BFB",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "B": "minecraft:bricks",
+    "F": "minecraft:blast_furnace",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:alloy_smelter",
+    "count": 1
+  }
+}
