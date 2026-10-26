@@ -32,6 +32,7 @@ public final class ItemEnergy {
     }
 
     public static int capacity(ItemStack stack) {
+        if (stack.getItem() instanceof DrillItem drill) return drill.maxEnergy();
         return stack.getItem() instanceof Chargeable c ? c.energyCapacity() : 0;
     }
 

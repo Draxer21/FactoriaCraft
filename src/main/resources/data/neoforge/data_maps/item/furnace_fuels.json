@@ -5,6 +5,12 @@
     },
     "factorycraft:sulfur": {
       "burn_time": 800
+    },
+    "factorycraft:diesel": {
+      "burn_time": 24000
+    },
+    "factorycraft:biofuel": {
+      "burn_time": 12000
     }
   }
 }

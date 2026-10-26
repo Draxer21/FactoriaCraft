@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "SCS",
+    "PPP"
+  ],
+  "key": {
+    "T": "factorycraft:tempered_glass",
+    "S": "factorycraft:solar_generator",
+    "C": "factorycraft:circuit_board",
+    "P": "#c:plates/steel"
+  },
+  "result": {
+    "id": "factorycraft:advanced_solar",
+    "count": 1
+  }
+}

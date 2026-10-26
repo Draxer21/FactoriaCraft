@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/photon_array"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/photon_array"
+    }
+  }
+}

@@ -65,6 +65,10 @@ public final class DrillItem extends Item {
         this.tier = tier;
     }
 
+    public int maxEnergy() {
+        return capacity();
+    }
+
     private int capacity() {
         return tier == 2 ? CAPACITY * 4 : tier == 1 ? CAPACITY * 2 : CAPACITY;
     }

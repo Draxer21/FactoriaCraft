@@ -25,6 +25,8 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
     public static final int OUTPUT = 40;
 
     private int energy;
+    /** Burning biofuel: no smog. */
+    private boolean cleanFuel;
     private int burnLeft;
     private int burnMax;
 
@@ -82,6 +84,7 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
             ItemStack fuel = items.get(0);
             int burn = fuel.isEmpty() ? 0 : level.fuelValues().burnDuration(fuel);
             if (burn > 0) {
+                cleanFuel = fuel.is(FactoryCraft.BIOFUEL.value());
                 ItemStackTemplate remainder = fuel.getCraftingRemainder();
                 fuel.shrink(1);
                 if (fuel.isEmpty() && remainder != null) items.set(0, remainder.create());
@@ -92,7 +95,7 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
         if (burnLeft <= 0) return false;
         // Smog unless a chimney filter sits on top.
         if (level.getGameTime() % 200 == 0 && level instanceof net.minecraft.server.level.ServerLevel server
-                && !hasFilter(level)) {
+                && !hasFilter(level) && !cleanFuel) {
             Pollution.smog(server, worldPosition);
         }
         if (energy + OUTPUT > CAPACITY) return true; // full: idle, keep the fire

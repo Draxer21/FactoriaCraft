@@ -51,7 +51,7 @@ public final class TerrainSelfTest {
     private static void setUp(ServerLevel level) {
         base = new BlockPos(64, level.getMaxY() - 60, 64);
         // Keep the test scenes ticking even with nobody around.
-        for (int x = base.getX() - 16; x <= base.getX() + 216; x += 16) {
+        for (int x = base.getX() - 16; x <= base.getX() + 336; x += 16) {
             for (int z = base.getZ() - 16; z <= base.getZ() + 16; z += 16) level.setChunkForced(x >> 4, z >> 4, true);
         }
         BlockState stone = Blocks.STONE.defaultBlockState();
@@ -94,6 +94,7 @@ public final class TerrainSelfTest {
         ItemStack paper = new ItemStack(FactoryCraft.BLUEPRINT.value());
         if (blueprint != null) blueprint.writeTo(paper);
         setUpMaterials(level);
+        setUpEnergy(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -101,6 +102,30 @@ public final class TerrainSelfTest {
             be.setItem(1, new ItemStack(Items.COBBLESTONE, 16));
             be.setItem(2, new ItemStack(Items.OAK_PLANKS, 16));
         }
+    }
+
+    private static void setUpEnergy(ServerLevel level) {
+        BlockPos turbine = base.offset(240, 0, 0);
+        level.setBlockAndUpdate(turbine, FactoryCraft.HYDRO_TURBINE.value().defaultBlockState());
+        level.setBlockAndUpdate(turbine.above(3), Blocks.WATER.defaultBlockState());
+        level.setBlockAndUpdate(base.offset(250, 0, 0), FactoryCraft.PHOTON_ARRAY.value().defaultBlockState());
+        BlockPos refinery = base.offset(260, 0, 0);
+        powered(level, refinery, FactoryCraft.REFINERY.value());
+        if (level.getBlockEntity(refinery) instanceof RefineryBlockEntity be) be.setItem(0, new ItemStack(FactoryCraft.CRUDE_OIL.value(), 2));
+        BlockPos fermenter = base.offset(270, 0, 0);
+        powered(level, fermenter, FactoryCraft.FERMENTER.value());
+        if (level.getBlockEntity(fermenter) instanceof FermenterBlockEntity be) be.setItem(0, new ItemStack(Items.WHEAT, 16));
+        BlockPos generator = base.offset(280, 0, 0);
+        level.setBlockAndUpdate(generator, FactoryCraft.GENERATOR.value().defaultBlockState());
+        if (level.getBlockEntity(generator) instanceof GeneratorBlockEntity be) be.setItem(0, new ItemStack(FactoryCraft.BIOFUEL.value(), 1));
+    }
+
+    private static String outputs(ServerLevel level, BlockPos pos) {
+        StringBuilder out = new StringBuilder();
+        if (level.getBlockEntity(pos) instanceof MachineBlockEntity be) {
+            for (int i = 0; i < be.getContainerSize(); i++) if (!be.getItem(i).isEmpty()) out.append(be.getItem(i)).append(' ');
+        }
+        return out.toString().trim();
     }
 
     private static void setUpMaterials(ServerLevel level) {
@@ -176,6 +201,15 @@ public final class TerrainSelfTest {
                     multitool.getDestroySpeed(net.minecraft.world.level.block.Blocks.OAK_LOG.defaultBlockState()),
                     ToolForge.trait(multitool), ToolForge.statsFor(new ItemStack(Items.STICK)),
                     smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON))).toString()).orElse("none"));
+            int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
+            int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
+            com.mojang.logging.LogUtils.getLogger().info(
+                    "ENERGYTEST turbine={} photon={} refinery=[{}] fermenter=[{}] generatorStored={} dieselBurn={} biofuelBurn={} oilHere={}",
+                    turbineRate, photonRate, outputs(level, base.offset(260, 0, 0)), outputs(level, base.offset(270, 0, 0)),
+                    level.getBlockEntity(base.offset(280, 0, 0)) instanceof Energy.Source g ? g.stored() : -1,
+                    level.fuelValues().burnDuration(new ItemStack(FactoryCraft.DIESEL.value())),
+                    level.fuelValues().burnDuration(new ItemStack(FactoryCraft.BIOFUEL.value())),
+                    OilDeposits.richness(level, net.minecraft.world.level.ChunkPos.containing(base)));
             com.mojang.logging.LogUtils.getLogger().info("MATERIALSTEST smelter={} oreFeatures={}/4 tinTagged={} pressWire={}",
                     out, ores, new ItemStack(Materials.TIN.ingot().value()).is(tin),
                     PressBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Materials.COPPER_WIRE.value()));

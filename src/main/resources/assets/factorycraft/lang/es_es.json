@@ -568,5 +568,20 @@
   "material.factorycraft.voidnite": "vacíonita",
   "material.factorycraft.uranium": "uranio",
   "material.factorycraft.thorium": "torio",
-  "material.factorycraft.plutonium": "plutonio"
+  "material.factorycraft.plutonium": "plutonio",
+  "block.factorycraft.hydro_turbine": "Turbina hidroeléctrica",
+  "block.factorycraft.advanced_solar": "Panel solar avanzado",
+  "block.factorycraft.photon_array": "Matriz fotónica",
+  "block.factorycraft.pumpjack": "Bomba de petróleo",
+  "block.factorycraft.refinery": "Refinería",
+  "block.factorycraft.fermenter": "Fermentador",
+  "block.factorycraft.wireless_charger": "Cargador inalámbrico",
+  "block.factorycraft.asphalt": "Asfalto",
+  "item.factorycraft.crude_oil": "Bidón de petróleo crudo",
+  "item.factorycraft.diesel": "Bidón de diésel",
+  "item.factorycraft.biofuel": "Bidón de biocombustible",
+  "message.factorycraft.pumpjack.richness": "Yacimiento de petróleo: %s%%",
+  "message.factorycraft.pumpjack.dry": "Aquí no hay petróleo: prueba en otro chunk",
+  "guide.factorycraft.oil.title": "Petróleo y energía avanzada",
+  "guide.factorycraft.oil.text": "Petróleo: algunos chunks del mundo normal tienen un yacimiento (4 de cada 10 no tienen nada). La bomba de petróleo saca bidones de crudo del chunk donde está; mientras más rico, más rápido (al 100%, uno cada 10 segundos). Shift + clic derecho con la mano vacía muestra cuánto hay.\n\nRefinería: 1 crudo = 1 bidón de diésel + 1 lámina de plástico + 2 bloques de asfalto.\n- Diésel: dura 15 veces más que el carbón, en generadores, hornos y vehículos (los vehículos lo toman solos de su almacén).\n- Asfalto: caminar sobre él es un 35% más rápido. La aplanadora puede pavimentar con él.\n\nBiocombustible (limpio): el fermentador convierte 8 cultivos (caña, trigo, papa, zanahoria, betarraga, sandía, algas, bayas, manzanas, calabaza) en un bidón. Dura 7,5 veces más que el carbón y el generador diésel no hace smog al quemarlo.\n\nTurbina hidroeléctrica: el agua que se mueve genera energía. Agua cayendo encima: 40 por tick; agua corriendo al lado: 15 por cada lado (máx. 100). Ponlas en cascadas o a lo largo de un río.\n\nPanel solar avanzado: 64 por tick al sol. Matriz fotónica: 256 de día y 64 de noche. La lluvia baja la producción al 40% y la tormenta a la quinta parte.\n\nCargador inalámbrico: carga las herramientas, armas y equipo eléctricos (taladros, rifle, jetpack, exoesqueleto...) de todos los jugadores a 8 bloques, con la energía de la red."
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SPS",
+    "GDG",
+    "SRS"
+  ],
+  "key": {
+    "S": "#c:plates/steel",
+    "P": "minecraft:piston",
+    "G": "#c:gears/iron",
+    "D": "factorycraft:iron_drill",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "factorycraft:pumpjack",
+    "count": 1
+  }
+}

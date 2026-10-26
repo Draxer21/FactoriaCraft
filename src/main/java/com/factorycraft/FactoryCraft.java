@@ -518,6 +518,65 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("industrial_lamp", () -> new BlockEntityType<>(IndustrialLampBlockEntity::new, INDUSTRIAL_LAMP.value()));
     public static final DeferredHolder<Item, Item> BLUEPRINT = ITEMS.registerItem("blueprint", BlueprintItem::new);
 
+    // ---- Stage 5: energy.
+    public static final DeferredHolder<Block, Block> HYDRO_TURBINE = BLOCKS.register("hydro_turbine", () ->
+            new SimpleMachineBlock(machineProperties("hydro_turbine"), () -> FactoryCraft.HYDRO_TURBINE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> HYDRO_TURBINE_ITEM = ITEMS.registerItem("hydro_turbine",
+            properties -> new BlockItem(HYDRO_TURBINE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HydroTurbineBlockEntity>> HYDRO_TURBINE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("hydro_turbine", () -> new BlockEntityType<>(HydroTurbineBlockEntity::new, HYDRO_TURBINE.value()));
+    public static final DeferredHolder<Block, Block> ADVANCED_SOLAR = BLOCKS.register("advanced_solar", () ->
+            new SimpleMachineBlock(machineProperties("advanced_solar"), () -> FactoryCraft.ADVANCED_SOLAR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> ADVANCED_SOLAR_ITEM = ITEMS.registerItem("advanced_solar",
+            properties -> new BlockItem(ADVANCED_SOLAR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanelBlockEntity>> ADVANCED_SOLAR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("advanced_solar", () -> new BlockEntityType<>(SolarPanelBlockEntity::advanced, ADVANCED_SOLAR.value()));
+    public static final DeferredHolder<Block, Block> PHOTON_ARRAY = BLOCKS.register("photon_array", () ->
+            new SimpleMachineBlock(machineProperties("photon_array").lightLevel(state -> 7), () -> FactoryCraft.PHOTON_ARRAY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> PHOTON_ARRAY_ITEM = ITEMS.registerItem("photon_array",
+            properties -> new BlockItem(PHOTON_ARRAY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanelBlockEntity>> PHOTON_ARRAY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("photon_array", () -> new BlockEntityType<>(SolarPanelBlockEntity::photon, PHOTON_ARRAY.value()));
+    public static final DeferredHolder<Block, Block> PUMPJACK = BLOCKS.register("pumpjack", () ->
+            new SimpleMachineBlock(machineProperties("pumpjack"), () -> FactoryCraft.PUMPJACK_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> PUMPJACK_ITEM = ITEMS.registerItem("pumpjack",
+            properties -> new BlockItem(PUMPJACK.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PumpjackBlockEntity>> PUMPJACK_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("pumpjack", () -> new BlockEntityType<>(PumpjackBlockEntity::new, PUMPJACK.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> PUMPJACK_MENU = MENUS.register("pumpjack",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.PUMPJACK_MENU.value(), id, inventory, 0, ProcessingMenu.OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> REFINERY = BLOCKS.register("refinery", () ->
+            new SimpleMachineBlock(machineProperties("refinery"), () -> FactoryCraft.REFINERY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> REFINERY_ITEM = ITEMS.registerItem("refinery",
+            properties -> new BlockItem(REFINERY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RefineryBlockEntity>> REFINERY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("refinery", () -> new BlockEntityType<>(RefineryBlockEntity::new, REFINERY.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> REFINERY_MENU = MENUS.register("refinery",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.REFINERY_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> FERMENTER = BLOCKS.register("fermenter", () ->
+            new SimpleMachineBlock(machineProperties("fermenter"), () -> FactoryCraft.FERMENTER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> FERMENTER_ITEM = ITEMS.registerItem("fermenter",
+            properties -> new BlockItem(FERMENTER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FermenterBlockEntity>> FERMENTER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("fermenter", () -> new BlockEntityType<>(FermenterBlockEntity::new, FERMENTER.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> FERMENTER_MENU = MENUS.register("fermenter",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.FERMENTER_MENU.value(), id, inventory, 2), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> WIRELESS_CHARGER = BLOCKS.register("wireless_charger", () ->
+            new SimpleMachineBlock(machineProperties("wireless_charger").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 9 : 2), () -> FactoryCraft.WIRELESS_CHARGER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> WIRELESS_CHARGER_ITEM = ITEMS.registerItem("wireless_charger",
+            properties -> new BlockItem(WIRELESS_CHARGER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WirelessChargerBlockEntity>> WIRELESS_CHARGER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("wireless_charger", () -> new BlockEntityType<>(WirelessChargerBlockEntity::new, WIRELESS_CHARGER.value()));
+    public static final DeferredHolder<Item, Item> CRUDE_OIL = ITEMS.registerItem("crude_oil", properties -> new Item(properties.stacksTo(16)));
+    public static final DeferredHolder<Item, Item> DIESEL = ITEMS.registerItem("diesel", properties -> new Item(properties.stacksTo(16)));
+    public static final DeferredHolder<Item, Item> BIOFUEL = ITEMS.registerItem("biofuel", properties -> new Item(properties.stacksTo(16)));
+    public static final DeferredHolder<Block, Block> ASPHALT = BLOCKS.register("asphalt", () ->
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "asphalt")))
+                    .strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops().speedFactor(1.35F)));
+    public static final DeferredHolder<Item, Item> ASPHALT_ITEM = ITEMS.registerItem("asphalt",
+            properties -> new BlockItem(ASPHALT.value(), properties.useBlockDescriptionPrefix()));
+
     // ---- Stage 4: tool forge, forged tools and moulds.
     public static final DeferredHolder<Block, Block> TOOL_FORGE = BLOCKS.register("tool_forge", () ->
             new SimpleMachineBlock(machineProperties("tool_forge").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
@@ -785,6 +844,10 @@ public final class FactoryCraft {
                         output.accept(BLUEPRINT.value());
                         output.accept(INDUSTRIAL_LAMP_ITEM.value());
                         output.accept(TOOL_FORGE_ITEM.value());
+                        for (DeferredHolder<Item, Item> item : java.util.List.of(HYDRO_TURBINE_ITEM, ADVANCED_SOLAR_ITEM, PHOTON_ARRAY_ITEM,
+                                PUMPJACK_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM)) {
+                            output.accept(item.value());
+                        }
                         for (DeferredHolder<Item, Item> mould : MOULDS.values()) output.accept(mould.value());
                         output.accept(Gear.EXOSKELETON.value());
                         output.accept(Gear.WORK_HELMET.value());

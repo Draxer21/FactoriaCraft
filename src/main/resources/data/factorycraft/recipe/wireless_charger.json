@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PAP",
+    "CXC",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "A": "minecraft:lightning_rod",
+    "C": "factorycraft:copper_coil",
+    "X": "factorycraft:advanced_circuit",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:wireless_charger",
+    "count": 1
+  }
+}

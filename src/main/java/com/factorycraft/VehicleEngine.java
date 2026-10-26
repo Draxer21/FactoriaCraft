@@ -403,7 +403,8 @@ public final class VehicleEngine {
 
     /** Bay fuel the engine helps itself to: never blocks, planks or logs a paver might need. */
     private static boolean isBayFuel(ItemStack stack) {
-        return stack.is(Items.COAL) || stack.is(Items.CHARCOAL) || stack.is(Items.COAL_BLOCK) || stack.is(Items.BLAZE_ROD);
+        return stack.is(Items.COAL) || stack.is(Items.CHARCOAL) || stack.is(Items.COAL_BLOCK) || stack.is(Items.BLAZE_ROD)
+                || stack.is(FactoryCraft.DIESEL.value()) || stack.is(FactoryCraft.BIOFUEL.value()) || stack.is(Exotic.SOUL_FUEL.value());
     }
 
     private void refuelFromBay(Container bay) {
