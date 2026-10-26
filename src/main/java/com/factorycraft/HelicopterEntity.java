@@ -21,7 +21,7 @@ public final class HelicopterEntity extends CraneEntity {
 
     @Override public double reach() { return 32.0; }
     @Override protected double maxDistance() { return 14.0; }
-    @Override protected int maxLiftSize() { return 7; }
+    @Override protected int[] liftSizes() { return new int[] {1, 3, 5, 7}; }
     @Override public float hookForward() { return 0.0F; }
     @Override public float hookHeight() { return -0.2F; }
     @Override public float maxLoadHeight() { return 4.0F; }
