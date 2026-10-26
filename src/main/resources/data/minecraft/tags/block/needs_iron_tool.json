@@ -7,6 +7,8 @@
     "factorycraft:uranium_block",
     "factorycraft:thorium_block",
     "factorycraft:plutonium_block",
-    "factorycraft:nuclear_reactor"
+    "factorycraft:nuclear_reactor",
+    "factorycraft:tungsten_ore",
+    "factorycraft:deepslate_tungsten_ore"
   ]
 }

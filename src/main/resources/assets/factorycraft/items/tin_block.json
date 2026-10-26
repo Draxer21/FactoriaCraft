@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "factorycraft:block/tin_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14212838
+      }
+    ]
+  }
+}

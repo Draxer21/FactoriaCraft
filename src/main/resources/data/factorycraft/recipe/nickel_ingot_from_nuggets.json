@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:nuggets/nickel"
+  },
+  "result": {
+    "id": "factorycraft:nickel_ingot",
+    "count": 1
+  }
+}

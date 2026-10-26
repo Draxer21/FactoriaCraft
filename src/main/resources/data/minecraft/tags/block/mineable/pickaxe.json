@@ -54,6 +54,22 @@
     "factorycraft:drain",
     "factorycraft:planter",
     "factorycraft:builder",
-    "factorycraft:industrial_lamp"
+    "factorycraft:industrial_lamp",
+    "factorycraft:tin_ore",
+    "factorycraft:deepslate_tin_ore",
+    "factorycraft:tin_block",
+    "factorycraft:nickel_ore",
+    "factorycraft:deepslate_nickel_ore",
+    "factorycraft:nickel_block",
+    "factorycraft:lithium_ore",
+    "factorycraft:deepslate_lithium_ore",
+    "factorycraft:lithium_block",
+    "factorycraft:tungsten_ore",
+    "factorycraft:deepslate_tungsten_ore",
+    "factorycraft:tungsten_block",
+    "factorycraft:steel_block",
+    "factorycraft:bronze_block",
+    "factorycraft:stainless_steel_block",
+    "factorycraft:alloy_smelter"
   ]
 }

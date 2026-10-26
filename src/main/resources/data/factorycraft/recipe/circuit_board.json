@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " W ",
+    "RPR",
+    " W "
+  ],
+  "key": {
+    "W": "factorycraft:copper_wire",
+    "R": "minecraft:redstone",
+    "P": "factorycraft:plastic_sheet"
+  },
+  "result": {
+    "id": "factorycraft:circuit_board",
+    "count": 2
+  }
+}

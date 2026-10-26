@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "factorycraft:block/tungsten_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6976124
+      }
+    ]
+  }
+}

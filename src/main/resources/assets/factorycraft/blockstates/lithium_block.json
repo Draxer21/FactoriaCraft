@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "factorycraft:block/lithium_block"
+    }
+  }
+}

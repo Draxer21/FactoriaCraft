@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:ingots/lithium"
+  ],
+  "result": {
+    "id": "factorycraft:lithium_nugget",
+    "count": 9
+  }
+}

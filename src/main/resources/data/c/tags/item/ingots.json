@@ -3,6 +3,13 @@
     "#c:ingots/uranium",
     "#c:ingots/lead",
     "#c:ingots/thorium",
-    "#c:ingots/plutonium"
+    "#c:ingots/plutonium",
+    "#c:ingots/tin",
+    "#c:ingots/nickel",
+    "#c:ingots/lithium",
+    "#c:ingots/tungsten",
+    "#c:ingots/steel",
+    "#c:ingots/bronze",
+    "#c:ingots/stainless_steel"
   ]
 }

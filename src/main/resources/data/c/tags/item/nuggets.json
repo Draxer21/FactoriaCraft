@@ -1,5 +1,9 @@
 {
   "values": [
-    "#c:nuggets/plutonium"
+    "#c:nuggets/plutonium",
+    "#c:nuggets/tin",
+    "#c:nuggets/nickel",
+    "#c:nuggets/lithium",
+    "#c:nuggets/tungsten"
   ]
 }

@@ -2,6 +2,10 @@
   "values": [
     "#c:ores/uranium",
     "#c:ores/lead",
-    "#c:ores/thorium"
+    "#c:ores/thorium",
+    "#c:ores/tin",
+    "#c:ores/nickel",
+    "#c:ores/lithium",
+    "#c:ores/tungsten"
   ]
 }

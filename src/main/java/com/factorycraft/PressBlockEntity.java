@@ -28,6 +28,10 @@ public final class PressBlockEntity extends PoweredMachineBlockEntity {
             new Pressing(() -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(net.minecraft.resources.Identifier.withDefaultNamespace("copper_block")), 1, () -> FactoryCraft.COPPER_PLATE.value(), 9),
             new Pressing(() -> Items.IRON_BLOCK, 1, () -> FactoryCraft.IRON_PLATE.value(), 9),
             new Pressing(() -> Items.GOLD_BLOCK, 1, () -> FactoryCraft.GOLD_PLATE.value(), 9),
+            new Pressing(() -> Materials.STEEL.ingot().value(), 1, () -> Materials.STEEL.plate().value(), 1),
+            new Pressing(() -> Materials.BRONZE.ingot().value(), 1, () -> Materials.BRONZE.plate().value(), 1),
+            new Pressing(() -> Materials.STAINLESS_STEEL.ingot().value(), 1, () -> Materials.STAINLESS_STEEL.plate().value(), 1),
+            new Pressing(() -> FactoryCraft.COPPER_PLATE.value(), 1, () -> Materials.COPPER_WIRE.value(), 4),
             new Pressing(() -> Nuclear.THORIUM_INGOT.value(), 4, () -> Nuclear.THORIUM_FUEL_ROD.value(), 1),
             new Pressing(() -> Nuclear.URANIUM_INGOT.value(), 4, () -> Nuclear.URANIUM_FUEL_ROD.value(), 1),
             new Pressing(() -> Nuclear.PLUTONIUM_INGOT.value(), 2, () -> Nuclear.PLUTONIUM_FUEL_ROD.value(), 1));

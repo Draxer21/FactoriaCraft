@@ -3,6 +3,13 @@
     "#c:storage_blocks/uranium",
     "#c:storage_blocks/lead",
     "#c:storage_blocks/thorium",
-    "#c:storage_blocks/plutonium"
+    "#c:storage_blocks/plutonium",
+    "#c:storage_blocks/tin",
+    "#c:storage_blocks/nickel",
+    "#c:storage_blocks/lithium",
+    "#c:storage_blocks/tungsten",
+    "#c:storage_blocks/steel",
+    "#c:storage_blocks/bronze",
+    "#c:storage_blocks/stainless_steel"
   ]
 }

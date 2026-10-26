@@ -777,6 +777,7 @@ public final class FactoryCraft {
 
     public FactoryCraft(IEventBus modEventBus, net.neoforged.fml.ModContainer container) {
         Nuclear.init();
+        Materials.init();
         container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);

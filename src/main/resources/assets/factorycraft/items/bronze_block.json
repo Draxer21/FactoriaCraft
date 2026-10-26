@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "factorycraft:block/bronze_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13601852
+      }
+    ]
+  }
+}

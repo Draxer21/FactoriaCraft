@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "#c:ingots/lithium"
+  },
+  "result": {
+    "id": "factorycraft:lithium_block",
+    "count": 1
+  }
+}

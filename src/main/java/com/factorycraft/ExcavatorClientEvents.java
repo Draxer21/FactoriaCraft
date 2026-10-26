@@ -51,6 +51,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.TANNERY_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.INCINERATOR_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.FILLER_MENU.value(), ProcessingScreen::new);
+        event.register(Materials.ALLOY_SMELTER_MENU.value(), ProcessingScreen::new);
         for (var menu : java.util.List.of(FactoryCraft.LEVELER_MENU, FactoryCraft.QUARRY_MENU, FactoryCraft.DRAIN_MENU,
                 FactoryCraft.PLANTER_MENU, FactoryCraft.BUILDER_MENU)) {
             event.register(menu.value(), ProcessingScreen::new);
@@ -94,6 +95,8 @@ public final class ExcavatorClientEvents {
         tint(event, 0xE2D29A, Nuclear.THORIUM_BLOCK.value());
         tint(event, 0x8E98C4, Nuclear.LEAD_BLOCK.value());
         tint(event, 0xE884E8, Nuclear.PLUTONIUM_BLOCK.value());
+        for (Materials.Metal m : Materials.METALS) tint(event, Materials.COLORS.get(m.name()), m.block().value());
+        for (Materials.Alloy a : Materials.ALLOYS) tint(event, Materials.COLORS.get(a.name()), a.block().value());
     }
 
     private static void tint(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event,

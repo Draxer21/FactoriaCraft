@@ -59,6 +59,12 @@ public final class CrusherRecipes {
         add(Nuclear.DEEPSLATE_THORIUM_ORE_ITEM.value(), () -> Nuclear.THORIUM_DUST.value(), 4);
         add(Nuclear.LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
         add(Nuclear.DEEPSLATE_LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
+        // Industrial metals.
+        for (Materials.Metal m : Materials.METALS) {
+            add(m.raw().value(), () -> m.dust().value(), 2);
+            add(m.oreItem().value(), () -> m.dust().value(), 4);
+            add(m.deepOreItem().value(), () -> m.dust().value(), 4);
+        }
     }
 
     private CrusherRecipes() {}
