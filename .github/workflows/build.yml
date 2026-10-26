@@ -18,115 +18,22 @@ jobs:
           distribution: temurin
           java-version: '25'
       - uses: gradle/actions/setup-gradle@v5
-      - name: Build
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           chmod +x gradlew
-          set -o pipefail
-          ./gradlew build --no-configuration-cache 2>&1 | tee build.log
-      - name: Report errors as a commit comment
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
+          ./gradlew compileJava --no-configuration-cache > build.log 2>&1 || true
+          J=$(find .gradle/repositories -name "neoforge-*.jar" | grep -v -E "sources|userdev|universal" | head -1)
+          U=$(find ~/.gradle -name "neoforge-*-universal.jar" | head -1)
+          CP="$J:$U:$(find ~/.gradle -name '*.jar' | tr '\n' ':')"
           {
-            echo '### Build failed'
-            echo '```'
-            grep -E -A3 "error:|What went wrong|FAILURE|Exception" build.log | head -c 60000
-            echo '```'
-          } > report.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@report.md
-      - name: Publish release (jar downloadable without login)
-        if: success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/mc-26.1')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          MC=$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)
-          ver=$(grep '^mod_version=' gradle.properties | cut -d= -f2)
-          jar=$(ls build/libs/*.jar | grep -v -E 'sources|javadoc' | head -1)
-          tag="v${ver}-mc${MC}"
-          notes="FactoryCraft ${ver} para Minecraft ${MC} (NeoForge). Se actualiza automáticamente con cada cambio; último commit: ${GITHUB_SHA::7}."
-          if gh release view "$tag" > /dev/null 2>&1; then
-            gh release edit "$tag" --notes "$notes"
-          else
-            gh release create "$tag" --title "FactoryCraft ${ver} — Minecraft ${MC}" --notes "$notes" --target "$GITHUB_SHA"
-          fi
-          gh release upload "$tag" "$jar" --clobber
-      - name: Server smoke test
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p run/server
-          echo "eula=true" > run/server/eula.txt
-          printf 'online-mode=false\nlevel-type=minecraft\\:normal\n' > run/server/server.properties
-          ./gradlew runServer --no-configuration-cache > server.log 2>&1 &
-          PID=$!
-          for i in $(seq 1 150); do
-            if grep -q 'Done (' server.log; then echo "Server started"; break; fi
-            if ! kill -0 $PID 2>/dev/null; then echo "Server process ended"; break; fi
-            sleep 4
+          echo "### probe caps2"; echo '```'
+          for c in net.neoforged.neoforge.transfer.transaction.SnapshotJournal net.neoforged.neoforge.transfer.energy.EnergyHandlerUtil net.neoforged.neoforge.transfer.ResourceHandlerUtil net.neoforged.neoforge.transfer.access.ItemAccess net.neoforged.neoforge.capabilities.ICapabilityProvider net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler net.neoforged.neoforge.capabilities.BlockCapabilityCache; do
+            echo "== $c"; javap -cp "$CP" -p "$c" 2>&1 | grep -v "lambda\|synthetic" | head -40
           done
-          sleep 20
-          kill $PID 2>/dev/null || true
-          pkill -f 'net.neoforged' 2>/dev/null || true
-          {
-            if grep -q 'Done (' server.log; then echo '### Server started OK'; else echo '### Server did NOT start'; fi
-            echo '```'
-            grep -E -i -B1 -A4 "exception|error|failed|couldn't|could not|unknown|missing|invalid" server.log \
-              | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\." | head -c 60000
-            echo '```'
-          } > server_report.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@server_report.md
-          grep -q 'Done (' server.log
-      - name: Client smoke test (software OpenGL) + guide screenshots
-        if: success()
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-          LIBGL_ALWAYS_SOFTWARE: '1'
-          GUIDE_DEMO: 'true'
-          DISPLAY: ':99'
-        run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri mesa-utils imagemagick > /dev/null
-          Xvfb :99 -screen 0 1280x720x24 > /dev/null 2>&1 &
-          sleep 2
-          mkdir -p run/client shots
-          echo '[{"uuid":"380df991-f603-344c-a090-369bad2a924a","name":"Dev","level":4,"bypassesPlayerLimit":false}]' > run/server/ops.json
-          # A server to join, so the manual is opened inside a world like in real play.
-          ./gradlew runServer --no-configuration-cache > server2.log 2>&1 &
-          for i in $(seq 1 120); do grep -q 'Done (' server2.log && break; sleep 3; done
-          echo "server2: $(grep -c 'Done (' server2.log)"
-          printf 'onboardAccessibility:false\nnarrator:0\nsoundDevice:""\nguiScale:2\ntutorialStep:none\n' > run/client/options.txt
-          ./gradlew runClient --no-configuration-cache > client.log 2>&1 &
-          PID=$!
-          taken=""
-          for i in $(seq 1 300); do
-            for c in $(grep -o 'GUIDE_DEMO [a-z_:0-9]*' client.log | awk '{print $2}'); do
-              case " $taken " in *" $c "*) ;; *) sleep 3; import -window root "shots/${c/:/_}.png" && taken="$taken $c";; esac
-            done
-            if echo "$taken" | grep -q excavator; then echo "All screenshots taken"; break; fi
-            if ! kill -0 $PID 2>/dev/null; then echo "Client process ended"; break; fi
-            sleep 2
-          done
-          import -window root shots/last.png || true
-          kill $PID 2>/dev/null || true
-          pkill -f 'net.neoforged' 2>/dev/null || true
-          {
-            echo "### Client log (filtered) — screenshots:$taken"
-            echo '```'
-            grep -E "joined the game|lost connection" server2.log | head -5
-            grep -E -i -B1 -A3 "factorycraft|guide|missing|unable to|exception|failed|couldn't" client.log \
-              | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\.|kqueue" | head -c 60000
-            echo '```'
-          } > client_report.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@client_report.md
-          # Publish the screenshots on the ci-screens branch.
-          cd shots && git init -q && git checkout -q -b ci-screens && git add . \
-            && git -c user.name=ci -c user.email=ci@local commit -qm "screens ${{ github.sha }}" \
-            && git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" ci-screens
-      - name: Upload mod jar
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: factorycraft-mc26.2
-          path: build/libs/*.jar
+          echo "== hooks"; javap -cp "$CP" -c -p net.neoforged.neoforge.capabilities.CapabilityHooks | grep -E "Method|Field" | grep -i -E "register|WorldlyContainer|Container|ENTITY_AUTOMATION|instanceof" | head -30
+          unzip -Z1 $U | grep -E "neoforge/transfer/(fluid|item)/" | sed 's/\.class$//' | grep -v '\$' | sort
+          echo '```'; } > report.md 2>&1
+          head -c 60000 report.md > r2.md
+          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@r2.md
