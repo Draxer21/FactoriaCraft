@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "CGC",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "B": "minecraft:bucket",
+    "C": "factorycraft:copper_coil",
+    "G": "#c:gears/iron",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:hydro_turbine",
+    "count": 1
+  }
+}

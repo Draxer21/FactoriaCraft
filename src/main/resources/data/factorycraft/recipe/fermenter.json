@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "GCG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "B": "minecraft:barrel",
+    "G": "#c:gears/iron",
+    "C": "minecraft:cauldron",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:fermenter",
+    "count": 1
+  }
+}

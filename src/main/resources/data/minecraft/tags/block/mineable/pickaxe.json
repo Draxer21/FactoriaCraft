@@ -77,6 +77,14 @@
     "factorycraft:voidnite_ore",
     "factorycraft:cobalt_block",
     "factorycraft:voidnite_block",
-    "factorycraft:tool_forge"
+    "factorycraft:tool_forge",
+    "factorycraft:hydro_turbine",
+    "factorycraft:advanced_solar",
+    "factorycraft:photon_array",
+    "factorycraft:pumpjack",
+    "factorycraft:refinery",
+    "factorycraft:fermenter",
+    "factorycraft:wireless_charger",
+    "factorycraft:asphalt"
   ]
 }

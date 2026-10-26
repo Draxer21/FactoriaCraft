@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "QQQ",
+    "ACA",
+    "PLP"
+  ],
+  "key": {
+    "Q": "factorycraft:industrial_quartz",
+    "A": "factorycraft:advanced_solar",
+    "C": "factorycraft:advanced_circuit",
+    "P": "#c:plates/stainless_steel",
+    "L": "#c:ingots/lithium"
+  },
+  "result": {
+    "id": "factorycraft:photon_array",
+    "count": 1
+  }
+}

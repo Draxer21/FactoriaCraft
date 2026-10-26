@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/advanced_solar"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/advanced_solar"
+    }
+  }
+}

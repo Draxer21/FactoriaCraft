@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SBS",
+    "CFC",
+    "SRS"
+  ],
+  "key": {
+    "S": "#c:plates/stainless_steel",
+    "B": "minecraft:bucket",
+    "C": "factorycraft:circuit_board",
+    "F": "minecraft:blast_furnace",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:refinery",
+    "count": 1
+  }
+}
