@@ -52,7 +52,7 @@ public final class ToolForgeBlockEntity extends PoweredMachineBlockEntity {
         if (kind == null || material.getCount() < kind.materials || !isPart(kind, items.get(2))) return null;
         ToolForge.Stats stats = ToolForge.statsFor(material);
         if (stats == null) return null;
-        return new Operation(new int[] {0, kind.materials, 1}, List.of(ToolForge.forge(kind, material, stats)));
+        return new Operation(new int[] {0, kind.materials, 1}, List.of(ToolForge.forge(kind, material, stats, level.registryAccess())));
     }
 
     @Override

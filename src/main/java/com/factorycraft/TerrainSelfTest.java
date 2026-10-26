@@ -160,11 +160,11 @@ public final class TerrainSelfTest {
                     exotic, level.fuelValues().burnDuration(new ItemStack(Exotic.SOUL_FUEL.value())),
                     CrusherRecipes.resultFor(new ItemStack(Items.PURPUR_BLOCK)), AlloySmelterBlockEntity.RECIPES.size());
             ItemStack cobalt = new ItemStack(Exotic.COBALT_INGOT.value(), 3);
-            ItemStack drill = ToolForge.forge(ToolForge.Kind.DRILL, cobalt, ToolForge.statsFor(cobalt));
-            ItemStack tin = new ItemStack(Materials.TIN.ingot().value());
-            ItemStack tinHammer = ToolForge.forge(ToolForge.Kind.HAMMER, tin, ToolForge.statsFor(tin));
+            ItemStack drill = ToolForge.forge(ToolForge.Kind.DRILL, cobalt, ToolForge.statsFor(cobalt), level.registryAccess());
+            ItemStack tinIngot = new ItemStack(Materials.TIN.ingot().value());
+            ItemStack tinHammer = ToolForge.forge(ToolForge.Kind.HAMMER, tinIngot, ToolForge.statsFor(tinIngot), level.registryAccess());
             ItemStack igneous = new ItemStack(Exotic.IGNEOUS_CRYSTAL.value());
-            ItemStack multitool = ToolForge.forge(ToolForge.Kind.MULTITOOL, igneous, ToolForge.statsFor(igneous));
+            ItemStack multitool = ToolForge.forge(ToolForge.Kind.MULTITOOL, igneous, ToolForge.statsFor(igneous), level.registryAccess());
             var smelt = level.recipeAccess().getRecipeFor(net.minecraft.world.item.crafting.RecipeType.SMELTING,
                     new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON)), level);
             com.mojang.logging.LogUtils.getLogger().info(
@@ -175,7 +175,7 @@ public final class TerrainSelfTest {
                     tinHammer.isCorrectToolForDrops(net.minecraft.world.level.block.Blocks.STONE.defaultBlockState()),
                     multitool.getDestroySpeed(net.minecraft.world.level.block.Blocks.OAK_LOG.defaultBlockState()),
                     ToolForge.trait(multitool), ToolForge.statsFor(new ItemStack(Items.STICK)),
-                    smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON)), level.registryAccess()).toString()).orElse("none"));
+                    smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON))).toString()).orElse("none"));
             com.mojang.logging.LogUtils.getLogger().info("MATERIALSTEST smelter={} oreFeatures={}/4 tinTagged={} pressWire={}",
                     out, ores, new ItemStack(Materials.TIN.ingot().value()).is(tin),
                     PressBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Materials.COPPER_WIRE.value()));

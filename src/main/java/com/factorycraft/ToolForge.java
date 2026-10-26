@@ -187,7 +187,7 @@ public final class ToolForge {
     }
 
     /** Builds the finished tool of {@code kind} out of {@code material}. */
-    public static ItemStack forge(Kind kind, ItemStack material, Stats stats) {
+    public static ItemStack forge(Kind kind, ItemStack material, Stats stats, net.minecraft.core.HolderLookup.Provider registries) {
         ItemStack tool = new ItemStack(itemFor(kind));
         var blocks = BuiltInRegistries.BLOCK;
         List<Tool.Rule> rules = new ArrayList<>();
@@ -211,7 +211,7 @@ public final class ToolForge {
                 .build());
         tool.set(DataComponents.ENCHANTABLE, new Enchantable(stats.enchantability()));
         tool.set(DataComponents.REPAIRABLE, new Repairable(HolderSet.direct(material.getItem().builtInRegistryHolder())));
-        if (stats.fireproof()) tool.set(DataComponents.DAMAGE_RESISTANT, new DamageResistant(DamageTypeTags.IS_FIRE));
+        if (stats.fireproof()) tool.set(DataComponents.DAMAGE_RESISTANT, new DamageResistant(registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DamageTypeTags.IS_FIRE)));
         tool.set(DataComponents.ITEM_NAME, Component.translatable("item.factorycraft.forged." + kind.id(), material.getHoverName()));
         tool.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(), List.of(stats.color())));
         String materialId = BuiltInRegistries.ITEM.getKey(material.getItem()).toString();
@@ -237,7 +237,7 @@ public final class ToolForge {
             ItemStack stack = drop.getItem();
             var recipe = level.recipeAccess().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), level);
             if (recipe.isEmpty()) continue;
-            ItemStack result = recipe.get().value().assemble(new SingleRecipeInput(stack), level.registryAccess());
+            ItemStack result = recipe.get().value().assemble(new SingleRecipeInput(stack));
             if (result.isEmpty()) continue;
             drop.setItem(result.copyWithCount(Math.min(result.getMaxStackSize(), result.getCount() * stack.getCount())));
         }
