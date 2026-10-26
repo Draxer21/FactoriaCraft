@@ -98,6 +98,12 @@ public final class BatteryBlockEntity extends MachineBlockEntity implements Menu
         return taken;
     }
 
+    @Override
+    public void setStored(int value) {
+        energy = value;
+        setChanged();
+    }
+
     @Override public int stored() { return energy; }
     @Override public int capacity() { return CAPACITY; }
     @Override public boolean isStorage() { return true; }

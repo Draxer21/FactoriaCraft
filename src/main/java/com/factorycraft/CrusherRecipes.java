@@ -77,6 +77,45 @@ public final class CrusherRecipes {
         for (Entry entry : ENTRIES) {
             if (entry.input().test(input)) return new ItemStack(entry.output().get(), entry.count());
         }
+        return fromCommonTags(input);
+    }
+
+    /**
+     * Ores and raw metals from other mods: anything tagged {@code c:ores/<metal>} (x4) or
+     * {@code c:raw_materials/<metal>} (x2) becomes that metal's dust, if some mod has a
+     * {@code c:dusts/<metal>}. Our own dusts are preferred when there are several.
+     */
+    private static @Nullable ItemStack fromCommonTags(ItemStack input) {
+        for (TagKey<Item> tag : (Iterable<TagKey<Item>>) input.getTags()::iterator) {
+            if (!tag.location().getNamespace().equals("c")) continue;
+            String path = tag.location().getPath();
+            int count;
+            String metal;
+            if (path.startsWith("ores/")) {
+                count = 4;
+                metal = path.substring(5);
+            } else if (path.startsWith("raw_materials/")) {
+                count = 2;
+                metal = path.substring(14);
+            } else {
+                continue;
+            }
+            Item dust = dustFor(metal);
+            if (dust != null) return new ItemStack(dust, count);
+        }
         return null;
+    }
+
+    private static @Nullable Item dustFor(String metal) {
+        TagKey<Item> dusts = TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                net.minecraft.resources.Identifier.fromNamespaceAndPath("c", "dusts/" + metal));
+        Item found = null;
+        for (net.minecraft.core.Holder<Item> holder : net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(dusts)) {
+            Item item = holder.value();
+            if (found == null || net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(FactoryCraft.MOD_ID)) {
+                found = item;
+            }
+        }
+        return found;
     }
 }

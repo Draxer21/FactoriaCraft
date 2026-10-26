@@ -7,7 +7,7 @@
     "PBP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "B": "minecraft:bricks",
     "F": "minecraft:blast_furnace"
   },

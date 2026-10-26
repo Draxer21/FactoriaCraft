@@ -6,7 +6,7 @@
     "L L"
   ],
   "key": {
-    "L": "factorycraft:lead_ingot"
+    "L": "#c:ingots/lead"
   },
   "result": {
     "id": "factorycraft:lead_boots",

@@ -8,7 +8,7 @@
   ],
   "key": {
     "T": "minecraft:redstone_torch",
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "G": "minecraft:glass_pane",
     "R": "minecraft:redstone"
   },

@@ -8,7 +8,7 @@
   ],
   "key": {
     "B": "factorycraft:lead_block",
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "G": "minecraft:glass",
     "C": "factorycraft:generator",
     "R": "minecraft:redstone_block"

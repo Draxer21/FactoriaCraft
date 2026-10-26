@@ -7,9 +7,9 @@
     "PRP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "B": "minecraft:bucket",
-    "G": "factorycraft:iron_gear",
+    "G": "#c:gears/iron",
     "C": "minecraft:piston",
     "R": "minecraft:redstone"
   },

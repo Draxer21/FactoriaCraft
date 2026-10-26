@@ -7,7 +7,7 @@
     "###"
   ],
   "key": {
-    "#": "factorycraft:plutonium_nugget"
+    "#": "#c:nuggets/plutonium"
   },
   "result": {
     "id": "factorycraft:plutonium_ingot",

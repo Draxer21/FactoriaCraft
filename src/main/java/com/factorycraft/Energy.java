@@ -25,6 +25,9 @@ public final class Energy {
 
         int stored();
 
+        /** Sets the stored energy directly (used to undo a cancelled transfer to another mod). */
+        void setStored(int value);
+
         int capacity();
 
         /** Energy made per tick right now (for the meter). */

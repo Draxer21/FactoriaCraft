@@ -9,7 +9,7 @@
   "key": {
     "S": "#minecraft:wool",
     "G": "factorycraft:copper_coil",
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "R": "minecraft:redstone_block"
   },
   "result": {

@@ -25,7 +25,11 @@ runs {
             argument 'localhost:25565'
         }
     }
-    server { argument '--nogui' }
+    server {
+        argument '--nogui'
+        // CI only: logs whether other mods can reach our items, energy and fluids.
+        systemProperty 'factorycraft.selfTest', System.getenv('GUIDE_DEMO') ?: 'false'
+    }
 }
 
 repositories {

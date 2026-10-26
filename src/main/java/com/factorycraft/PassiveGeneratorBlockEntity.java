@@ -105,6 +105,12 @@ public abstract class PassiveGeneratorBlockEntity extends MachineBlockEntity imp
         return taken;
     }
 
+    @Override
+    public void setStored(int value) {
+        energy = value;
+        setChanged();
+    }
+
     @Override public int stored() { return energy; }
     @Override public int capacity() { return capacity; }
     @Override public int rate() { return rate; }

@@ -7,9 +7,9 @@
     " L "
   ],
   "key": {
-    "L": "factorycraft:lead_ingot",
+    "L": "#c:ingots/lead",
     "T": "minecraft:tnt",
-    "C": "factorycraft:plutonium_ingot"
+    "C": "#c:ingots/plutonium"
   },
   "result": {
     "id": "factorycraft:mini_nuke",

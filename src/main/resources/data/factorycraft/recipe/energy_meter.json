@@ -8,7 +8,7 @@
   ],
   "key": {
     "G": "minecraft:glass_pane",
-    "C": "factorycraft:copper_plate",
+    "C": "#c:plates/copper",
     "R": "minecraft:redstone",
     "I": "minecraft:iron_ingot"
   },

@@ -10,7 +10,7 @@
     "S": "minecraft:iron_ingot",
     "G": "minecraft:glass",
     "E": "factorycraft:upgrade_turbo",
-    "P": "factorycraft:iron_plate"
+    "P": "#c:plates/iron"
   },
   "result": {
     "id": "factorycraft:helicopter",

@@ -9,7 +9,7 @@
   "key": {
     "I": "minecraft:iron_ingot",
     "R": "minecraft:redstone",
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "L": "minecraft:leather"
   },
   "result": {

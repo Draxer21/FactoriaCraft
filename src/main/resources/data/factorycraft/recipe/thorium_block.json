@@ -7,7 +7,7 @@
     "###"
   ],
   "key": {
-    "#": "factorycraft:thorium_ingot"
+    "#": "#c:ingots/thorium"
   },
   "result": {
     "id": "factorycraft:thorium_block",

@@ -7,9 +7,9 @@
     "PCP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "C": "minecraft:chest",
-    "X": "factorycraft:iron_gear"
+    "X": "#c:gears/iron"
   },
   "result": {
     "id": "factorycraft:industrial_chest",

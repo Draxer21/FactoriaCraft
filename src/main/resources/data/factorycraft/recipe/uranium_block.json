@@ -7,7 +7,7 @@
     "###"
   ],
   "key": {
-    "#": "factorycraft:uranium_ingot"
+    "#": "#c:ingots/uranium"
   },
   "result": {
     "id": "factorycraft:uranium_block",
