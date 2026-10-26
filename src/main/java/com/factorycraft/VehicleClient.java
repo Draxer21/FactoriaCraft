@@ -68,6 +68,10 @@ public final class VehicleClient {
     @SubscribeEvent
     public static void registerClientPayloads(net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent event) {
         event.register(StationDataPayload.TYPE, (payload, context) -> Minecraft.getInstance().setScreen(new StationScreen(payload)));
+        event.register(CraneLoadPayload.TYPE, (payload, context) -> {
+            var level = Minecraft.getInstance().level;
+            if (level != null && level.getEntity(payload.entityId()) instanceof CraneEntity crane) crane.setClientLoad(payload.packed());
+        });
     }
 
     @SubscribeEvent
@@ -79,7 +83,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"nuke:4", "look:crater", "look:smoke", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"summon:paver", "summon:harvester", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -158,7 +162,7 @@ public final class VehicleClient {
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         guideDemo();
-        outlineSegments();
+        if (Boolean.getBoolean("factorycraft.outlineDemo")) outlineSegments();
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         while (LIGHTS_KEY.consumeClick()) {

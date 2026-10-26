@@ -40,7 +40,8 @@ public record ToggleEnginePayload() implements CustomPacketPayload {
                     .playToServer(ToggleLightsPayload.TYPE, ToggleLightsPayload.STREAM_CODEC, ToggleLightsPayload::handle)
                     .playToServer(ToggleToolPayload.TYPE, ToggleToolPayload.STREAM_CODEC, ToggleToolPayload::handle)
                     .playToServer(JetpackPayload.TYPE, JetpackPayload.STREAM_CODEC, JetpackPayload::handle)
-                    .playToClient(StationDataPayload.TYPE, StationDataPayload.STREAM_CODEC);
+                    .playToClient(StationDataPayload.TYPE, StationDataPayload.STREAM_CODEC)
+                    .playToClient(CraneLoadPayload.TYPE, CraneLoadPayload.STREAM_CODEC);
         }
     }
 }

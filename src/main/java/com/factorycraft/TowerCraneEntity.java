@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
  * Tower crane: a stationary crane 17 blocks tall with a 15-block jib. It doesn't
  * drive; A / D slew the whole crane around its tower. The operator sits in the
  * cab at the top and works with the crane control as usual, but with a much
- * longer reach and loads up to 9×9×9.
+ * longer reach and loads up to 20×20×20.
  */
 public final class TowerCraneEntity extends CraneEntity {
     public TowerCraneEntity(EntityType<? extends TowerCraneEntity> type, Level level) {
@@ -24,7 +24,7 @@ public final class TowerCraneEntity extends CraneEntity {
 
     @Override public double reach() { return 48.0; }
     @Override protected double maxDistance() { return 40.0; }
-    @Override protected int maxLiftSize() { return 9; }
+    @Override protected int[] liftSizes() { return new int[] {1, 3, 5, 7, 9, 12, 16, 20}; }
     @Override public float hookForward() { return 11.25F; }
     @Override public float hookHeight() { return 6.47F; }
     @Override public float maxLoadHeight() { return 6.0F; }
