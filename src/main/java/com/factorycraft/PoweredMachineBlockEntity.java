@@ -131,6 +131,20 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
         return true;
     }
 
+    /** For machines with their own work loop: draws {@code energy} (scaled by modules) from the network. */
+    protected final boolean drawPower(Level level, int energy) {
+        if (level.getGameTime() % 10 == 0) {
+            networkStored = link.stored(level);
+            networkCapacity = link.capacity(level);
+        }
+        int cost = Math.max(1, (int) Math.ceil(energy * energyFactor()));
+        return link.draw(level, cost) >= cost;
+    }
+
+    protected final void setProgress(int value) {
+        progress = value;
+    }
+
     @Override
     public Component getDisplayName() {
         return withUpgrades(Component.translatable(nameKey()));
