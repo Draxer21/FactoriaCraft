@@ -97,7 +97,6 @@ public final class NukeBlast {
         }
         level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, true, true, x, y, z,
                 Math.min(80, radius * 2), radius * 0.5, radius * 0.3, radius * 0.5, 0.0);
-        level.sendParticles(ParticleTypes.FLASH, true, true, x, y + 2, z, 1, 0, 0, 0, 0);
     }
 
     /** Everything within twice the radius is hurt and thrown outwards; walls don't shelter. */
