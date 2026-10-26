@@ -33,6 +33,8 @@ public final class TunnelerRenderer extends AbstractBoatRenderer {
         public float pitch;
         /** True when the local player is driving in first person: hide the cab frame. */
         public boolean pilotView;
+        /** Drill angle: stops turning when the drill is switched off. */
+        public float drillSpin;
     }
 
     @Override
@@ -50,6 +52,7 @@ public final class TunnelerRenderer extends AbstractBoatRenderer {
         super.extractRenderState(entity, state, partialTicks);
         if (state instanceof TunnelerRenderState tunneler) {
             tunneler.pitch = entity.getXRot(partialTicks);
+            if (entity instanceof TunnelerEntity machine) tunneler.drillSpin = machine.toolSpin(partialTicks);
             Minecraft minecraft = Minecraft.getInstance();
             tunneler.pilotView = minecraft.player != null && entity.hasPassenger(minecraft.player)
                     && minecraft.options.getCameraType().isFirstPerson();

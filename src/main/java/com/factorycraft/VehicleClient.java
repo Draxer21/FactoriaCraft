@@ -42,6 +42,8 @@ public final class VehicleClient {
             new KeyMapping.Category(Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "vehicles"));
     public static final KeyMapping ENGINE_KEY = new KeyMapping("key.factorycraft.engine",
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY);
+    public static final KeyMapping TOOL_KEY = new KeyMapping("key.factorycraft.tool",
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY);
     public static final KeyMapping LIGHTS_KEY = new KeyMapping("key.factorycraft.lights",
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, CATEGORY);
 
@@ -60,6 +62,7 @@ public final class VehicleClient {
         event.registerCategory(CATEGORY);
         event.register(ENGINE_KEY);
         event.register(LIGHTS_KEY);
+        event.register(TOOL_KEY);
     }
 
     @SubscribeEvent
@@ -76,7 +79,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"summon:bulldozer", "summon:dump_truck", "summon:helicopter", "summon:locomotive", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"powered:last", "screen:tannery", "screen:incinerator", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -103,6 +106,8 @@ public final class VehicleClient {
                     case "crusher" -> ProcessingMenu.crusher(0, inv);
                     case "washer" -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), 0, inv,
                             ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS);
+                    case "tannery" -> ProcessingMenu.powered(FactoryCraft.TANNERY_MENU.value(), 0, inv, 2);
+                    case "incinerator" -> ProcessingMenu.powered(FactoryCraft.INCINERATOR_MENU.value(), 0, inv, 4, 0);
                     default -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), 0, inv, 4);
                 };
                 mc.setScreen(new ProcessingScreen(menu, inv, net.minecraft.network.chat.Component.literal(parts[1])));
@@ -150,6 +155,11 @@ public final class VehicleClient {
         while (LIGHTS_KEY.consumeClick()) {
             if (player != null && player.getVehicle() instanceof VehicleEngine.Holder) {
                 ClientPacketDistributor.sendToServer(ToggleLightsPayload.INSTANCE);
+            }
+        }
+        while (TOOL_KEY.consumeClick()) {
+            if (player != null && player.getVehicle() instanceof ToolToggle tool && tool.hasTool()) {
+                ClientPacketDistributor.sendToServer(ToggleToolPayload.INSTANCE);
             }
         }
         while (ENGINE_KEY.consumeClick()) {
@@ -280,7 +290,8 @@ public final class VehicleClient {
                     pitch = 0.7F + 0.6F * speed;
                 }
                 default -> {
-                    boolean boring = running && vehicle instanceof AbstractBoat boat && boat.getPaddleState(0) && boat.getPaddleState(1);
+                    boolean boring = running && vehicle instanceof AbstractBoat boat && boat.getPaddleState(0) && boat.getPaddleState(1)
+                            && !(vehicle instanceof ToolToggle tool && !tool.toolOn());
                     target = boring ? 0.8F : 0.0F;
                     pitch = 0.9F + 0.2F * speed;
                 }

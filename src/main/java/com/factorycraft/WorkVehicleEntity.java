@@ -32,11 +32,14 @@ import net.minecraft.world.phys.Vec3;
  * a hitbox fitted to the model, and a work step that runs while driving forward.
  * Whatever the bay can't hold goes to a dump truck within range, or drops.
  */
-public abstract class WorkVehicleEntity extends AbstractChestBoat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
+public abstract class WorkVehicleEntity extends AbstractChestBoat implements VehicleHitbox.Holder, ToolToggle, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(WorkVehicleEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
             SynchedEntityData.defineId(WorkVehicleEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> TOOL_ON =
+            SynchedEntityData.defineId(WorkVehicleEntity.class, EntityDataSerializers.BOOLEAN);
+    private final ToolToggle.Spin toolSpin = new ToolToggle.Spin();
     private static final EntityDataAccessor<Integer> UPGRADES =
             SynchedEntityData.defineId(WorkVehicleEntity.class, EntityDataSerializers.INT);
     private final VehicleEngine engine = new VehicleEngine(this, ENGINE_ON, FUEL, UPGRADES);
@@ -194,6 +197,7 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
         lights.tick(engine.lightsWanted(driver != null, lights.isDark(level())), forward());
 
         if (level().isClientSide()) {
+            toolSpin.tick(hasTool() && toolOn() && engine.isRunning(), toolSpinSpeed());
             travelledO = travelled;
             Vec3 f = forward();
             travelled += (float) ((getX() - xo) * f.x + (getZ() - zo) * f.z);
@@ -201,6 +205,7 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
         }
         if (driver == null || !(level() instanceof ServerLevel level)) return;
         if (!getPaddleState(0) || !getPaddleState(1)) return; // only while driving forward
+        if (hasTool() && !toolOn()) return; // the driver switched the tool off
         if (tickCount % workInterval() != 0) return;
         work(level, driver);
     }
@@ -268,6 +273,35 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         VehicleEngine.define(builder, ENGINE_ON, FUEL, UPGRADES);
+        builder.define(TOOL_ON, true);
+    }
+
+    // ---------------------------------------------------------------- tool switch
+
+    /** Machines with a switchable tool (the forester's saw) override this. */
+    @Override
+    public boolean hasTool() {
+        return false;
+    }
+
+    /** Spin speed of the tool at full revs, radians per tick. */
+    protected float toolSpinSpeed() {
+        return 0.9F;
+    }
+
+    @Override
+    public boolean toolOn() {
+        return entityData.get(TOOL_ON);
+    }
+
+    @Override
+    public void setToolOn(boolean on) {
+        entityData.set(TOOL_ON, on);
+    }
+
+    @Override
+    public float toolSpin(float partialTicks) {
+        return toolSpin.get(partialTicks);
     }
 
     @Override
@@ -286,12 +320,14 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         engine.save(output);
+        output.putBoolean("ToolOn", toolOn());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         engine.load(input);
+        setToolOn(input.getBooleanOr("ToolOn", true));
     }
 
     @Override
@@ -363,5 +399,11 @@ public abstract class WorkVehicleEntity extends AbstractChestBoat implements Veh
     @Override
     public void push(net.minecraft.world.entity.Entity other) {
         if (hitbox.touches(other)) super.push(other);
+    }
+
+    /** Only players drive: mobs bumping into the machine don't climb aboard. */
+    @Override
+    protected boolean canAddPassenger(net.minecraft.world.entity.Entity passenger) {
+        return passenger instanceof net.minecraft.world.entity.player.Player && super.canAddPassenger(passenger);
     }
 }

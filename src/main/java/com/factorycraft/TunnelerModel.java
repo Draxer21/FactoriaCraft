@@ -121,7 +121,7 @@ public final class TunnelerModel extends EntityModel<BoatRenderState> {
     public void setupAnim(BoatRenderState state) {
         super.setupAnim(state);
         if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
-        this.drillHead.xRot = state.ageInTicks * 0.75F;
+        if (state instanceof TunnelerRenderer.TunnelerRenderState tunneler) this.drillHead.xRot = tunneler.drillSpin;
         // The pilot can't tilt their camera with the machine, so in first person the
         // cab frame would cut through their view when sloped. Other players still see it.
         boolean hide = state instanceof TunnelerRenderer.TunnelerRenderState tunneler && tunneler.pilotView;

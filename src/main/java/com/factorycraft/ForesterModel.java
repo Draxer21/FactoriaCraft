@@ -123,13 +123,15 @@ public final class ForesterModel extends EntityModel<BoatRenderState> {
         if (state instanceof Headlights.LitBoatRenderState moving) treads.animate(moving.travelled);
         boolean lit = false;
         float travelled = 0.0F;
+        float spin = 0.0F;
         if (state instanceof WorkVehicleRenderer.WorkRenderState work) {
             travelled = work.travelled;
+            spin = work.toolSpin;
             lit = work.lightsOn;
         }
         for (ModelPart roller : rollers) roller.zRot = travelled / ROLLER_RADIUS;
-        // The saw spins (horizontally) as long as the machine moves.
-        saw.yRot = state.ageInTicks * 0.9F + travelled / SAW_RADIUS;
+        // The saw spins while the engine runs and the driver hasn't switched it off.
+        saw.yRot = spin;
         for (ModelPart lamp : lamps) lamp.visible = !lit;
     }
 }

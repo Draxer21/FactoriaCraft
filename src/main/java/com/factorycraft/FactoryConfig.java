@@ -26,6 +26,9 @@ public final class FactoryConfig {
     private static final ModConfigSpec.BooleanValue WEAPONS_BREAK_BLOCKS = BUILDER
             .comment("If true, mini-nukes destroy blocks.")
             .define("nuclearWeaponsBreakBlocks", true);
+    private static final ModConfigSpec.DoubleValue MINI_NUKE_POWER = BUILDER
+            .comment("Mini-nuke blast power multiplier. 0.5 = half, 2.0 = double (very laggy above 2).")
+            .defineInRange("miniNukePower", 1.0, 0.1, 4.0);
     private static final ModConfigSpec.BooleanValue RADIATION = BUILDER
             .comment("Radioactive items make players sick.")
             .define("radiation", true);
@@ -52,6 +55,7 @@ public final class FactoryConfig {
     public static double vehicleFuel() { return loaded() ? VEHICLE_FUEL.get() : 1.0; }
     public static boolean meltdownBreaksBlocks() { return !loaded() || MELTDOWN_BREAKS_BLOCKS.getAsBoolean(); }
     public static boolean weaponsBreakBlocks() { return !loaded() || WEAPONS_BREAK_BLOCKS.getAsBoolean(); }
+    public static double miniNukePower() { return loaded() ? MINI_NUKE_POWER.get() : 1.0; }
     public static boolean radiation() { return !loaded() || RADIATION.getAsBoolean(); }
     public static double radiationStrength() { return loaded() ? RADIATION_STRENGTH.get() : 1.0; }
     public static boolean pollution() { return !loaded() || POLLUTION.getAsBoolean(); }

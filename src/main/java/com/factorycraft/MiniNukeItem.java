@@ -32,14 +32,15 @@ public final class MiniNukeItem extends Item implements Radiation.Source {
         return Math.max(1, Math.min(4, y));
     }
 
-    /** Explosion power for each yield (TNT is 4). */
+    /** Explosion power for each yield (TNT is 4), times the server's mini-nuke multiplier. */
     public static float power(int yield) {
-        return switch (yield) {
-            case 1 -> 4.0F;
-            case 2 -> 6.0F;
-            case 3 -> 9.0F;
-            default -> 12.0F;
+        float base = switch (yield) {
+            case 1 -> 10.0F;
+            case 2 -> 16.0F;
+            case 3 -> 22.0F;
+            default -> 30.0F;
         };
+        return base * (float) FactoryConfig.miniNukePower();
     }
 
     @Override
