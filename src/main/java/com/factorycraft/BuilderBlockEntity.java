@@ -115,6 +115,13 @@ public final class BuilderBlockEntity extends PoweredMachineBlockEntity {
         return -1;
     }
 
+    /** CI self-test: what the builder thinks it is doing. */
+    String debugState(Level level) {
+        Blueprint blueprint = blueprint(level);
+        return "blueprint=" + (blueprint == null ? "none" : blueprint.count()) + " next=" + next
+                + " slot0=" + items.get(0) + " slot1=" + items.get(1);
+    }
+
     @Override
     protected @Nullable Operation find(Level level) {
         return null;

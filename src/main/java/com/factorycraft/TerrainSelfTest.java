@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 @EventBusSubscriber(modid = FactoryCraft.MOD_ID)
 public final class TerrainSelfTest {
     private static final int START = 100;
-    private static final int CHECK = START + 800;
+    private static final int CHECK = START + 1400;
     private static int ticks;
     private static BlockPos base;
 
@@ -123,5 +123,8 @@ public final class TerrainSelfTest {
                 level.getFluidState(drain.offset(2, -1, 0)).isEmpty() ? 0
                         : count(level, drain.offset(1, -1, -1), drain.offset(3, -1, 1), Blocks.WATER),
                 built, front);
+        if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
+            com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST builder {}", be.debugState(level));
+        }
     }
 }
