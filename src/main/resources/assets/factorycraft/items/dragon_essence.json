@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "minecraft:item/blaze_powder",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14704880
+      }
+    ]
+  }
+}

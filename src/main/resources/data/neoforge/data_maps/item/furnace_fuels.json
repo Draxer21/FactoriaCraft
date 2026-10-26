@@ -1,0 +1,10 @@
+{
+  "values": {
+    "factorycraft:soul_fuel": {
+      "burn_time": 12800
+    },
+    "factorycraft:sulfur": {
+      "burn_time": 800
+    }
+  }
+}

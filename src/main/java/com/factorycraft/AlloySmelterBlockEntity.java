@@ -47,7 +47,16 @@ public final class AlloySmelterBlockEntity extends PoweredMachineBlockEntity {
             new Alloying(item(() -> Items.DRIED_KELP), 4, item(() -> Items.COAL), 1, () -> Materials.PLASTIC.value(), 2, Items.DRIED_KELP, Items.COAL),
             new Alloying(item(() -> Items.SLIME_BALL), 1, item(() -> Items.COAL), 1, () -> Materials.PLASTIC.value(), 2, Items.SLIME_BALL, Items.COAL),
             // Tempered glass: glass with a steel ingot.
-            new Alloying(item(() -> Items.GLASS), 4, tag("ingots/steel"), 1, () -> Materials.TEMPERED_GLASS_ITEM.value(), 4, Items.GLASS, "c:ingots/steel"));
+            new Alloying(item(() -> Items.GLASS), 4, tag("ingots/steel"), 1, () -> Materials.TEMPERED_GLASS_ITEM.value(), 4, Items.GLASS, "c:ingots/steel"),
+            // Nether.
+            new Alloying(item(() -> Items.SOUL_SAND), 4, item(() -> Items.COAL), 1, () -> Exotic.SOUL_FUEL.value(), 2, Items.SOUL_SAND, Items.COAL),
+            new Alloying(item(() -> Items.SOUL_SOIL), 4, item(() -> Items.COAL), 1, () -> Exotic.SOUL_FUEL.value(), 2, Items.SOUL_SOIL, Items.COAL),
+            new Alloying(item(() -> Items.QUARTZ), 4, item(() -> Items.GLOWSTONE_DUST), 1, () -> Exotic.INDUSTRIAL_QUARTZ.value(), 2, Items.QUARTZ, Items.GLOWSTONE_DUST),
+            // End.
+            new Alloying(item(() -> Items.ENDER_PEARL), 1, item(() -> Items.POPPED_CHORUS_FRUIT), 2, () -> Exotic.STABLE_ENDER_CRYSTAL.value(), 1, Items.ENDER_PEARL, Items.POPPED_CHORUS_FRUIT),
+            new Alloying(item(() -> Exotic.PURPURITE_DUST.value()), 4, tag("ingots/lithium"), 1, () -> Exotic.PURPURITE_INGOT.value(), 2, Exotic.PURPURITE_DUST.value(), "c:ingots/lithium"),
+            new Alloying(item(() -> Items.DRAGON_BREATH), 4, item(() -> Exotic.STABLE_ENDER_CRYSTAL.value()), 1, () -> Exotic.DRAGON_ESSENCE.value(), 1, Items.DRAGON_BREATH, Exotic.STABLE_ENDER_CRYSTAL.value()),
+            new Alloying(item(() -> Items.CHORUS_FRUIT), 4, item(() -> Materials.PLASTIC.value()), 1, () -> Exotic.CHORUS_INSULATION.value(), 2, Items.CHORUS_FRUIT, Materials.PLASTIC.value()));
 
     public AlloySmelterBlockEntity(BlockPos pos, BlockState state) {
         super(Materials.ALLOY_SMELTER_BLOCK_ENTITY.value(), pos, state, 2);

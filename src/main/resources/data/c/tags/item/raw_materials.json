@@ -6,6 +6,8 @@
     "#c:raw_materials/tin",
     "#c:raw_materials/nickel",
     "#c:raw_materials/lithium",
-    "#c:raw_materials/tungsten"
+    "#c:raw_materials/tungsten",
+    "#c:raw_materials/cobalt",
+    "#c:raw_materials/voidnite"
   ]
 }

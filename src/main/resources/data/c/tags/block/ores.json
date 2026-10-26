@@ -9,6 +9,10 @@
     "#c:ores/tin",
     "#c:ores/nickel",
     "#c:ores/lithium",
-    "#c:ores/tungsten"
+    "#c:ores/tungsten",
+    "#c:ores/igneous",
+    "#c:ores/sulfur",
+    "#c:ores/cobalt",
+    "#c:ores/voidnite"
   ]
 }

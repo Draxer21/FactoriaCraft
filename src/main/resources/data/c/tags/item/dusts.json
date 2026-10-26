@@ -9,6 +9,10 @@
     "#c:dusts/tin",
     "#c:dusts/nickel",
     "#c:dusts/lithium",
-    "#c:dusts/tungsten"
+    "#c:dusts/tungsten",
+    "#c:dusts/cobalt",
+    "#c:dusts/voidnite",
+    "#c:dusts/sulfur",
+    "#c:dusts/purpurite"
   ]
 }

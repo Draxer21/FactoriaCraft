@@ -151,6 +151,14 @@ public final class TerrainSelfTest {
             }
             var tin = net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
                     net.minecraft.resources.Identifier.fromNamespaceAndPath("c", "ingots/tin"));
+            int exotic = 0;
+            for (String ore : new String[] {"igneous_ore", "sulfur_ore", "cobalt_ore", "voidnite_ore"}) {
+                if (features.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                        net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, ore))).isPresent()) exotic++;
+            }
+            com.mojang.logging.LogUtils.getLogger().info("EXOTICTEST features={}/4 soulFuelBurn={} purpurCrushes={} alloyRecipes={}",
+                    exotic, level.fuelValues().burnDuration(new ItemStack(Exotic.SOUL_FUEL.value())),
+                    CrusherRecipes.resultFor(new ItemStack(Items.PURPUR_BLOCK)), AlloySmelterBlockEntity.RECIPES.size());
             com.mojang.logging.LogUtils.getLogger().info("MATERIALSTEST smelter={} oreFeatures={}/4 tinTagged={} pressWire={}",
                     out, ores, new ItemStack(Materials.TIN.ingot().value()).is(tin),
                     PressBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Materials.COPPER_WIRE.value()));

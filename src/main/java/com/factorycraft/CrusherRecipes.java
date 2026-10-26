@@ -59,6 +59,16 @@ public final class CrusherRecipes {
         add(Nuclear.DEEPSLATE_THORIUM_ORE_ITEM.value(), () -> Nuclear.THORIUM_DUST.value(), 4);
         add(Nuclear.LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
         add(Nuclear.DEEPSLATE_LEAD_ORE_ITEM.value(), () -> Nuclear.LEAD_DUST.value(), 4);
+        // Nether and End.
+        add(Exotic.RAW_COBALT.value(), () -> Exotic.COBALT_DUST.value(), 2);
+        add(Exotic.COBALT_ORE_ITEM.value(), () -> Exotic.COBALT_DUST.value(), 4);
+        add(Exotic.RAW_VOIDNITE.value(), () -> Exotic.VOIDNITE_DUST.value(), 2);
+        add(Exotic.VOIDNITE_ORE_ITEM.value(), () -> Exotic.VOIDNITE_DUST.value(), 3);
+        add(Exotic.SULFUR_ORE_ITEM.value(), () -> Exotic.SULFUR.value(), 6);
+        add(Exotic.IGNEOUS_ORE_ITEM.value(), () -> Exotic.IGNEOUS_CRYSTAL.value(), 2);
+        add(Items.PURPUR_BLOCK, () -> Exotic.PURPURITE_DUST.value(), 2);
+        add(Items.PURPUR_PILLAR, () -> Exotic.PURPURITE_DUST.value(), 2);
+        add(Items.NETHERRACK, () -> Items.GRAVEL, 1);
         // Industrial metals.
         for (Materials.Metal m : Materials.METALS) {
             add(m.raw().value(), () -> m.dust().value(), 2);

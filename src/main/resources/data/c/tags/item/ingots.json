@@ -10,6 +10,9 @@
     "#c:ingots/tungsten",
     "#c:ingots/steel",
     "#c:ingots/bronze",
-    "#c:ingots/stainless_steel"
+    "#c:ingots/stainless_steel",
+    "#c:ingots/cobalt",
+    "#c:ingots/voidnite",
+    "#c:ingots/purpurite"
   ]
 }
