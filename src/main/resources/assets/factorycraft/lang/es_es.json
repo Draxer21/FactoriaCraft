@@ -431,5 +431,21 @@
   "message.factorycraft.tool_off": "Herramienta apagada: no gira ni corta",
   "tooltip.factorycraft.mini_nuke.radius": "Cráter de %s bloques de radio",
   "block.factorycraft.filler": "Rellenadora",
-  "message.factorycraft.filler.area": "Área de relleno: %sx%s"
+  "message.factorycraft.filler.area": "Área de relleno: %sx%s",
+  "block.factorycraft.leveler": "Niveladora",
+  "block.factorycraft.quarry": "Cantera",
+  "block.factorycraft.drain": "Bomba de drenaje",
+  "block.factorycraft.planter": "Plantadora de árboles",
+  "block.factorycraft.builder": "Constructora",
+  "block.factorycraft.industrial_lamp": "Lámpara industrial",
+  "item.factorycraft.blueprint": "Plano",
+  "message.factorycraft.area": "Área: %sx%s",
+  "message.factorycraft.blueprint.corner": "Primera esquina marcada. Clic derecho en la esquina opuesta.",
+  "message.factorycraft.blueprint.saved": "Plano guardado: %sx%sx%s, %s bloques",
+  "message.factorycraft.blueprint.too_big": "Demasiado grande: máximo %s bloques por lado y %s bloques en total",
+  "message.factorycraft.blueprint.cleared": "Plano borrado",
+  "tooltip.factorycraft.blueprint.size": "%sx%sx%s, %s bloques",
+  "tooltip.factorycraft.blueprint.empty": "Vacío: clic derecho en dos esquinas opuestas para copiar",
+  "guide.factorycraft.terrain.title": "Terreno y construcción",
+  "guide.factorycraft.terrain.text": "Máquinas fijas que trabajan un área cuadrada a su alrededor. Shift + clic derecho con la mano vacía cambia el tamaño (se marca con partículas). Todas usan energía y, al terminar, revisan el área cada 10 segundos.\n\nNiveladora: corta todo lo que sobresale por encima de su nivel (cerros, árboles, construcciones sin cofres), de arriba hacia abajo, hasta 64 de alto. Lo cortado sale por el frente a una cinta o cofre. Con la rellenadora te deja una explanada perfecta.\n\nCantera: excava su área capa por capa desde debajo de ella hasta la roca madre y saca todo por el frente, minerales incluidos. No toca fluidos ni cofres.\n\nBomba de drenaje: vacía el agua y la lava del área, desde 8 bloques sobre su nivel hasta 32 bajo él. También seca los bloques inundados. Úsala antes de rellenar o construir en un lago.\n\nPlantadora de árboles: replanta el área con los brotes de sus 6 espacios, uno cada 3 bloques, sobre pasto o tierra.\n\nPlano y constructora: con el plano, clic derecho en una esquina de una construcción y luego en la esquina opuesta (hasta 32×32×32). Pon el plano en el primer espacio de la constructora y los bloques en los demás: la construye frente a ella (el lado del panel), de abajo hacia arriba. Si le falta un bloque espera a que se lo pongas. Nunca rompe nada: lo que esté ocupado se lo salta. Shift + clic derecho al aire borra el plano.\n\nLámpara industrial: luz máxima. Con energía (5 por tick) impide que aparezcan monstruos en 32 bloques a la redonda.\n\nPuentes: la aplanadora ya construye camino sobre agua y quebradas mientras avanza, con el bloque que tenga cargado."
 }

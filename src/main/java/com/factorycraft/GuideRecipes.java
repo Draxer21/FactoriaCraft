@@ -81,6 +81,7 @@ final class GuideRecipes {
             Map.entry("clean_power", new String[] {"chimney_filter", "air_purifier", "waste_barrel", "plant_inspector", "geiger_counter", "decontamination_kit"}),
             Map.entry("logistics", new String[] {"loading_station", "unloading_station", "tank_wagon", "route_beacon", "upgrade_autopilot"}),
             Map.entry("aircraft", new String[] {"helicopter", "submarine"}),
+            Map.entry("terrain", new String[] {"filler", "leveler", "quarry", "drain", "planter", "blueprint", "builder", "industrial_lamp"}),
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),
             Map.entry("power", new String[] {"generator", "solar_generator", "windmill", "geothermal_generator", "steam_turbine", "lightning_collector", "copper_coil", "copper_radiator", "battery", "energy_meter", "cable"}),

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:lapis_lazuli"
+  ],
+  "result": {
+    "id": "factorycraft:blueprint",
+    "count": 1
+  }
+}

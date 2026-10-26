@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "GDG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "S": "#minecraft:saplings",
+    "G": "#c:gears/iron",
+    "D": "minecraft:dispenser",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:planter",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "GCG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "B": "minecraft:bucket",
+    "G": "#c:gears/iron",
+    "C": "minecraft:sponge",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:drain",
+    "count": 1
+  }
+}

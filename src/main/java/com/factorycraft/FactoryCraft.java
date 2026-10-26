@@ -468,6 +468,56 @@ public final class FactoryCraft {
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> FILLER_MENU = MENUS.register("filler",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), id, inventory,
                     ProcessingMenu.BIG_INPUTS, 0), FeatureFlags.VANILLA_SET));
+
+    // ---- Stage 2: terrain machines.
+    public static final DeferredHolder<Block, Block> LEVELER = BLOCKS.register("leveler", () ->
+            new SimpleMachineBlock(machineProperties("leveler"), () -> FactoryCraft.LEVELER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> LEVELER_ITEM = ITEMS.registerItem("leveler",
+            properties -> new BlockItem(LEVELER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LevelerBlockEntity>> LEVELER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("leveler", () -> new BlockEntityType<>(LevelerBlockEntity::new, LEVELER.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> LEVELER_MENU = MENUS.register("leveler",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.LEVELER_MENU.value(), id, inventory, 0, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> QUARRY = BLOCKS.register("quarry", () ->
+            new SimpleMachineBlock(machineProperties("quarry"), () -> FactoryCraft.QUARRY_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> QUARRY_ITEM = ITEMS.registerItem("quarry",
+            properties -> new BlockItem(QUARRY.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBlockEntity>> QUARRY_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("quarry", () -> new BlockEntityType<>(QuarryBlockEntity::new, QUARRY.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> QUARRY_MENU = MENUS.register("quarry",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.QUARRY_MENU.value(), id, inventory, 0, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> DRAIN = BLOCKS.register("drain", () ->
+            new SimpleMachineBlock(machineProperties("drain"), () -> FactoryCraft.DRAIN_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> DRAIN_ITEM = ITEMS.registerItem("drain",
+            properties -> new BlockItem(DRAIN.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DrainBlockEntity>> DRAIN_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("drain", () -> new BlockEntityType<>(DrainBlockEntity::new, DRAIN.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> DRAIN_MENU = MENUS.register("drain",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.DRAIN_MENU.value(), id, inventory, 0, 0), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> PLANTER = BLOCKS.register("planter", () ->
+            new SimpleMachineBlock(machineProperties("planter"), () -> FactoryCraft.PLANTER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> PLANTER_ITEM = ITEMS.registerItem("planter",
+            properties -> new BlockItem(PLANTER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PlanterBlockEntity>> PLANTER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("planter", () -> new BlockEntityType<>(PlanterBlockEntity::new, PLANTER.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> PLANTER_MENU = MENUS.register("planter",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.PLANTER_MENU.value(), id, inventory, ProcessingMenu.BIG_INPUTS, 0), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> BUILDER = BLOCKS.register("builder", () ->
+            new SimpleMachineBlock(machineProperties("builder"), () -> FactoryCraft.BUILDER_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> BUILDER_ITEM = ITEMS.registerItem("builder",
+            properties -> new BlockItem(BUILDER.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BuilderBlockEntity>> BUILDER_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("builder", () -> new BlockEntityType<>(BuilderBlockEntity::new, BUILDER.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> BUILDER_MENU = MENUS.register("builder",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.BUILDER_MENU.value(), id, inventory, ProcessingMenu.BIG_INPUTS, 0), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> INDUSTRIAL_LAMP = BLOCKS.register("industrial_lamp", () ->
+            new SimpleMachineBlock(machineProperties("industrial_lamp").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 15 : 6), () -> FactoryCraft.INDUSTRIAL_LAMP_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> INDUSTRIAL_LAMP_ITEM = ITEMS.registerItem("industrial_lamp",
+            properties -> new BlockItem(INDUSTRIAL_LAMP.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IndustrialLampBlockEntity>> INDUSTRIAL_LAMP_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("industrial_lamp", () -> new BlockEntityType<>(IndustrialLampBlockEntity::new, INDUSTRIAL_LAMP.value()));
+    public static final DeferredHolder<Item, Item> BLUEPRINT = ITEMS.registerItem("blueprint", BlueprintItem::new);
+
     public static final DeferredHolder<Block, Block> INCINERATOR = BLOCKS.register("incinerator", () ->
             new SimpleMachineBlock(machineProperties("incinerator").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 12 : 0),
                     () -> FactoryCraft.INCINERATOR_BLOCK_ENTITY.value()));
@@ -700,6 +750,13 @@ public final class FactoryCraft {
                         output.accept(TANNERY_ITEM.value());
                         output.accept(INCINERATOR_ITEM.value());
                         output.accept(FILLER_ITEM.value());
+                        output.accept(LEVELER_ITEM.value());
+                        output.accept(QUARRY_ITEM.value());
+                        output.accept(DRAIN_ITEM.value());
+                        output.accept(PLANTER_ITEM.value());
+                        output.accept(BUILDER_ITEM.value());
+                        output.accept(BLUEPRINT.value());
+                        output.accept(INDUSTRIAL_LAMP_ITEM.value());
                         output.accept(LOCOMOTIVE_ITEM.value());
                         output.accept(DRONE_ITEM.value());
                         output.accept(DRONE_CONTROLLER.value());
