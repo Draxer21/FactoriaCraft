@@ -50,6 +50,10 @@ public final class TerrainSelfTest {
 
     private static void setUp(ServerLevel level) {
         base = new BlockPos(64, level.getMaxY() - 60, 64);
+        // Keep the test scenes ticking even with nobody around.
+        for (int x = base.getX() - 16; x <= base.getX() + 176; x += 16) {
+            for (int z = base.getZ() - 16; z <= base.getZ() + 16; z += 16) level.setChunkForced(x >> 4, z >> 4, true);
+        }
         BlockState stone = Blocks.STONE.defaultBlockState();
 
         // Filler: a 9x9 stone floor 4 below it, to fill 3 deep with dirt.
