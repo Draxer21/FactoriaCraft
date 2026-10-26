@@ -99,11 +99,6 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         return slot == 0 && Nuclear.fuelOf(stack) != null;
     }
 
-    /** Water in the reactor, in mB (for other mods' pipes). */
-    int water() {
-        return water;
-    }
-
     void setWater(int value) {
         water = Math.max(0, Math.min(WATER_CAPACITY, value));
         setChanged();
