@@ -44,9 +44,6 @@ import net.minecraft.world.phys.Vec3;
 public class CraneEntity extends WorkVehicleEntity implements HudInfo {
     private static final EntityDataAccessor<Byte> SIZE =
             SynchedEntityData.defineId(CraneEntity.class, EntityDataSerializers.BYTE);
-    /** The carried structure for the client renderer: "x,y,z,stateId;" per block. */
-    private static final EntityDataAccessor<String> LOAD =
-            SynchedEntityData.defineId(CraneEntity.class, EntityDataSerializers.STRING);
 
     /** How far the operator can aim, and how far from the crane a target may be. */
     public static final double REACH = 24.0;
@@ -70,9 +67,9 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
 
     private List<Piece> load = new ArrayList<>();
 
-    // Client-side cache of the synced load.
-    private String parsedFrom = "";
+    // Client side: the load as synced (CraneLoadPayload), and how many blocks it has.
     private List<Piece> clientLoad = List.of();
+    private int clientLoadCount;
 
     public CraneEntity(EntityType<? extends CraneEntity> type, Level level) {
         this(type, level, () -> FactoryCraft.CRANE_ITEM.value());
@@ -91,8 +88,13 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
     /** How far from the crane a lift or drop may be. */
     protected double maxDistance() { return MAX_DISTANCE; }
 
-    /** Biggest lift size (odd). */
-    protected int maxLiftSize() { return 5; }
+    /** Lift sizes the operator cycles through (edge of the cube, in blocks). */
+    protected int[] liftSizes() { return new int[] {1, 3, 5}; }
+
+    protected final int maxLiftSize() {
+        int[] sizes = liftSizes();
+        return sizes[sizes.length - 1];
+    }
 
     /** Hook position in blocks: ahead of the centre and above the ground (from the model). */
     public float hookForward() { return HOOK_FORWARD; }
@@ -119,7 +121,6 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SIZE, (byte) 3);
-        builder.define(LOAD, "");
     }
 
     public int getLiftSize() {
@@ -143,7 +144,13 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
                 player.sendOverlayMessage(Component.translatable("message.factorycraft.crane.carrying"));
                 return;
             }
-            int next = getLiftSize() >= maxLiftSize() ? 1 : getLiftSize() + 2;
+            int next = liftSizes()[0];
+            for (int candidate : liftSizes()) {
+                if (candidate > getLiftSize()) {
+                    next = candidate;
+                    break;
+                }
+            }
             entityData.set(SIZE, (byte) next);
             player.sendOverlayMessage(Component.translatable("message.factorycraft.crane.size", next, next, next));
             return;
@@ -162,12 +169,13 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
     private void lift(ServerLevel level, Player player, BlockPos base) {
         int size = getLiftSize();
         int half = size / 2;
+        int far = size - 1 - half; // even sizes reach one block less on the far side
         Rotation toCrane = rotationBetween(getDirection(), Direction.SOUTH);
         List<Piece> pieces = new ArrayList<>();
         List<BlockPos> taken = new ArrayList<>();
         for (int y = 0; y < size; y++) {
-            for (int x = -half; x <= half; x++) {
-                for (int z = -half; z <= half; z++) {
+            for (int x = -half; x <= far; x++) {
+                for (int z = -half; z <= far; z++) {
                     BlockPos pos = base.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
                     if (!canLift(level, pos, state)) continue;
@@ -263,41 +271,63 @@ public class CraneEntity extends WorkVehicleEntity implements HudInfo {
     @Override
     public Component hudLine() {
         int size = getLiftSize();
-        return getClientLoad().isEmpty()
+        return clientLoadCount == 0
                 ? Component.translatable("hud.factorycraft.crane_size", size, size, size)
-                : Component.translatable("hud.factorycraft.crane_load", getClientLoad().size());
+                : Component.translatable("hud.factorycraft.crane_load", clientLoadCount);
     }
 
     // ---------------------------------------------------------------- client sync
 
     private void syncLoad() {
-        StringBuilder sb = new StringBuilder();
-        for (Piece piece : load) {
-            BlockPos p = piece.pos();
-            sb.append(p.getX()).append(',').append(p.getY()).append(',').append(p.getZ()).append(',')
-                    .append(Block.getId(piece.state())).append(';');
+        if (level() instanceof ServerLevel) {
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntity(this, loadPayload());
         }
-        entityData.set(LOAD, sb.toString());
     }
 
-    /** The carried blocks as the client sees them (crane frame, forward = +z). */
-    public List<Piece> getClientLoad() {
-        String raw = entityData.get(LOAD);
-        if (!raw.equals(parsedFrom)) {
-            List<Piece> parsed = new ArrayList<>();
-            for (String entry : raw.split(";")) {
-                String[] f = entry.split(",");
-                if (f.length != 4) continue;
-                try {
-                    parsed.add(new Piece(new BlockPos(Integer.parseInt(f[0]), Integer.parseInt(f[1]), Integer.parseInt(f[2])),
-                            Block.stateById(Integer.parseInt(f[3])), Optional.empty()));
-                } catch (NumberFormatException ignored) {
-                    // Skip malformed entries.
+    private CraneLoadPayload loadPayload() {
+        int[] packed = new int[load.size() * 4];
+        for (int i = 0; i < load.size(); i++) {
+            Piece piece = load.get(i);
+            packed[i * 4] = piece.pos().getX();
+            packed[i * 4 + 1] = piece.pos().getY();
+            packed[i * 4 + 2] = piece.pos().getZ();
+            packed[i * 4 + 3] = Block.getId(piece.state());
+        }
+        return new CraneLoadPayload(getId(), packed);
+    }
+
+    @Override
+    public void startSeenByPlayer(net.minecraft.server.level.ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        if (!load.isEmpty()) net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player, loadPayload());
+    }
+
+    /**
+     * Client: a new load arrived. Only blocks with an open side are kept for drawing,
+     * so a solid 20×20×20 cube draws about 2,200 blocks instead of 8,000.
+     */
+    public void setClientLoad(int[] packed) {
+        int count = packed.length / 4;
+        java.util.Set<BlockPos> occupied = new java.util.HashSet<>();
+        for (int i = 0; i < count; i++) occupied.add(new BlockPos(packed[i * 4], packed[i * 4 + 1], packed[i * 4 + 2]));
+        List<Piece> visible = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            BlockPos pos = new BlockPos(packed[i * 4], packed[i * 4 + 1], packed[i * 4 + 2]);
+            boolean open = false;
+            for (Direction direction : Direction.values()) {
+                if (!occupied.contains(pos.relative(direction))) {
+                    open = true;
+                    break;
                 }
             }
-            parsedFrom = raw;
-            clientLoad = parsed;
+            if (open) visible.add(new Piece(pos, Block.stateById(packed[i * 4 + 3]), Optional.empty()));
         }
+        clientLoad = visible;
+        clientLoadCount = count;
+    }
+
+    /** The carried blocks as the client draws them (crane frame, forward = +z; hidden inner blocks left out). */
+    public List<Piece> getClientLoad() {
         return clientLoad;
     }
 

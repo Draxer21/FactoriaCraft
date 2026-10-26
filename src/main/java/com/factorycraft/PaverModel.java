@@ -33,8 +33,9 @@ public final class PaverModel extends EntityModel<BoatRenderState> {
     public static LayerDefinition createLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("front_roller", CubeListBuilder.create().texOffs(0, 0)
-                .addBox(-7, -7, -14, 14, 14, 28), PartPose.offset(20, -1, 0));
+        // A 16-sided drum: round, not a square box turning over.
+        PartDefinition drum = root.addOrReplaceChild("front_roller", CubeListBuilder.create(), PartPose.offset(20, -1, 0));
+        RoundParts.prismZ(drum, "drum", 0, 0, 7.0F, 28.0F, 16);
         root.addOrReplaceChild("roller_yoke", CubeListBuilder.create().texOffs(108, 42)
                 .addBox(13, -10, -15, 14, 2, 30), PartPose.ZERO);
         root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 42)

@@ -187,7 +187,7 @@
   "guide.factorycraft.crane.title": "Grúa de orugas",
   "guide.factorycraft.crane.text": "Sentado y con el Control de grúa:\n- Clic derecho a un bloque: levanta el cubo cuya base centrada es ese bloque.\n- Clic derecho en otro lugar: lo deja apoyado sobre esa cara.\n- Clic derecho al aire: tamaño 1, 3 o 5.\n\nLa carga gira con la grúa. Los cofres viajan con su contenido. Alcance 24 bloques (objetivo a menos de 18 de la grúa).",
   "guide.factorycraft.tower_crane.title": "Grúa torre",
-  "guide.factorycraft.tower_crane.text": "Fija, de 17 bloques. A/D la hacen girar sobre su torre. Se usa con el Control de grúa como la de orugas, pero alcanza 40 bloques y levanta hasta 9×9×9.",
+  "guide.factorycraft.tower_crane.text": "Fija, de 17 bloques. A/D la hacen girar sobre su torre. Se usa con el Control de grúa como la de orugas, pero alcanza 40 bloques y levanta hasta 20×20×20 (8000 bloques). Clic derecho al aire cambia el tamaño: 1, 3, 5, 7, 9, 12, 16 o 20.",
   "guide.factorycraft.locomotive.title": "Locomotora",
   "guide.factorycraft.locomotive.text": "Sobre rieles se guía sola (curvas y pendientes) y va rápida; fuera de rieles va lenta.\n\nSi lleva rieles en su almacén, tiende la vía delante mientras avanzas: construye una línea solo conduciendo.\n\nLos vagones de carga se enganchan detrás.",
   "guide.factorycraft.drone.title": "Dron explorador",

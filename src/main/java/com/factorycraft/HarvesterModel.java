@@ -36,8 +36,9 @@ public final class HarvesterModel extends EntityModel<BoatRenderState> {
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("header", CubeListBuilder.create().texOffs(0, 0)
                 .addBox(22, -4, -24, 8, 6, 48), PartPose.ZERO);
-        root.addOrReplaceChild("reel", CubeListBuilder.create().texOffs(112, 0)
-                .addBox(-3, -3, -23, 6, 6, 46), PartPose.offset(26, -8, 0));
+        // A 12-sided reel so it looks round while it turns.
+        PartDefinition reel = root.addOrReplaceChild("reel", CubeListBuilder.create(), PartPose.offset(26, -8, 0));
+        RoundParts.prismZ(reel, "drum", 112, 0, 3.0F, 46.0F, 12);
         root.addOrReplaceChild("reel_arm_left", CubeListBuilder.create().texOffs(0, 116)
                 .addBox(16, -10, -24, 10, 2, 2), PartPose.ZERO);
         root.addOrReplaceChild("reel_arm_right", CubeListBuilder.create().texOffs(0, 116)
