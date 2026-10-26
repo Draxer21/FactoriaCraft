@@ -70,6 +70,12 @@
     "factorycraft:steel_block",
     "factorycraft:bronze_block",
     "factorycraft:stainless_steel_block",
-    "factorycraft:alloy_smelter"
+    "factorycraft:alloy_smelter",
+    "factorycraft:igneous_ore",
+    "factorycraft:sulfur_ore",
+    "factorycraft:cobalt_ore",
+    "factorycraft:voidnite_ore",
+    "factorycraft:cobalt_block",
+    "factorycraft:voidnite_block"
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "factorycraft:sulfur_ore",
+  "result": {
+    "id": "factorycraft:sulfur"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

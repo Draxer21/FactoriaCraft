@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "minecraft:item/netherite_ingot",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 10121440
+      }
+    ]
+  }
+}

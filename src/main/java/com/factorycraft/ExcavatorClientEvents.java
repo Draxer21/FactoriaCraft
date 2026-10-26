@@ -97,6 +97,8 @@ public final class ExcavatorClientEvents {
         tint(event, 0xE884E8, Nuclear.PLUTONIUM_BLOCK.value());
         for (Materials.Metal m : Materials.METALS) tint(event, Materials.COLORS.get(m.name()), m.block().value());
         for (Materials.Alloy a : Materials.ALLOYS) tint(event, Materials.COLORS.get(a.name()), a.block().value());
+        tint(event, Materials.COLORS.get("cobalt"), Exotic.COBALT_BLOCK.value());
+        tint(event, Materials.COLORS.get("voidnite"), Exotic.VOIDNITE_BLOCK.value());
     }
 
     private static void tint(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event,
