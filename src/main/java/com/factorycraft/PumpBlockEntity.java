@@ -217,4 +217,9 @@ public final class PumpBlockEntity extends MachineBlockEntity implements Energy.
         output.putInt("Amount", amount);
         output.putBoolean("Drain", drainMode);
     }
+
+    @Override
+    public Energy.Link energyLink() {
+        return link;
+    }
 }

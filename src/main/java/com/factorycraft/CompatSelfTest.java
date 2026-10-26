@@ -39,7 +39,7 @@ public final class CompatSelfTest {
             log.append(" afterRollback=").append(genFe == null ? -1 : genFe.getAmountAsLong());
 
             BlockPos crusher = base.east(3);
-            level.setBlockAndUpdate(crusher, FactoryCraft.CRUSHER.value().defaultBlockState());
+            level.setBlockAndUpdate(crusher, FactoryCraft.PRESS.value().defaultBlockState());
             var machineFe = level.getCapability(Capabilities.Energy.BLOCK, crusher, Direction.UP);
             try (Transaction tx = Transaction.openRoot()) {
                 log.append(" machineIn=").append(machineFe == null ? "none" : machineFe.insert(1_500, tx));
@@ -47,7 +47,7 @@ public final class CompatSelfTest {
             }
             var crusherItems = level.getCapability(Capabilities.Item.BLOCK, crusher, Direction.UP);
             try (Transaction tx = Transaction.openRoot()) {
-                log.append(" itemsIn=").append(crusherItems == null ? "none" : crusherItems.insert(ItemResource.of(Items.RAW_IRON), 4, tx));
+                log.append(" itemsIn=").append(crusherItems == null ? "none" : crusherItems.insert(ItemResource.of(Items.IRON_INGOT), 4, tx));
                 tx.commit();
             }
 

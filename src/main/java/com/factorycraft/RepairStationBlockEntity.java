@@ -134,4 +134,9 @@ public final class RepairStationBlockEntity extends MachineBlockEntity implement
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new ProcessingMenu(FactoryCraft.REPAIR_STATION_MENU.value(), id, inventory, this, data, false, INPUTS);
     }
+
+    @Override
+    public Energy.Link energyLink() {
+        return link;
+    }
 }

@@ -42,7 +42,12 @@ public final class Energy {
     }
 
     /** A machine that runs on power (cables connect to it). */
-    public interface Consumer {}
+    public interface Consumer {
+        /** Its link, through which other mods' FE also comes in (see ModCompat). */
+        default @org.jspecify.annotations.Nullable Link energyLink() {
+            return null;
+        }
+    }
 
     private static final int RESCAN_TICKS = 40;
     private static final int MAX_CABLES = 1024;
@@ -59,8 +64,16 @@ public final class Energy {
         private List<BlockPos> sources = List.of();
         private long nextScan;
 
+        /** FE pushed in by other mods; used before the FactoryCraft network. Not saved (it's small). */
+        private final net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler feInput =
+                new net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler(10_000, 2_000, 0);
+
         public Link(BlockEntity owner) {
             this.owner = owner;
+        }
+
+        public net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler feInput() {
+            return feInput;
         }
 
         /** A link that only draws from generators, never from batteries (used by batteries). */
@@ -71,8 +84,11 @@ public final class Energy {
 
         /** Draws up to {@code amount} from the network; returns what it got. */
         public int draw(Level level, int amount) {
+            int buffered = feInput.getAmountAsInt();
+            int got = Math.min(buffered, amount);
+            if (got > 0) feInput.set(buffered - got);
+            if (got >= amount) return got;
             refresh(level);
-            int got = 0;
             for (BlockPos pos : sources) {
                 if (got >= amount) break;
                 if (level.getBlockEntity(pos) instanceof Source source && !(generatorsOnly && source.isStorage())) {
