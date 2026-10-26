@@ -46,4 +46,9 @@ public final class AirPurifierBlockEntity extends MachineBlockEntity implements 
         }
         return true;
     }
+
+    @Override
+    public Energy.Link energyLink() {
+        return link;
+    }
 }

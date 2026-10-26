@@ -30,14 +30,6 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     private final int inputs;
     private final int outputs;
     private final Energy.Link link = new Energy.Link(this);
-    /** FE pushed in by other mods' generators and cables; used before the FactoryCraft network. */
-    private final net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler feInput =
-            new net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler(20_000, 2_000, 0) {
-                @Override
-                protected void onEnergyChanged(int previous) {
-                    setChanged();
-                }
-            };
     private int progress;
     private int networkStored;
     private int networkCapacity;
@@ -117,8 +109,8 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     @Override
     protected boolean work(Level level) {
         if (level.getGameTime() % 10 == 0) {
-            networkStored = link.stored(level) + feInput.getAmountAsInt();
-            networkCapacity = link.capacity(level) + feInput.getCapacityAsInt();
+            networkStored = link.stored(level) + link.feInput().getAmountAsInt();
+            networkCapacity = link.capacity(level) + link.feInput().getCapacityAsInt();
         }
         Operation op = find(level);
         if (op == null || !canStore(op.maxOutputs())) {
@@ -142,8 +134,8 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     /** For machines with their own work loop: draws {@code energy} (scaled by modules) from the network. */
     protected final boolean drawPower(Level level, int energy) {
         if (level.getGameTime() % 10 == 0) {
-            networkStored = link.stored(level) + feInput.getAmountAsInt();
-            networkCapacity = link.capacity(level) + feInput.getCapacityAsInt();
+            networkStored = link.stored(level) + link.feInput().getAmountAsInt();
+            networkCapacity = link.capacity(level) + link.feInput().getCapacityAsInt();
         }
         int cost = Math.max(1, (int) Math.ceil(energy * energyFactor()));
         return draw(level, cost) >= cost;
@@ -151,16 +143,12 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
 
     /** Takes power from FE pushed in by other mods first, then from our own network. */
     private int draw(Level level, int amount) {
-        int buffered = feInput.getAmountAsInt();
-        int fromBuffer = Math.min(buffered, amount);
-        if (fromBuffer > 0) feInput.set(buffered - fromBuffer);
-        if (fromBuffer >= amount) return amount;
-        return fromBuffer + link.draw(level, amount - fromBuffer);
+        return link.draw(level, amount);
     }
 
-    /** Capability: other mods' power goes in here. */
-    net.neoforged.neoforge.transfer.energy.EnergyHandler feInput() {
-        return feInput;
+    @Override
+    public Energy.Link energyLink() {
+        return link;
     }
 
     protected final void setProgress(int value) {
@@ -181,13 +169,13 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         progress = input.getIntOr("Progress", 0);
-        feInput.set(input.getIntOr("FE", 0));
+        link.feInput().set(input.getIntOr("FE", 0));
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.putInt("Progress", progress);
-        output.putInt("FE", feInput.getAmountAsInt());
+        output.putInt("FE", link.feInput().getAmountAsInt());
     }
 }

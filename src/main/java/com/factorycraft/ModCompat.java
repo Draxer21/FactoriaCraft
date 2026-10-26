@@ -64,7 +64,7 @@ public final class ModCompat {
 
     private static @Nullable EnergyHandler energy(BlockEntity be) {
         if (be instanceof Energy.Source source) return new SourceHandler(source);
-        if (be instanceof PoweredMachineBlockEntity machine) return machine.feInput();
+        if (be instanceof Energy.Consumer consumer && consumer.energyLink() != null) return consumer.energyLink().feInput();
         return null;
     }
 

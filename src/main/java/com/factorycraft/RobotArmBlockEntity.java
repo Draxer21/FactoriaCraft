@@ -136,4 +136,9 @@ public final class RobotArmBlockEntity extends BlockEntity implements Energy.Con
             net.minecraft.world.Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, hand);
         }
     }
+
+    @Override
+    public Energy.Link energyLink() {
+        return link;
+    }
 }
