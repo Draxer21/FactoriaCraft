@@ -18,8 +18,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 @EventBusSubscriber(modid = FactoryCraft.MOD_ID)
 public final class TerrainSelfTest {
-    private static final int START = 100;
-    private static final int CHECK = START + 1400;
+    private static final int START = 40;
+    private static final int CHECK = START + 900;
     private static int ticks;
     private static BlockPos base;
 
@@ -32,7 +32,7 @@ public final class TerrainSelfTest {
         ServerLevel level = event.getServer().overworld();
         try {
             if (ticks == START) setUp(level);
-            if (ticks == CHECK) check(level);
+            if (ticks == START + 300 || ticks == START + 600 || ticks == CHECK) check(level);
         } catch (RuntimeException e) {
             com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST FAILED {}", e.toString());
         }
