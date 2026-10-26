@@ -7,9 +7,9 @@
     "PSP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "S": "minecraft:sugar",
-    "G": "factorycraft:gold_plate",
+    "G": "#c:plates/gold",
     "R": "minecraft:redstone_block"
   },
   "result": {

@@ -9,7 +9,7 @@
   "key": {
     "U": "factorycraft:uranium_fuel_rod",
     "N": "minecraft:netherite_sword",
-    "L": "factorycraft:lead_ingot"
+    "L": "#c:ingots/lead"
   },
   "result": {
     "id": "factorycraft:irradiated_blade",

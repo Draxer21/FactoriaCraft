@@ -7,9 +7,9 @@
     "PEP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "E": "minecraft:emerald",
-    "G": "factorycraft:iron_gear",
+    "G": "#c:gears/iron",
     "D": "minecraft:diamond"
   },
   "result": {

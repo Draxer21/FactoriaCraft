@@ -7,8 +7,8 @@
     "PLP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
-    "L": "factorycraft:lead_ingot",
+    "P": "#c:plates/iron",
+    "L": "#c:ingots/lead",
     "R": "factorycraft:plutonium_fuel_rod"
   },
   "result": {

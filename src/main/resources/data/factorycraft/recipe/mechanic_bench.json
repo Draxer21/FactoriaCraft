@@ -7,8 +7,8 @@
     "III"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
-    "G": "factorycraft:iron_gear",
+    "P": "#c:plates/iron",
+    "G": "#c:gears/iron",
     "W": "#minecraft:planks",
     "C": "minecraft:crafting_table",
     "I": "minecraft:iron_ingot"

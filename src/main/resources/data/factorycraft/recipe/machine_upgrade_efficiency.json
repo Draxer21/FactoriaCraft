@@ -7,8 +7,8 @@
     "PCP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
-    "C": "factorycraft:copper_plate",
+    "P": "#c:plates/iron",
+    "C": "#c:plates/copper",
     "L": "minecraft:lapis_block",
     "R": "minecraft:redstone"
   },

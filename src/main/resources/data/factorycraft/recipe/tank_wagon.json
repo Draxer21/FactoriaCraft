@@ -7,7 +7,7 @@
     "WWW"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "B": "minecraft:bucket",
     "W": "factorycraft:cargo_wagon"
   },

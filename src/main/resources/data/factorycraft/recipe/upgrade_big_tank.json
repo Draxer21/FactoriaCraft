@@ -7,7 +7,7 @@
     "IGI"
   ],
   "key": {
-    "I": "factorycraft:iron_plate",
+    "I": "#c:plates/iron",
     "G": "minecraft:gold_ingot",
     "R": "minecraft:redstone",
     "X": "minecraft:cauldron"

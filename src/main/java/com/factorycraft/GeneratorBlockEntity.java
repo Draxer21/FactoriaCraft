@@ -128,6 +128,12 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
     }
 
     @Override
+    public void setStored(int value) {
+        energy = value;
+        setChanged();
+    }
+
+    @Override
     public int stored() {
         return energy;
     }

@@ -7,8 +7,8 @@
     "LGL"
   ],
   "key": {
-    "C": "factorycraft:copper_plate",
-    "L": "factorycraft:lead_ingot",
+    "C": "#c:plates/copper",
+    "L": "#c:ingots/lead",
     "R": "minecraft:redstone",
     "G": "minecraft:glass_pane"
   },

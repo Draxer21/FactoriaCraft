@@ -7,7 +7,7 @@
     " L "
   ],
   "key": {
-    "L": "factorycraft:lead_ingot",
+    "L": "#c:ingots/lead",
     "T": "minecraft:tnt",
     "C": "factorycraft:enriched_uranium_3"
   },

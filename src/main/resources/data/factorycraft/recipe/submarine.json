@@ -7,7 +7,7 @@
     "PPP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "G": "minecraft:glass",
     "D": "factorycraft:iron_drill",
     "E": "minecraft:conduit",

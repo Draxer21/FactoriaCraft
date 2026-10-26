@@ -57,6 +57,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity machine) {
         boolean working = machine.work(level);
+        if (machine instanceof Energy.Source source) ModCompat.pushToNeighbours(level, pos, source);
         if (state.getValue(MachineBlock.LIT) != working) {
             level.setBlock(pos, state.setValue(MachineBlock.LIT, working), 3);
         }

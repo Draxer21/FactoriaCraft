@@ -7,9 +7,9 @@
     "PCP"
   ],
   "key": {
-    "P": "factorycraft:iron_plate",
+    "P": "#c:plates/iron",
     "A": "minecraft:anvil",
-    "G": "factorycraft:iron_gear",
+    "G": "#c:gears/iron",
     "R": "minecraft:redstone_block",
     "C": "factorycraft:cable"
   },

@@ -7,7 +7,7 @@
     "###"
   ],
   "key": {
-    "#": "factorycraft:lead_ingot"
+    "#": "#c:ingots/lead"
   },
   "result": {
     "id": "factorycraft:lead_block",

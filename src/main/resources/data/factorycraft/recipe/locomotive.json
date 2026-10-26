@@ -7,8 +7,8 @@
     "GMG"
   ],
   "key": {
-    "G": "factorycraft:iron_gear",
-    "P": "factorycraft:iron_plate",
+    "G": "#c:gears/iron",
+    "P": "#c:plates/iron",
     "M": "minecraft:minecart"
   },
   "result": {

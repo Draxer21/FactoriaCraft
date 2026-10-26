@@ -8,9 +8,9 @@
   ],
   "key": {
     "D": "minecraft:diamond",
-    "L": "factorycraft:lead_ingot",
+    "L": "#c:ingots/lead",
     "U": "factorycraft:uranium_fuel_rod",
-    "I": "factorycraft:iron_plate"
+    "I": "#c:plates/iron"
   },
   "result": {
     "id": "factorycraft:gamma_rifle",

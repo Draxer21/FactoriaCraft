@@ -99,6 +99,16 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         return slot == 0 && Nuclear.fuelOf(stack) != null;
     }
 
+    /** Water in the reactor, in mB (for other mods' pipes). */
+    int water() {
+        return water;
+    }
+
+    void setWater(int value) {
+        water = Math.max(0, Math.min(WATER_CAPACITY, value));
+        setChanged();
+    }
+
     /** Pours in a bucket of water (by hand or from a pump). */
     public boolean acceptWater() {
         if (water + BUCKET > WATER_CAPACITY) return false;
@@ -254,6 +264,12 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
             setChanged();
         }
         return taken;
+    }
+
+    @Override
+    public void setStored(int value) {
+        energy = value;
+        setChanged();
     }
 
     @Override public int stored() { return energy; }

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "factorycraft:plutonium_ingot"
+    "#c:ingots/plutonium"
   ],
   "result": {
     "id": "factorycraft:plutonium_nugget",

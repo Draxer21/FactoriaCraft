@@ -7,7 +7,7 @@
     "PPP"
   ],
   "key": {
-    "P": "factorycraft:copper_plate",
+    "P": "#c:plates/copper",
     "G": "minecraft:glass"
   },
   "result": {

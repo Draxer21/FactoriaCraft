@@ -9,7 +9,7 @@
   "key": {
     "L": "minecraft:redstone_lamp",
     "I": "minecraft:iron_bars",
-    "P": "factorycraft:iron_plate"
+    "P": "#c:plates/iron"
   },
   "result": {
     "id": "factorycraft:route_beacon",
