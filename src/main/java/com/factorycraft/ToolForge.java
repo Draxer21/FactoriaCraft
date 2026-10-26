@@ -212,7 +212,7 @@ public final class ToolForge {
         tool.set(DataComponents.ENCHANTABLE, new Enchantable(stats.enchantability()));
         tool.set(DataComponents.REPAIRABLE, new Repairable(HolderSet.direct(material.getItem().builtInRegistryHolder())));
         if (stats.fireproof()) tool.set(DataComponents.DAMAGE_RESISTANT, new DamageResistant(registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DamageTypeTags.IS_FIRE)));
-        tool.set(DataComponents.ITEM_NAME, Component.translatable("item.factorycraft.forged." + kind.id(), material.getHoverName()));
+        tool.set(DataComponents.ITEM_NAME, Component.translatable("item.factorycraft.forged." + kind.id(), materialName(material)));
         tool.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(), List.of(stats.color())));
         String materialId = BuiltInRegistries.ITEM.getKey(material.getItem()).toString();
         CustomData.update(DataComponents.CUSTOM_DATA, tool, tag -> {
@@ -220,6 +220,13 @@ public final class ToolForge {
             if (!stats.trait().isEmpty()) tag.putString("Trait", stats.trait());
         });
         return tool;
+    }
+
+    /** "cobalt" rather than "Cobalt Ingot": a material name key, falling back to the item's own name. */
+    static Component materialName(ItemStack material) {
+        Identifier id = BuiltInRegistries.ITEM.getKey(material.getItem());
+        String path = id.getPath().replace("_ingot", "");
+        return Component.translatableWithFallback("material." + id.getNamespace() + "." + path, material.getHoverName().getString());
     }
 
     public static String trait(ItemStack tool) {
