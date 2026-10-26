@@ -79,7 +79,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"powered:last", "screen:tannery", "screen:incinerator", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"nuke:4", "look:crater", "look:smoke", "summon:excavator"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -92,7 +92,16 @@ public final class VehicleClient {
             String chapter = DEMO_CHAPTERS[demoTicks / 160 - 1];
             com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO {}", chapter);
             String[] parts = chapter.split(":");
-            if (parts[0].equals("summon")) {
+            if (parts[0].equals("look")) {
+                // Just take another screenshot of whatever is in view.
+            } else if (parts[0].equals("nuke")) {
+                mc.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("gamemode spectator");
+                mc.player.connection.sendCommand("summon factorycraft:mini_nuke ~ ~25 ~45 {Item:{id:\"factorycraft:mini_nuke\",count:1,"
+                        + "components:{\"minecraft:custom_data\":{Yield:" + parts[1] + "}}}}");
+                mc.player.connection.sendCommand("tp @s ~ ~75 ~-45 0 38");
+            } else if (parts[0].equals("summon")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..30]");

@@ -27,8 +27,8 @@ public final class FactoryConfig {
             .comment("If true, mini-nukes destroy blocks.")
             .define("nuclearWeaponsBreakBlocks", true);
     private static final ModConfigSpec.DoubleValue MINI_NUKE_POWER = BUILDER
-            .comment("Mini-nuke blast power multiplier. 0.5 = half, 2.0 = double (very laggy above 2).")
-            .defineInRange("miniNukePower", 1.0, 0.1, 4.0);
+            .comment("Mini-nuke crater size multiplier (radius). 0.5 = half as wide, 2.0 = twice as wide; big craters take a few seconds to carve.")
+            .defineInRange("miniNukePower", 1.0, 0.1, 3.0);
     private static final ModConfigSpec.BooleanValue RADIATION = BUILDER
             .comment("Radioactive items make players sick.")
             .define("radiation", true);
