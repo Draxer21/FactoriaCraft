@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PEP",
+    "PCP",
+    "PPP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "E": "minecraft:ender_pearl",
+    "C": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:lift_pad",
+    "count": 2
+  }
+}

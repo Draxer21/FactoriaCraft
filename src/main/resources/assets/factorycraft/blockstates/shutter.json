@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/shutter"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/shutter"
+    }
+  }
+}

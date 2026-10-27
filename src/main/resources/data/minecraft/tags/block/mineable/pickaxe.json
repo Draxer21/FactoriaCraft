@@ -97,6 +97,22 @@
     "factorycraft:data_cable",
     "factorycraft:drone_port",
     "factorycraft:garage",
-    "factorycraft:cable_station"
+    "factorycraft:cable_station",
+    "factorycraft:turret",
+    "factorycraft:alarm",
+    "factorycraft:security_camera",
+    "factorycraft:monitor",
+    "factorycraft:shutter",
+    "factorycraft:reinforced_concrete",
+    "factorycraft:armor_plating",
+    "factorycraft:steel_scaffold",
+    "factorycraft:lift_pad",
+    "factorycraft:hazard_block",
+    "factorycraft:steel_panel",
+    "factorycraft:steel_grate",
+    "factorycraft:industrial_bricks",
+    "factorycraft:warning_lamp",
+    "factorycraft:armored_door",
+    "factorycraft:shutter_panel"
   ]
 }

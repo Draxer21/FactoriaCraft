@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PRP",
+    "NCN",
+    "PPP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "R": "minecraft:redstone_lamp",
+    "N": "minecraft:note_block",
+    "C": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:alarm",
+    "count": 1
+  }
+}

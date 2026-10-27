@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB",
+    "BC"
+  ],
+  "key": {
+    "B": "minecraft:bricks",
+    "C": "minecraft:coal"
+  },
+  "result": {
+    "id": "factorycraft:industrial_bricks",
+    "count": 4
+  }
+}

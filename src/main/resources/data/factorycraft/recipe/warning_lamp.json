@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "OLO",
+    " P "
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "O": "minecraft:orange_stained_glass",
+    "L": "minecraft:redstone_lamp"
+  },
+  "result": {
+    "id": "factorycraft:warning_lamp",
+    "count": 2
+  }
+}

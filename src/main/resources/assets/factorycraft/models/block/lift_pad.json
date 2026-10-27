@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "factorycraft:block/lift_pad_top",
+    "side": "factorycraft:block/steel_panel",
+    "bottom": "factorycraft:block/steel_panel"
+  }
+}

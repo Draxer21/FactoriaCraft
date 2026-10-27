@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/alarm"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/alarm_on"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/alarm"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/alarm_on"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/alarm"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/alarm_on"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/alarm"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/alarm_on"
+    }
+  }
+}

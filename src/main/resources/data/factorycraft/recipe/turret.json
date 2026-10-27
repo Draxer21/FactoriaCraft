@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " B ",
+    "PCP",
+    "SRS"
+  ],
+  "key": {
+    "B": "factorycraft:steel_ingot",
+    "P": "#c:plates/steel",
+    "C": "factorycraft:advanced_circuit",
+    "S": "#c:plates/iron",
+    "R": "minecraft:crossbow"
+  },
+  "result": {
+    "id": "factorycraft:turret",
+    "count": 1
+  }
+}

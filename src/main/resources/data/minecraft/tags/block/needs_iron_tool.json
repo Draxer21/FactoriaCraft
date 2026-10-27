@@ -11,6 +11,10 @@
     "factorycraft:tungsten_ore",
     "factorycraft:deepslate_tungsten_ore",
     "factorycraft:cobalt_ore",
-    "factorycraft:cobalt_block"
+    "factorycraft:cobalt_block",
+    "factorycraft:reinforced_concrete",
+    "factorycraft:armored_door",
+    "factorycraft:turret",
+    "factorycraft:shutter"
   ]
 }
