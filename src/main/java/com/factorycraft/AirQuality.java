@@ -75,10 +75,14 @@ public final class AirQuality {
 
     // ---------------------------------------------------------------- reading and writing
 
+    /** The chunk at {@code pos} only if it's fully loaded already (never waits for or generates one). */
+    private static LevelChunk loaded(Level level, BlockPos pos) {
+        return level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+    }
+
     public static int get(Level level, BlockPos pos) {
-        if (!level.isLoaded(pos)) return 0;
-        LevelChunk chunk = level.getChunkAt(pos);
-        return chunk.getData(AIR).now(level.getGameTime());
+        LevelChunk chunk = loaded(level, pos);
+        return chunk == null ? 0 : chunk.getData(AIR).now(level.getGameTime());
     }
 
     /** What a player standing at {@code pos} breathes: own chunk plus some of the neighbours'. */
@@ -90,8 +94,9 @@ public final class AirQuality {
     }
 
     public static void add(Level level, BlockPos pos, int amount) {
-        if (!FactoryConfig.pollution() || !level.isLoaded(pos) || level.isClientSide()) return;
-        LevelChunk chunk = level.getChunkAt(pos);
+        if (!FactoryConfig.pollution() || level.isClientSide()) return;
+        LevelChunk chunk = loaded(level, pos);
+        if (chunk == null) return;
         long time = level.getGameTime();
         int value = Math.max(0, Math.min(MAX, chunk.getData(AIR).now(time) + amount));
         chunk.setData(AIR, new Air(value, time));
@@ -164,7 +169,8 @@ public final class AirQuality {
     public static void onSpawn(FinalizeSpawnEvent event) {
         if (!(event.getEntity() instanceof Animal)) return;
         EntitySpawnReason reason = event.getSpawnType();
-        if (reason != EntitySpawnReason.NATURAL && reason != EntitySpawnReason.CHUNK_GENERATION && reason != EntitySpawnReason.BREEDING) return;
+        // Not during world generation: the chunk isn't ready to be asked yet.
+        if (reason != EntitySpawnReason.NATURAL && reason != EntitySpawnReason.BREEDING) return;
         if (get(event.getEntity().level(), event.getEntity().blockPosition()) >= FAUNA) event.setSpawnCancelled(true);
     }
 
