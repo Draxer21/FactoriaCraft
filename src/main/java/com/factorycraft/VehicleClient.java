@@ -99,6 +99,7 @@ public final class VehicleClient {
             String[] parts = chapter.split(":");
             if (parts[0].equals("look")) {
                 // Just take another screenshot of whatever is in view.
+                com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO look air={} haze={}", PollutionPayload.latest.air(), EnvironmentClient.haze());
             } else if (parts[0].equals("nuke")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
@@ -139,7 +140,10 @@ public final class VehicleClient {
                 mc.player.connection.sendCommand("tp @s ~ ~ ~ 0 0");
                 var server = mc.getSingleplayerServer();
                 net.minecraft.core.BlockPos at = mc.player.blockPosition();
-                if (server != null) server.execute(() -> AirQuality.spread(server.overworld(), at, 900));
+                if (server != null) server.execute(() -> {
+                    AirQuality.spread(server.overworld(), at, 900);
+                    com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO smog air={}", AirQuality.get(server.overworld(), at));
+                });
             } else if (parts[0].equals("showcase")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
