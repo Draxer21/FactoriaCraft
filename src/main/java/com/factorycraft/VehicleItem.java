@@ -21,6 +21,15 @@ public final class VehicleItem extends Item {
         this.type = type;
     }
 
+    /** Gives a freshly made vehicle the data it had when it was parked in a garage (if any). */
+    static void restore(net.minecraft.world.item.ItemStack stack, AbstractBoat vehicle) {
+        net.minecraft.world.item.component.CustomData custom = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+        if (custom == null) return;
+        custom.copyTag().getCompound(GarageBlockEntity.VEHICLE_KEY).ifPresent(tag -> vehicle.load(
+                net.minecraft.world.level.storage.TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING, vehicle.registryAccess(), tag)));
+        vehicle.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+    }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
@@ -31,6 +40,8 @@ public final class VehicleItem extends Item {
         if (vehicle == null) return InteractionResult.FAIL;
 
         Player player = context.getPlayer();
+        // A vehicle that was parked in a garage comes back just as it was.
+        restore(context.getItemInHand(), vehicle);
         if (player != null) vehicle.setYRot(player.getYRot());
         vehicle.setInitialPos(placeAt.getX() + 0.5, placeAt.getY(), placeAt.getZ() + 0.5);
         if (!level.noCollision(vehicle, vehicle.getBoundingBox()) || !level.addFreshEntity(vehicle)) {

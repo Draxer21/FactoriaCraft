@@ -65,6 +65,10 @@
     "factorycraft:fluid_tank",
     "factorycraft:sewer_grate",
     "factorycraft:desalinator",
-    "factorycraft:treatment_plant"
+    "factorycraft:treatment_plant",
+    "factorycraft:storage_terminal",
+    "factorycraft:drone_port",
+    "factorycraft:garage",
+    "factorycraft:cable_station"
   ]
 }

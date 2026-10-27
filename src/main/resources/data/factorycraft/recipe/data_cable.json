@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "CRC",
+    "GGG"
+  ],
+  "key": {
+    "G": "#c:plates/iron",
+    "C": "factorycraft:copper_wire",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:data_cable",
+    "count": 8
+  }
+}

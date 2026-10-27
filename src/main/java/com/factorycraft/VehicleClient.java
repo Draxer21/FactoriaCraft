@@ -68,6 +68,7 @@ public final class VehicleClient {
     @SubscribeEvent
     public static void registerClientPayloads(net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent event) {
         event.register(StationDataPayload.TYPE, (payload, context) -> Minecraft.getInstance().gui.setScreen(new StationScreen(payload)));
+        event.register(TerminalListPayload.TYPE, (payload, context) -> TerminalListPayload.latest = payload);
         event.register(CraneLoadPayload.TYPE, (payload, context) -> {
             var level = Minecraft.getInstance().level;
             if (level != null && level.getEntity(payload.entityId()) instanceof CraneEntity crane) crane.setClientLoad(payload.packed());

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "P P",
+    "CHC",
+    "PBP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "C": "factorycraft:circuit_board",
+    "H": "minecraft:hopper",
+    "B": "factorycraft:battery"
+  },
+  "result": {
+    "id": "factorycraft:drone_port",
+    "count": 1
+  }
+}

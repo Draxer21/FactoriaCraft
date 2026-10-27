@@ -92,6 +92,11 @@
     "factorycraft:sewer_grate",
     "factorycraft:desalinator",
     "factorycraft:treatment_plant",
-    "factorycraft:salt_block"
+    "factorycraft:salt_block",
+    "factorycraft:storage_terminal",
+    "factorycraft:data_cable",
+    "factorycraft:drone_port",
+    "factorycraft:garage",
+    "factorycraft:cable_station"
   ]
 }

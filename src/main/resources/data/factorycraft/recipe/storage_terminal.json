@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "CEC",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:circuit_board",
+    "E": "minecraft:ender_pearl",
+    "R": "factorycraft:data_cable"
+  },
+  "result": {
+    "id": "factorycraft:storage_terminal",
+    "count": 1
+  }
+}

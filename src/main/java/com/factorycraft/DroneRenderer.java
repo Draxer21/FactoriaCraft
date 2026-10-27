@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 
-public final class DroneRenderer extends EntityRenderer<DroneEntity, DroneRenderer.DroneRenderState> {
+public final class DroneRenderer<T extends net.minecraft.world.entity.Entity> extends EntityRenderer<T, DroneRenderer.DroneRenderState> {
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "textures/entity/drone.png");
     private final DroneModel model;
 
@@ -30,7 +30,7 @@ public final class DroneRenderer extends EntityRenderer<DroneEntity, DroneRender
     }
 
     @Override
-    public void extractRenderState(DroneEntity entity, DroneRenderState state, float partialTicks) {
+    public void extractRenderState(T entity, DroneRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.yRot = entity.getYRot(partialTicks);
     }

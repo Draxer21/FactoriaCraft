@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SCS",
+    "PGP",
+    "SSS"
+  ],
+  "key": {
+    "S": "#c:plates/steel",
+    "C": "minecraft:chain",
+    "P": "minecraft:piston",
+    "G": "#c:gears/iron"
+  },
+  "result": {
+    "id": "factorycraft:cable_station",
+    "count": 1
+  }
+}

@@ -107,6 +107,12 @@ final class VehicleShapes {
             box(2.72, 3.09, -2.53, 2.53, 0.09, 1.78),   // blade
     };
 
+    static final VehicleHitbox.Box[] CARGO_SHIP = {
+            box(-4.31, 5.06, -1.59, 1.59, 0.0, 1.78),   // hull and deck
+            box(-4.13, -3.19, -1.31, 1.31, 1.78, 3.75), // bridge
+            box(-1.88, 3.0, -1.41, 1.41, 1.78, 2.72),   // containers
+    };
+
     static VehicleHitbox.Box[] of(Entity vehicle) {
         return switch (BuiltInRegistries.ENTITY_TYPE.getKey(vehicle.getType()).getPath()) {
             case "excavator" -> EXCAVATOR;
@@ -122,6 +128,7 @@ final class VehicleShapes {
             case "locomotive" -> LOCOMOTIVE;
             case "forester" -> FORESTER;
             case "bulldozer" -> BULLDOZER;
+            case "cargo_ship" -> CARGO_SHIP;
             default -> CARGO_WAGON; // cargo and tank wagons share the model
         };
     }

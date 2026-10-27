@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PDP",
+    "WCW",
+    "PPP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "D": "minecraft:iron_door",
+    "W": "factorycraft:wrench",
+    "C": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:garage",
+    "count": 1
+  }
+}
