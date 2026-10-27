@@ -35,7 +35,7 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
     @Override
     protected void init() {
         super.init();
-        search = new EditBox(this.font, leftPos + 8, topPos + 17, 110, 12, Component.translatable("gui.factorycraft.terminal.search"));
+        search = new EditBox(this.font, leftPos + 8, topPos + 17, 96, 12, Component.translatable("gui.factorycraft.terminal.search"));
         search.setMaxLength(40);
         search.setHint(Component.translatable("gui.factorycraft.terminal.search"));
         search.setResponder(text -> scroll = 0);
@@ -192,8 +192,8 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
         String info = Component.translatable("gui.factorycraft.terminal.info", TerminalListPayload.latest.inventories(),
                 TerminalListPayload.latest.entries().size()).getString();
         graphics.pose().pushMatrix();
-        graphics.pose().translate(leftPos + 122, topPos + 20);
-        graphics.pose().scale(0.75F, 0.75F);
+        graphics.pose().translate(leftPos + 108, topPos + 21);
+        graphics.pose().scale(0.6F, 0.6F);
         graphics.text(this.font, info, 0, 0, 0xFF404040);
         graphics.pose().popMatrix();
     }
