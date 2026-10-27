@@ -1,0 +1,67 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "factorycraft:block/data_cable_core"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm",
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm",
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm",
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm",
+        "x": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "factorycraft:block/data_cable_arm",
+        "x": 90,
+        "uvlock": false
+      }
+    }
+  ]
+}

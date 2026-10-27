@@ -64,6 +64,32 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
+        // Drone ports: dock delivery drones, link with the wrench.
+        if (level.getBlockEntity(pos) instanceof DronePortBlockEntity port) {
+            if (stack.is(Logistics.DELIVERY_DRONE_ITEM.value())) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                if (!port.dock()) return InteractionResult.FAIL;
+                if (!player.isCreative()) stack.shrink(1);
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.drone_port.docked", port.drones()));
+                return InteractionResult.SUCCESS_SERVER;
+            }
+            if (stack.getItem() instanceof WrenchItem) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                        net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+                int[] from = tag.getIntArray("PortFrom").orElse(new int[0]);
+                BlockPos source = from.length == 3 ? new BlockPos(from[0], from[1], from[2]) : null;
+                if (source != null && !source.equals(pos) && level.getBlockEntity(source) instanceof DronePortBlockEntity sender) {
+                    sender.link(player, pos);
+                    tag.remove("PortFrom");
+                } else {
+                    tag.putIntArray("PortFrom", new int[] {pos.getX(), pos.getY(), pos.getZ()});
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.drone_port.pick"));
+                }
+                stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+                return InteractionResult.SUCCESS_SERVER;
+            }
+        }
         // Buckets fill and empty tanks and fluid machines.
         if (stack.getItem() instanceof net.minecraft.world.item.BucketItem
                 && level.getBlockEntity(pos) instanceof FluidStorage.Holder holder) {
@@ -124,6 +150,22 @@ public abstract class MachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PumpBlockEntity pump) {
             if (!level.isClientSide()) pump.click(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof GarageBlockEntity garage) {
+            if (!level.isClientSide()) garage.park(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof DronePortBlockEntity port) {
+            if (!level.isClientSide() && port.undock()) {
+                ItemStack drone = new ItemStack(Logistics.DELIVERY_DRONE_ITEM.value());
+                if (!player.getInventory().add(drone)) player.drop(drone, false);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof CableStationBlockEntity station) {
+            if (!level.isClientSide()) player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable(
+                    station.linked() ? "message.factorycraft.cable.station_linked" : "message.factorycraft.cable.station_free"));
             return InteractionResult.SUCCESS;
         }
         if (level.getBlockEntity(pos) instanceof FluidTankBlockEntity || level.getBlockEntity(pos) instanceof SewerGrateBlockEntity) {

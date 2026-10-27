@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SKS",
+    "SSS"
+  ],
+  "key": {
+    "S": "#c:ingots/steel",
+    "K": "minecraft:stick"
+  },
+  "result": {
+    "id": "factorycraft:steel_cable",
+    "count": 1
+  }
+}

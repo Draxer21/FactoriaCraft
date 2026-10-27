@@ -28,6 +28,8 @@ public final class ExcavatorClientEvents {
         event.registerLayerDefinition(SubmarineModel.LAYER_LOCATION, SubmarineModel::createLayer);
         event.registerLayerDefinition(LocomotiveModel.LAYER_LOCATION, LocomotiveModel::createLayer);
         event.registerLayerDefinition(DroneModel.LAYER_LOCATION, DroneModel::createLayer);
+        event.registerLayerDefinition(CargoShipModel.LAYER_LOCATION, CargoShipModel::createLayer);
+        event.registerLayerDefinition(CableCarModel.LAYER_LOCATION, CableCarModel::createLayer);
     }
 
     @SubscribeEvent
@@ -57,6 +59,9 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.REFINERY_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.FERMENTER_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.GREENHOUSE_MENU.value(), ProcessingScreen::new);
+        event.register(Logistics.STORAGE_TERMINAL_MENU.value(), StorageTerminalScreen::new);
+        event.register(Logistics.DRONE_PORT_MENU.value(), ProcessingScreen::new);
+        event.register(Logistics.GARAGE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.ANIMAL_FARM_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.DESALINATOR_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.TREATMENT_PLANT_MENU.value(), ProcessingScreen::new);
@@ -86,6 +91,10 @@ public final class ExcavatorClientEvents {
         event.registerEntityRenderer(FactoryCraft.LOCOMOTIVE.value(), context -> new WorkVehicleRenderer(context, "locomotive",
                 LocomotiveModel.LAYER_LOCATION, 1.5F, LocomotiveModel::new, LocomotiveModel.LAMP_PARTS, LocomotiveModel.BEAM_ORIGINS));
         event.registerEntityRenderer(FactoryCraft.DRONE.value(), DroneRenderer::new);
+        event.registerEntityRenderer(Logistics.DELIVERY_DRONE.value(), DroneRenderer::new);
+        event.registerEntityRenderer(Logistics.CABLE_CAR.value(), CableCarRenderer::new);
+        event.registerEntityRenderer(Logistics.CARGO_SHIP.value(), context -> new WorkVehicleRenderer(context, "cargo_ship",
+                CargoShipModel.LAYER_LOCATION, 1.5F, CargoShipModel::new, CargoShipModel.LAMP_PARTS, CargoShipModel.BEAM_ORIGINS));
         event.registerEntityRenderer(Nuclear.MINI_NUKE_ENTITY.value(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
         event.registerEntityRenderer(FactoryCraft.ORE_MARKER.value(), OreMarkerRenderer::new);
         event.registerEntityRenderer(FactoryCraft.FORESTER.value(), context -> new WorkVehicleRenderer(context, "forester",

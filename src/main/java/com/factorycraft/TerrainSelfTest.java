@@ -96,6 +96,7 @@ public final class TerrainSelfTest {
         setUpMaterials(level);
         setUpEnergy(level);
         setUpFarm(level);
+        setUpLogistics(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -159,6 +160,81 @@ public final class TerrainSelfTest {
     }
 
     private static int tankExtracted = -1;
+    private static String storageResult = "";
+    private static String garageResult = "";
+
+    private static void setUpLogistics(ServerLevel level) {
+        BlockPos row = base.offset(0, 0, 16);
+        // Storage: terminal - cable - cable - chest, an industrial chest above the first cable.
+        BlockPos terminal = row;
+        level.setBlockAndUpdate(terminal, Logistics.STORAGE_TERMINAL.value().defaultBlockState());
+        level.setBlockAndUpdate(terminal.east(), Logistics.DATA_CABLE.value().defaultBlockState());
+        level.setBlockAndUpdate(terminal.east(2), Logistics.DATA_CABLE.value().defaultBlockState());
+        level.setBlockAndUpdate(terminal.east(3), Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(terminal.east(3)) instanceof net.minecraft.world.Container chest) chest.setItem(0, new ItemStack(Items.IRON_INGOT, 10));
+        level.setBlockAndUpdate(terminal.east().above(), FactoryCraft.INDUSTRIAL_CHEST.value().defaultBlockState());
+        if (level.getBlockEntity(terminal.east().above()) instanceof net.minecraft.world.Container chest) chest.setItem(5, new ItemStack(Items.GOLD_INGOT, 5));
+        StorageNetwork network = StorageNetwork.scan(level, terminal);
+        int inventories = network.inventories();
+        long iron = network.count(net.neoforged.neoforge.transfer.item.ItemResource.of(Items.IRON_INGOT));
+        long gold = network.count(net.neoforged.neoforge.transfer.item.ItemResource.of(Items.GOLD_INGOT));
+        ItemStack rest = network.insert(new ItemStack(Items.DIAMOND, 20));
+        ItemStack taken = network.extract(net.neoforged.neoforge.transfer.item.ItemResource.of(Items.IRON_INGOT), 4);
+        storageResult = "inventories=" + inventories + " iron=" + iron + " gold=" + gold + " insertRest=" + rest.getCount()
+                + " diamonds=" + StorageNetwork.scan(level, terminal).count(net.neoforged.neoforge.transfer.item.ItemResource.of(Items.DIAMOND))
+                + " extracted=" + taken.getCount() + " ironLeft=" + StorageNetwork.scan(level, terminal).count(net.neoforged.neoforge.transfer.item.ItemResource.of(Items.IRON_INGOT));
+
+        // Drone delivery: port A -> port B, 40 blocks.
+        BlockPos portA = row.offset(20, 0, 0);
+        BlockPos portB = row.offset(60, 0, 0);
+        powered(level, portA, Logistics.DRONE_PORT.value());
+        powered(level, portB, Logistics.DRONE_PORT.value());
+        if (level.getBlockEntity(portA) instanceof DronePortBlockEntity a) {
+            a.setTarget(portB);
+            a.dock();
+            a.setItem(0, new ItemStack(Items.IRON_INGOT, 16));
+            a.setItem(1, new ItemStack(Items.COAL, 8));
+        }
+
+        // Garage: park a cargo ship with coal in its hold, then take it out again.
+        BlockPos garage = row.offset(80, 0, 0);
+        box(level, garage.offset(-2, -1, -6), garage.offset(12, -1, 6), Blocks.STONE.defaultBlockState());
+        powered(level, garage, Logistics.GARAGE.value());
+        CargoShipEntity ship = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (ship != null && level.getBlockEntity(garage) instanceof GarageBlockEntity be) {
+            ship.setPos(garage.getX() + 6.5, garage.getY(), garage.getZ() + 0.5);
+            ship.setItem(0, new ItemStack(Items.COAL, 3));
+            level.addFreshEntity(ship);
+            String parked = be.parkNearest().getString();
+            ItemStack packed = be.getItem(0).copy();
+            CargoShipEntity back = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+            if (back != null) VehicleItem.restore(packed, back);
+            garageResult = "parked='" + parked + "' item=" + packed.getItem() + " shipGone=" + ship.isRemoved()
+                    + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed);
+        }
+
+        // Cable car: two stations 30 blocks apart.
+        BlockPos stationA = row.offset(100, 0, 0);
+        BlockPos stationB = row.offset(130, 2, 0);
+        level.setBlockAndUpdate(stationA, Logistics.CABLE_STATION.value().defaultBlockState());
+        level.setBlockAndUpdate(stationB, Logistics.CABLE_STATION.value().defaultBlockState());
+        if (level.getBlockEntity(stationA) instanceof CableStationBlockEntity sa && level.getBlockEntity(stationB) instanceof CableStationBlockEntity sb) {
+            sa.link(stationB, true);
+            sb.link(stationA, false);
+            CableCarEntity.create(level, stationA, stationB);
+        }
+    }
+
+    private static void logLogistics(ServerLevel level) {
+        BlockPos row = base.offset(0, 0, 16);
+        int drones = level.getBlockEntity(row.offset(20, 0, 0)) instanceof DronePortBlockEntity a ? a.drones() : -1;
+        java.util.List<CableCarEntity> cars = level.getEntitiesOfClass(CableCarEntity.class,
+                new net.minecraft.world.phys.AABB(net.minecraft.world.phys.Vec3.atCenterOf(row.offset(95, -10, -5)), net.minecraft.world.phys.Vec3.atCenterOf(row.offset(135, 10, 5))));
+        String car = cars.isEmpty() ? "none" : String.format(java.util.Locale.ROOT, "x=%.1f y=%.1f", cars.get(0).getX() - row.getX(), cars.get(0).getY() - row.getY());
+        int fuel = level.getBlockEntity(row.offset(80, 0, 0)) instanceof GarageBlockEntity g ? GarageBlockEntity.fuelOf(g.getItem(0)) : -2;
+        com.mojang.logging.LogUtils.getLogger().info("LOGISTICSTEST storage[{}] droneB=[{}] dronesHomeA={} garage[{}] garageFuelNow={} cableCars={} car={}",
+                storageResult, outputs(level, row.offset(60, 0, 0)), drones, garageResult, fuel, cars.size(), car);
+    }
 
     private static String tank(ServerLevel level, BlockPos pos, int slot) {
         return level.getBlockEntity(pos) instanceof FluidStorage.Holder holder ? String.valueOf(holder.fluids().amount(slot)) : "none";
@@ -265,6 +341,7 @@ public final class TerrainSelfTest {
                     ToolForge.trait(multitool), ToolForge.statsFor(new ItemStack(Items.STICK)),
                     smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON))).toString()).orElse("none"));
             logFarm(level);
+            logLogistics(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
