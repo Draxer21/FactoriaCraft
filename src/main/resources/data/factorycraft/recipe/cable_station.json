@@ -8,7 +8,7 @@
   ],
   "key": {
     "S": "#c:plates/steel",
-    "C": "minecraft:chain",
+    "C": "minecraft:iron_chain",
     "P": "minecraft:piston",
     "G": "#c:gears/iron"
   },

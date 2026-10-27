@@ -32,6 +32,7 @@ public final class TerrainSelfTest {
         ServerLevel level = event.getServer().overworld();
         try {
             if (ticks == START) setUp(level);
+            if (ticks == START + 100) garageTest(level);
             if (ticks == START + 300 || ticks == START + 600 || ticks == CHECK) check(level);
         } catch (RuntimeException e) {
             com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST FAILED {}", e.toString());
@@ -201,16 +202,10 @@ public final class TerrainSelfTest {
         box(level, garage.offset(-2, -1, -6), garage.offset(12, -1, 6), Blocks.STONE.defaultBlockState());
         powered(level, garage, Logistics.GARAGE.value());
         CargoShipEntity ship = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
-        if (ship != null && level.getBlockEntity(garage) instanceof GarageBlockEntity be) {
+        if (ship != null) {
             ship.setPos(garage.getX() + 6.5, garage.getY(), garage.getZ() + 0.5);
             ship.setItem(0, new ItemStack(Items.COAL, 3));
             level.addFreshEntity(ship);
-            String parked = be.parkNearest().getString();
-            ItemStack packed = be.getItem(0).copy();
-            CargoShipEntity back = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
-            if (back != null) VehicleItem.restore(packed, back);
-            garageResult = "parked='" + parked + "' item=" + packed.getItem() + " shipGone=" + ship.isRemoved()
-                    + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed);
         }
 
         // Cable car: two stations 30 blocks apart.
@@ -223,6 +218,20 @@ public final class TerrainSelfTest {
             sb.link(stationA, false);
             CableCarEntity.create(level, stationA, stationB);
         }
+    }
+
+    /** Later than the set-up, once the forced chunks have their entities loaded. */
+    private static void garageTest(ServerLevel level) {
+        BlockPos garage = base.offset(80, 0, 16);
+        if (!(level.getBlockEntity(garage) instanceof GarageBlockEntity be)) return;
+        java.util.List<CargoShipEntity> ships = level.getEntitiesOfClass(CargoShipEntity.class, new net.minecraft.world.phys.AABB(garage).inflate(12));
+        String parked = be.parkNearest().getString();
+        ItemStack packed = be.getItem(0).copy();
+        CargoShipEntity back = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (back != null) VehicleItem.restore(packed, back);
+        garageResult = "shipsNear=" + ships.size() + " parked='" + parked + "' item=" + packed.getItem()
+                + " shipGone=" + (ships.isEmpty() ? "?" : String.valueOf(ships.get(0).isRemoved()))
+                + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed);
     }
 
     private static void logLogistics(ServerLevel level) {
