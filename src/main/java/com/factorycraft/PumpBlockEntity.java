@@ -196,8 +196,11 @@ public final class PumpBlockEntity extends MachineBlockEntity implements Energy.
         if (fluid == TankerEntity.Fluid.WATER && level.getBlockEntity(pos) instanceof NuclearReactorBlockEntity reactor) {
             return reactor.acceptWater();
         }
-        return fluid == TankerEntity.Fluid.LAVA && level.getBlockEntity(pos) instanceof GeneratorBlockEntity generator
-                && generator.acceptLava();
+        if (fluid == TankerEntity.Fluid.LAVA && level.getBlockEntity(pos) instanceof GeneratorBlockEntity generator
+                && generator.acceptLava()) return true;
+        // Our tanks and fluid machines, and any other mod's tank or machine.
+        if (level.getBlockEntity(pos) == null) return false;
+        return FluidStorage.offer(level, pos, null, fluid == TankerEntity.Fluid.LAVA ? Fluids.LAVA : Fluids.WATER, FluidStorage.BUCKET);
     }
 
     // ---------------------------------------------------------------- saving

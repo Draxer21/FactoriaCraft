@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "factorycraft:salt_block"
+  ],
+  "result": {
+    "id": "factorycraft:salt",
+    "count": 9
+  }
+}

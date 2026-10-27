@@ -12,6 +12,7 @@
     "#c:storage_blocks/bronze",
     "#c:storage_blocks/stainless_steel",
     "#c:storage_blocks/cobalt",
-    "#c:storage_blocks/voidnite"
+    "#c:storage_blocks/voidnite",
+    "#c:storage_blocks/salt"
   ]
 }

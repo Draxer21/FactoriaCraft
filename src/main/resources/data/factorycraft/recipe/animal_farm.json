@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "FWF",
+    "SCS",
+    "PHP"
+  ],
+  "key": {
+    "F": "#minecraft:fences",
+    "W": "minecraft:wheat",
+    "S": "minecraft:shears",
+    "C": "factorycraft:circuit_board",
+    "P": "#c:plates/iron",
+    "H": "minecraft:hopper"
+  },
+  "result": {
+    "id": "factorycraft:animal_farm",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "WCW",
+    "PHP"
+  ],
+  "key": {
+    "G": "factorycraft:tempered_glass",
+    "W": "minecraft:water_bucket",
+    "C": "factorycraft:circuit_board",
+    "P": "#c:plates/iron",
+    "H": "minecraft:composter"
+  },
+  "result": {
+    "id": "factorycraft:greenhouse",
+    "count": 1
+  }
+}

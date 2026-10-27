@@ -56,6 +56,10 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.PUMPJACK_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.REFINERY_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.FERMENTER_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.GREENHOUSE_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.ANIMAL_FARM_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.DESALINATOR_MENU.value(), ProcessingScreen::new);
+        event.register(FactoryCraft.TREATMENT_PLANT_MENU.value(), ProcessingScreen::new);
         for (var menu : java.util.List.of(FactoryCraft.LEVELER_MENU, FactoryCraft.QUARRY_MENU, FactoryCraft.DRAIN_MENU,
                 FactoryCraft.PLANTER_MENU, FactoryCraft.BUILDER_MENU)) {
             event.register(menu.value(), ProcessingScreen::new);

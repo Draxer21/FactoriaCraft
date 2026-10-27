@@ -59,6 +59,12 @@
     "factorycraft:refinery",
     "factorycraft:fermenter",
     "factorycraft:wireless_charger",
-    "factorycraft:asphalt"
+    "factorycraft:asphalt",
+    "factorycraft:greenhouse",
+    "factorycraft:animal_farm",
+    "factorycraft:fluid_tank",
+    "factorycraft:sewer_grate",
+    "factorycraft:desalinator",
+    "factorycraft:treatment_plant"
   ]
 }

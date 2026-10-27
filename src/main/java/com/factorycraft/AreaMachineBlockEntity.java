@@ -57,6 +57,11 @@ public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity i
         return 1;
     }
 
+    /** How long to wait after finishing the area before going round again. */
+    protected int idleTicks() {
+        return 200;
+    }
+
     protected static final BlockPos NOT_YET = new BlockPos(0, Integer.MIN_VALUE, 0);
 
     // ---------------------------------------------------------------- area
@@ -112,7 +117,7 @@ public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity i
     protected boolean work(Level level) {
         if (!(level instanceof ServerLevel server)) return false;
         if (done) {
-            if (level.getGameTime() % 200 != 0) return false;
+            if (level.getGameTime() % idleTicks() != 0) return false;
             restart();
         }
         if (++timer < scaledTime(time())) return true;

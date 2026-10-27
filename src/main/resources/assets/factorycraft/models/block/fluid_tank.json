@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "factorycraft:block/fluid_tank_side",
+    "end": "factorycraft:block/fluid_tank_top"
+  }
+}

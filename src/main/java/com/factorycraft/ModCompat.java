@@ -47,6 +47,11 @@ public final class ModCompat {
         }
         // Other mods' pipes can keep the reactor topped up with water.
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, Nuclear.REACTOR_BLOCK_ENTITY.value(), (reactor, side) -> new ReactorWater(reactor));
+        // Our tanks and fluid machines speak the standard fluid capability.
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.FLUID_TANK_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.SEWER_GRATE_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.DESALINATOR_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.TREATMENT_PLANT_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
         for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> holder : FactoryCraft.ENTITY_TYPES.getEntries()) {
             EntityType type = holder.value();
             event.registerEntity(Capabilities.Item.ENTITY, type,
