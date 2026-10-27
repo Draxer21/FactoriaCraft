@@ -9,8 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -55,7 +53,7 @@ public final class DefenseClient {
         views = list;
         index = 0;
         age = 0;
-        eye = EntityType.MARKER.create(mc.level, EntitySpawnReason.LOAD);
+        eye = new DeliveryDroneEntity(Logistics.DELIVERY_DRONE.value(), mc.level);
         if (eye == null) return;
         place();
         mc.setCameraEntity(eye);
