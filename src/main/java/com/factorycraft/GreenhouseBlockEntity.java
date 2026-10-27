@@ -31,7 +31,8 @@ public final class GreenhouseBlockEntity extends AreaMachineBlockEntity {
     @Override protected int time() { return 1; }
     @Override protected int energyPerTick() { return energyPerBlock(); }
     @Override protected int energyPerBlock() { return 15; }
-    @Override protected int perTick() { return 2; }
+    /** Spotless air (quality 0) makes the plants grow half as fast again. */
+    @Override protected int perTick() { return level != null && AirQuality.get(level, worldPosition) == 0 ? 3 : 2; }
     @Override protected int idleTicks() { return 20; }
     @Override protected MenuType<ProcessingMenu> menuType() { return FactoryCraft.GREENHOUSE_MENU.value(); }
     @Override protected String nameKey() { return "block.factorycraft.greenhouse"; }

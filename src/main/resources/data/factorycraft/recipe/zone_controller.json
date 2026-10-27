@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ADA",
+    "CEC",
+    "ADA"
+  ],
+  "key": {
+    "A": "factorycraft:armor_plating",
+    "D": "minecraft:diamond",
+    "C": "factorycraft:advanced_circuit",
+    "E": "minecraft:ender_eye"
+  },
+  "result": {
+    "id": "factorycraft:zone_controller",
+    "count": 1
+  }
+}

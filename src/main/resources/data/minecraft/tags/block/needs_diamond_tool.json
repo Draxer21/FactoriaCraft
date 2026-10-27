@@ -2,6 +2,7 @@
   "values": [
     "factorycraft:voidnite_ore",
     "factorycraft:voidnite_block",
-    "factorycraft:armor_plating"
+    "factorycraft:armor_plating",
+    "factorycraft:zone_controller"
   ]
 }

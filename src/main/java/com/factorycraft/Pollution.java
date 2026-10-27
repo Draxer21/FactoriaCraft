@@ -38,6 +38,10 @@ public final class Pollution {
     public static final int PURIFIER_RANGE = 12;
 
     static void purifierActive(Level level, BlockPos pos) {
+        // Purifiers also clear the air of their chunk and the ones around it.
+        if (level.getGameTime() % 20 == 0) {
+            for (int dx = -16; dx <= 16; dx += 16) for (int dz = -16; dz <= 16; dz += 16) AirQuality.add(level, pos.offset(dx, 0, dz), -3);
+        }
         PURIFIERS.computeIfAbsent(level.dimension(), k -> new ConcurrentHashMap<>()).put(pos.immutable(), level.getGameTime());
     }
 
@@ -72,6 +76,7 @@ public final class Pollution {
     public static void smog(ServerLevel level, BlockPos source) {
         RandomSource random = level.getRandom();
         level.sendParticles(ParticleTypes.LARGE_SMOKE, source.getX() + 0.5, source.getY() + 1.2, source.getZ() + 0.5, 8, 0.2, 0.3, 0.2, 0.02);
+        if (!purified(level, source)) AirQuality.add(level, source, 4);
         if (purified(level, source) || !roll(random)) return;
         BlockPos pos = surface(level, source, 10, random);
         BlockState state = level.getBlockState(pos);
@@ -87,6 +92,7 @@ public final class Pollution {
     /** Turns some ground within {@code radius} into contaminated soil. */
     public static void contaminate(ServerLevel level, BlockPos center, int radius, int count) {
         if (!FactoryConfig.pollution()) return;
+        AirQuality.spread(level, center, Math.min(AirQuality.MAX, count * 4));
         RandomSource random = level.getRandom();
         for (int i = 0; i < count; i++) {
             if (!roll(random)) continue;

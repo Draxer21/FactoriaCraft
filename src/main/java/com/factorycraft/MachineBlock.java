@@ -70,6 +70,25 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
+        // Vending machine: customers pay with what they hold.
+        if (level.getBlockEntity(pos) instanceof VendingMachineBlockEntity vending && !vending.isOwner(player)) {
+            if (!level.isClientSide()) player.sendOverlayMessage(vending.buy(player, hand));
+            return InteractionResult.SUCCESS;
+        }
+        // Contract board: deliver goods.
+        if (level.getBlockEntity(pos) instanceof ContractBoardBlockEntity board && !stack.isEmpty()) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            if (board.deliver(player, hand)) return InteractionResult.SUCCESS_SERVER;
+            board.read(player);
+            return InteractionResult.SUCCESS_SERVER;
+        }
+        // Zone controller: the owner binds access cards.
+        if (level.getBlockEntity(pos) instanceof ZoneControllerBlockEntity zone && stack.is(Economy.ACCESS_CARD.value())) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            if (!zone.isOwner(player)) return InteractionResult.FAIL;
+            zone.bind(player, stack);
+            return InteractionResult.SUCCESS_SERVER;
+        }
         // Security cameras: wrench the camera, then the monitor.
         if (stack.getItem() instanceof WrenchItem
                 && (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity || level.getBlockEntity(pos) instanceof MonitorBlockEntity)) {
@@ -177,6 +196,24 @@ public abstract class MachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PumpBlockEntity pump) {
             if (!level.isClientSide()) pump.click(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof StatsTerminalBlockEntity) {
+            if (player instanceof net.minecraft.server.level.ServerPlayer server) {
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(server, ProductionStats.snapshot(level, 12));
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof ContractBoardBlockEntity board) {
+            if (!level.isClientSide()) board.read(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof ZoneControllerBlockEntity zone) {
+            if (!level.isClientSide()) {
+                if (zone.isOwner(player) && player.isShiftKeyDown()) zone.cycle(player);
+                else player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable(
+                        zone.isOwner(player) ? "message.factorycraft.zone.yours" : "message.factorycraft.zone.denied"));
+            }
             return InteractionResult.SUCCESS;
         }
         if (level.getBlockEntity(pos) instanceof MonitorBlockEntity monitor) {

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "PCP",
+    "PRP"
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "P": "#c:plates/iron",
+    "C": "factorycraft:circuit_board",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:air_meter",
+    "count": 1
+  }
+}

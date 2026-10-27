@@ -110,6 +110,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
 
     protected void store(List<ItemStack> products) {
         for (ItemStack product : products) storeInto(items, product.copy());
+        if (level != null && !(this instanceof DronePortBlockEntity)) ProductionStats.record(level, products);
         setChanged();
     }
 

@@ -77,6 +77,10 @@
     "factorycraft:hazard_block",
     "factorycraft:steel_panel",
     "factorycraft:steel_grate",
-    "factorycraft:industrial_bricks"
+    "factorycraft:industrial_bricks",
+    "factorycraft:recycler",
+    "factorycraft:vending_machine",
+    "factorycraft:contract_board",
+    "factorycraft:stats_terminal"
   ]
 }
