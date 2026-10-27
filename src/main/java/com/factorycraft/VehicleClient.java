@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"oil:1", "oil:last", "screen:refinery", "summon:excavator"};
+    private static final String[] DEMO_CHAPTERS = {"transport:1", "terminal", "summon:cargo_ship", "cablecar", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -106,6 +106,30 @@ public final class VehicleClient {
                 mc.player.connection.sendCommand("summon factorycraft:mini_nuke ~ ~25 ~45 {Item:{id:\"factorycraft:mini_nuke\",count:1,"
                         + "components:{\"minecraft:custom_data\":{Yield:" + parts[1] + "}}}}");
                 mc.player.connection.sendCommand("tp @s ~ ~75 ~-45 0 38");
+            } else if (parts[0].equals("terminal")) {
+                java.util.List<TerminalListPayload.Entry> demo = new java.util.ArrayList<>();
+                net.minecraft.world.item.Item[] items = {net.minecraft.world.item.Items.IRON_INGOT, net.minecraft.world.item.Items.COAL,
+                        net.minecraft.world.item.Items.COBBLESTONE, net.minecraft.world.item.Items.OAK_LOG, net.minecraft.world.item.Items.DIAMOND,
+                        net.minecraft.world.item.Items.REDSTONE, net.minecraft.world.item.Items.COPPER_INGOT, net.minecraft.world.item.Items.GOLD_INGOT,
+                        net.minecraft.world.item.Items.WHEAT, FactoryCraft.SALT.value(), FactoryCraft.DIESEL.value(), Materials.PLASTIC.value()};
+                for (int i = 0; i < items.length; i++) demo.add(new TerminalListPayload.Entry(new net.minecraft.world.item.ItemStack(items[i]), (long) (i * 977 + 13) * (i % 3 + 1)));
+                TerminalListPayload.latest = new TerminalListPayload(5, demo);
+                var inv = mc.player.getInventory();
+                mc.gui.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
+                        net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("cablecar")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("kill @e[type=!player,distance=..40]");
+                int x = mc.player.getBlockX();
+                int z = mc.player.getBlockZ();
+                String a = (x - 12) + " 118 " + (z + 14);
+                String b = (x + 12) + " 121 " + (z + 14);
+                String ia = "[I;" + a.replace(" ", ",") + "]";
+                String ib = "[I;" + b.replace(" ", ",") + "]";
+                mc.player.connection.sendCommand("setblock " + a + " factorycraft:cable_station{Other:" + ib + ",Master:1b}");
+                mc.player.connection.sendCommand("setblock " + b + " factorycraft:cable_station{Other:" + ia + ",Master:0b}");
+                mc.player.connection.sendCommand("summon factorycraft:cable_car " + x + " 118 " + (z + 14) + " {From:" + ia + ",To:" + ib + ",Cycle:160}");
+                mc.player.connection.sendCommand("tp @s " + x + " 122 " + (z - 4) + " 0 12");
             } else if (parts[0].equals("summon")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
