@@ -231,7 +231,9 @@ public final class TerrainSelfTest {
         if (back != null) VehicleItem.restore(packed, back);
         garageResult = "shipsNear=" + ships.size() + " parked='" + parked + "' item=" + packed.getItem()
                 + " shipGone=" + (ships.isEmpty() ? "?" : String.valueOf(ships.get(0).isRemoved()))
-                + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed);
+                + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed)
+                + " tag=" + packed.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                        .copyTag().getCompound(GarageBlockEntity.VEHICLE_KEY).map(t -> t.keySet() + " items=" + t.get("Items")).orElse("none");
     }
 
     private static void logLogistics(ServerLevel level) {
