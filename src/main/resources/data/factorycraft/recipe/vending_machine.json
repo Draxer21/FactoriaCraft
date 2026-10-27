@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "PCP",
+    "PEP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:circuit_board",
+    "E": "minecraft:emerald"
+  },
+  "result": {
+    "id": "factorycraft:vending_machine",
+    "count": 1
+  }
+}

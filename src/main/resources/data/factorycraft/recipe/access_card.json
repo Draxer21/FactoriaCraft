@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GCG"
+  ],
+  "key": {
+    "P": "factorycraft:plastic_sheet",
+    "G": "minecraft:gold_nugget",
+    "C": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:access_card",
+    "count": 2
+  }
+}

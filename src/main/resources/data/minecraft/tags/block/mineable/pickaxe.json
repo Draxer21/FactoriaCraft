@@ -113,6 +113,11 @@
     "factorycraft:industrial_bricks",
     "factorycraft:warning_lamp",
     "factorycraft:armored_door",
-    "factorycraft:shutter_panel"
+    "factorycraft:shutter_panel",
+    "factorycraft:recycler",
+    "factorycraft:vending_machine",
+    "factorycraft:contract_board",
+    "factorycraft:stats_terminal",
+    "factorycraft:zone_controller"
   ]
 }

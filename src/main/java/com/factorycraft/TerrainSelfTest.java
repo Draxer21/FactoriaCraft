@@ -100,6 +100,7 @@ public final class TerrainSelfTest {
         setUpFarm(level);
         setUpLogistics(level);
         setUpDefense(level);
+        setUpEnvironment(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -314,6 +315,85 @@ public final class TerrainSelfTest {
                 depthA, depthB, LiftPadBlock.next(level, pad, true), LiftPadBlock.next(level, pad.above(10), false), blastResult);
     }
 
+    private static String economyResult = "";
+
+    private static BlockPos envRow() {
+        return base.offset(160, 0, 16);
+    }
+
+    private static void setUpEnvironment(ServerLevel level) {
+        BlockPos row = envRow();
+        // Air: a dirty chunk, and another with a running air purifier.
+        AirQuality.add(level, row, 500);
+        BlockPos purified = row.offset(48, 0, 0);
+        AirQuality.add(level, purified, 300);
+        powered(level, purified, FactoryCraft.AIR_PURIFIER.value());
+        // Recycler with iron pickaxes and oak stairs.
+        BlockPos recycler = row.offset(16, 0, 0);
+        powered(level, recycler, Economy.RECYCLER.value());
+        if (level.getBlockEntity(recycler) instanceof RecyclerBlockEntity be) be.setItem(0, new ItemStack(Items.IRON_PICKAXE, 1));
+        BlockPos recycler2 = row.offset(20, 0, 0);
+        powered(level, recycler2, Economy.RECYCLER.value());
+        if (level.getBlockEntity(recycler2) instanceof RecyclerBlockEntity be) be.setItem(0, new ItemStack(Items.OAK_STAIRS, 8));
+        // Shop, contracts and zone, with a stand-in player.
+        var buyer = net.neoforged.neoforge.common.util.FakePlayerFactory.getMinecraft(level);
+        BlockPos shop = row.offset(28, 0, 0);
+        level.setBlockAndUpdate(shop, Economy.VENDING_MACHINE.value().defaultBlockState());
+        String sale = "none";
+        if (level.getBlockEntity(shop) instanceof VendingMachineBlockEntity vending) {
+            vending.setOwner(java.util.UUID.randomUUID());
+            vending.setItem(VendingMachineBlockEntity.PRICE, new ItemStack(Items.EMERALD, 1));
+            vending.setItem(VendingMachineBlockEntity.GOODS, new ItemStack(Items.BREAD, 2));
+            vending.setItem(2, new ItemStack(Items.BREAD, 10));
+            buyer.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.EMERALD, 3));
+            vending.buy(buyer, net.minecraft.world.InteractionHand.MAIN_HAND);
+            String second = vending.buy(buyer, net.minecraft.world.InteractionHand.MAIN_HAND).getString();
+            sale = "stock=" + vending.stock() + " paid=" + vending.getItem(ProcessingMenu.BIG_INPUTS) + " emeraldsLeft="
+                    + buyer.getMainHandItem().getCount() + " msg='" + second + "'";
+        }
+        BlockPos board = row.offset(32, 0, 0);
+        level.setBlockAndUpdate(board, Economy.CONTRACT_BOARD.value().defaultBlockState());
+        String contract = "none";
+        if (level.getBlockEntity(board) instanceof ContractBoardBlockEntity be) {
+            be.work(level);
+            var first = be.contracts().get(0);
+            buyer.getInventory().clearContent();
+            buyer.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(first.item, first.wanted));
+            be.deliver(buyer, net.minecraft.world.InteractionHand.MAIN_HAND);
+            contract = "posted=" + be.contracts().size() + " want=" + first.wanted + "x" + first.item + " done=" + first.done()
+                    + " reward=" + first.reward;
+        }
+        BlockPos zone = row.offset(36, 0, 0);
+        level.setBlockAndUpdate(zone, Economy.ZONE_CONTROLLER.value().defaultBlockState());
+        String zoneResult = "none";
+        if (level.getBlockEntity(zone) instanceof ZoneControllerBlockEntity be) {
+            be.setOwner(java.util.UUID.randomUUID());
+            be.work(level);
+            boolean strangerInside = ZoneControllerBlockEntity.allowed(level, zone.offset(3, 0, 3), buyer);
+            boolean strangerOutside = ZoneControllerBlockEntity.allowed(level, zone.offset(40, 0, 0), buyer);
+            ItemStack card = new ItemStack(Economy.ACCESS_CARD.value());
+            be.bind(buyer, card);
+            buyer.getInventory().add(card);
+            boolean withCard = ZoneControllerBlockEntity.allowed(level, zone.offset(3, 0, 3), buyer);
+            level.setBlockAndUpdate(zone.offset(2, 0, 0), Blocks.STONE.defaultBlockState());
+            level.explode(null, zone.getX() + 2.5, zone.getY() + 1.5, zone.getZ() + 0.5, 3.0F, net.minecraft.world.level.Level.ExplosionInteraction.TNT);
+            zoneResult = "strangerInside=" + strangerInside + " outside=" + strangerOutside + " withCard=" + withCard
+                    + " stoneSurvivesTnt=" + level.getBlockState(zone.offset(2, 0, 0)).is(Blocks.STONE);
+        }
+        economyResult = "shop[" + sale + "] contract[" + contract + "] zone[" + zoneResult + "]";
+    }
+
+    private static void logEnvironment(ServerLevel level) {
+        BlockPos row = envRow();
+        StatsPayload stats = ProductionStats.snapshot(level, 5);
+        com.mojang.logging.LogUtils.getLogger().info(
+                "ENVTEST air={} felt={} purifiedChunk={} recyclerPick=[{}] recyclerStairs=[{}] statsItems={} top={} {}",
+                AirQuality.get(level, row), AirQuality.felt(level, row), AirQuality.get(level, row.offset(48, 0, 0)),
+                outputs(level, row.offset(16, 0, 0)), outputs(level, row.offset(20, 0, 0)),
+                stats.lines().size(), stats.lines().isEmpty() ? "none" : stats.lines().get(0).stack() + "=" + stats.lines().get(0).sum(),
+                economyResult);
+    }
+
     private static void logLogistics(ServerLevel level) {
         BlockPos row = base.offset(0, 0, 16);
         int drones = level.getBlockEntity(row.offset(20, 0, 0)) instanceof DronePortBlockEntity a ? a.drones() : -1;
@@ -432,6 +512,7 @@ public final class TerrainSelfTest {
             logFarm(level);
             logLogistics(level);
             logDefense(level);
+            logEnvironment(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

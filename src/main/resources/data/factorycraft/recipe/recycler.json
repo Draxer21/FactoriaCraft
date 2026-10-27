@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PHP",
+    "GCG",
+    "PCP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "H": "minecraft:hopper",
+    "G": "#c:gears/iron",
+    "C": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:recycler",
+    "count": 1
+  }
+}

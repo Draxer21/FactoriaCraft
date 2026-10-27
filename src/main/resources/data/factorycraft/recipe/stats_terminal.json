@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "CRC",
+    "PPP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:circuit_board",
+    "R": "minecraft:comparator"
+  },
+  "result": {
+    "id": "factorycraft:stats_terminal",
+    "count": 1
+  }
+}

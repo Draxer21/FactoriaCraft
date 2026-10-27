@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"defense:1", "defense:last", "showcase", "look"};
+    private static final String[] DEMO_CHAPTERS = {"economy:1", "stats", "smog", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -117,6 +117,29 @@ public final class VehicleClient {
                 var inv = mc.player.getInventory();
                 mc.gui.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("stats")) {
+                java.util.List<StatsPayload.Line> lines = new java.util.ArrayList<>();
+                int[] total = new int[ProductionStats.SHOWN];
+                net.minecraft.world.item.Item[] items = {Materials.PLASTIC.value(), FactoryCraft.DIESEL.value(), net.minecraft.world.item.Items.IRON_INGOT,
+                        FactoryCraft.SALT.value(), net.minecraft.world.item.Items.WHEAT};
+                for (int k = 0; k < items.length; k++) {
+                    int[] series = new int[ProductionStats.SHOWN];
+                    long sum = 0;
+                    for (int m = 0; m < series.length; m++) {
+                        series[m] = (int) (40 + 30 * Math.sin(m / 4.0 + k) + m * (5 - k));
+                        total[m] += series[m];
+                        sum += series[m];
+                    }
+                    lines.add(new StatsPayload.Line(new net.minecraft.world.item.ItemStack(items[k]), series, sum));
+                }
+                mc.gui.setScreen(new StatsScreen(new StatsPayload(total, lines)));
+            } else if (parts[0].equals("smog")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("tp @s ~ ~ ~ 0 0");
+                var server = mc.getSingleplayerServer();
+                net.minecraft.core.BlockPos at = mc.player.blockPosition();
+                if (server != null) server.execute(() -> AirQuality.spread(server.overworld(), at, 900));
             } else if (parts[0].equals("showcase")) {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
