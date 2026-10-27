@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "LCL",
+    "PKP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "B": "minecraft:bucket",
+    "L": "minecraft:charcoal",
+    "C": "factorycraft:advanced_circuit",
+    "K": "minecraft:cauldron"
+  },
+  "result": {
+    "id": "factorycraft:treatment_plant",
+    "count": 1
+  }
+}

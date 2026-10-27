@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "B B",
+    "BHB",
+    "SSS"
+  ],
+  "key": {
+    "B": "minecraft:iron_bars",
+    "H": "minecraft:hopper",
+    "S": "minecraft:stone_bricks"
+  },
+  "result": {
+    "id": "factorycraft:sewer_grate",
+    "count": 1
+  }
+}

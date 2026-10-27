@@ -518,6 +518,59 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("industrial_lamp", () -> new BlockEntityType<>(IndustrialLampBlockEntity::new, INDUSTRIAL_LAMP.value()));
     public static final DeferredHolder<Item, Item> BLUEPRINT = ITEMS.registerItem("blueprint", BlueprintItem::new);
 
+    // ---- Stage 6: agriculture and fluids.
+    public static final DeferredHolder<Block, Block> GREENHOUSE = BLOCKS.register("greenhouse", () ->
+            new SimpleMachineBlock(machineProperties("greenhouse").lightLevel(state -> state.getValue(MachineBlock.LIT) ? 10 : 0), () -> FactoryCraft.GREENHOUSE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> GREENHOUSE_ITEM = ITEMS.registerItem("greenhouse",
+            properties -> new BlockItem(GREENHOUSE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GreenhouseBlockEntity>> GREENHOUSE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("greenhouse", () -> new BlockEntityType<>(GreenhouseBlockEntity::new, GREENHOUSE.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> GREENHOUSE_MENU = MENUS.register("greenhouse",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.GREENHOUSE_MENU.value(), id, inventory, 0, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> ANIMAL_FARM = BLOCKS.register("animal_farm", () ->
+            new SimpleMachineBlock(machineProperties("animal_farm"), () -> FactoryCraft.ANIMAL_FARM_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> ANIMAL_FARM_ITEM = ITEMS.registerItem("animal_farm",
+            properties -> new BlockItem(ANIMAL_FARM.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AnimalFarmBlockEntity>> ANIMAL_FARM_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("animal_farm", () -> new BlockEntityType<>(AnimalFarmBlockEntity::new, ANIMAL_FARM.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ANIMAL_FARM_MENU = MENUS.register("animal_farm",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.ANIMAL_FARM_MENU.value(), id, inventory, 4, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> FLUID_TANK = BLOCKS.register("fluid_tank", () ->
+            new SimpleMachineBlock(machineProperties("fluid_tank"), () -> FactoryCraft.FLUID_TANK_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> FLUID_TANK_ITEM = ITEMS.registerItem("fluid_tank",
+            properties -> new BlockItem(FLUID_TANK.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidTankBlockEntity>> FLUID_TANK_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("fluid_tank", () -> new BlockEntityType<>(FluidTankBlockEntity::new, FLUID_TANK.value()));
+    public static final DeferredHolder<Block, Block> SEWER_GRATE = BLOCKS.register("sewer_grate", () ->
+            new SimpleMachineBlock(machineProperties("sewer_grate"), () -> FactoryCraft.SEWER_GRATE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> SEWER_GRATE_ITEM = ITEMS.registerItem("sewer_grate",
+            properties -> new BlockItem(SEWER_GRATE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SewerGrateBlockEntity>> SEWER_GRATE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("sewer_grate", () -> new BlockEntityType<>(SewerGrateBlockEntity::new, SEWER_GRATE.value()));
+    public static final DeferredHolder<Block, Block> DESALINATOR = BLOCKS.register("desalinator", () ->
+            new SimpleMachineBlock(machineProperties("desalinator"), () -> FactoryCraft.DESALINATOR_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> DESALINATOR_ITEM = ITEMS.registerItem("desalinator",
+            properties -> new BlockItem(DESALINATOR.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DesalinatorBlockEntity>> DESALINATOR_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("desalinator", () -> new BlockEntityType<>(DesalinatorBlockEntity::new, DESALINATOR.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> DESALINATOR_MENU = MENUS.register("desalinator",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.DESALINATOR_MENU.value(), id, inventory, 0, ProcessingMenu.OUTPUTS), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Block, Block> TREATMENT_PLANT = BLOCKS.register("treatment_plant", () ->
+            new SimpleMachineBlock(machineProperties("treatment_plant"), () -> FactoryCraft.TREATMENT_PLANT_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> TREATMENT_PLANT_ITEM = ITEMS.registerItem("treatment_plant",
+            properties -> new BlockItem(TREATMENT_PLANT.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreatmentPlantBlockEntity>> TREATMENT_PLANT_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("treatment_plant", () -> new BlockEntityType<>(TreatmentPlantBlockEntity::new, TREATMENT_PLANT.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> TREATMENT_PLANT_MENU = MENUS.register("treatment_plant",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.TREATMENT_PLANT_MENU.value(), id, inventory, 0, 0), FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<Item, Item> SALT = ITEMS.registerItem("salt", SaltItem::new);
+    public static final DeferredHolder<Block, Block> SALT_BLOCK = BLOCKS.register("salt_block", () ->
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "salt_block")))
+                    .strength(0.8F).sound(SoundType.CALCITE)));
+    public static final DeferredHolder<Item, Item> SALT_BLOCK_ITEM = ITEMS.registerItem("salt_block",
+            properties -> new BlockItem(SALT_BLOCK.value(), properties.useBlockDescriptionPrefix()));
+
     // ---- Stage 5: energy.
     public static final DeferredHolder<Block, Block> HYDRO_TURBINE = BLOCKS.register("hydro_turbine", () ->
             new SimpleMachineBlock(machineProperties("hydro_turbine"), () -> FactoryCraft.HYDRO_TURBINE_BLOCK_ENTITY.value()));
@@ -845,7 +898,9 @@ public final class FactoryCraft {
                         output.accept(INDUSTRIAL_LAMP_ITEM.value());
                         output.accept(TOOL_FORGE_ITEM.value());
                         for (DeferredHolder<Item, Item> item : java.util.List.of(HYDRO_TURBINE_ITEM, ADVANCED_SOLAR_ITEM, PHOTON_ARRAY_ITEM,
-                                PUMPJACK_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM)) {
+                                PUMPJACK_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM,
+                                GREENHOUSE_ITEM, ANIMAL_FARM_ITEM, FLUID_TANK_ITEM, SEWER_GRATE_ITEM, DESALINATOR_ITEM, SALT, SALT_BLOCK_ITEM,
+                                TREATMENT_PLANT_ITEM)) {
                             output.accept(item.value());
                         }
                         for (DeferredHolder<Item, Item> mould : MOULDS.values()) output.accept(mould.value());

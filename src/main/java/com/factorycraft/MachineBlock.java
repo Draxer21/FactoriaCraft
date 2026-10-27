@@ -64,6 +64,14 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
+        // Buckets fill and empty tanks and fluid machines.
+        if (stack.getItem() instanceof net.minecraft.world.item.BucketItem
+                && level.getBlockEntity(pos) instanceof FluidStorage.Holder holder) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            if (!holder.fluids().useBucket(player, hand)) return InteractionResult.FAIL;
+            player.sendOverlayMessage(holder.fluids().describe(0));
+            return InteractionResult.SUCCESS_SERVER;
+        }
         // Machine upgrade modules and the wrench.
         if (level.getBlockEntity(pos) instanceof MachineBlockEntity machine) {
             if (stack.getItem() instanceof MachineUpgradeItem module) {
@@ -116,6 +124,10 @@ public abstract class MachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PumpBlockEntity pump) {
             if (!level.isClientSide()) pump.click(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof FluidTankBlockEntity || level.getBlockEntity(pos) instanceof SewerGrateBlockEntity) {
+            if (!level.isClientSide()) player.sendOverlayMessage(((FluidStorage.Holder) level.getBlockEntity(pos)).fluids().describe(0));
             return InteractionResult.SUCCESS;
         }
         if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof AreaMachine area) {

@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/sewer_grate"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/sewer_grate"
+    }
+  }
+}

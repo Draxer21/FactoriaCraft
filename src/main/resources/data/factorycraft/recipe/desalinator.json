@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PBP",
+    "FCF",
+    "PKP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "B": "minecraft:bucket",
+    "F": "minecraft:furnace",
+    "C": "factorycraft:circuit_board",
+    "K": "minecraft:cauldron"
+  },
+  "result": {
+    "id": "factorycraft:desalinator",
+    "count": 1
+  }
+}

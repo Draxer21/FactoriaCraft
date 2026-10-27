@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/fluid_tank"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/fluid_tank"
+    }
+  }
+}

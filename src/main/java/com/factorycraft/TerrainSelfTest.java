@@ -95,6 +95,7 @@ public final class TerrainSelfTest {
         if (blueprint != null) blueprint.writeTo(paper);
         setUpMaterials(level);
         setUpEnergy(level);
+        setUpFarm(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -118,6 +119,68 @@ public final class TerrainSelfTest {
         BlockPos generator = base.offset(280, 0, 0);
         level.setBlockAndUpdate(generator, FactoryCraft.GENERATOR.value().defaultBlockState());
         if (level.getBlockEntity(generator) instanceof GeneratorBlockEntity be) be.setItem(0, new ItemStack(FactoryCraft.BIOFUEL.value(), 1));
+    }
+
+    private static void setUpFarm(ServerLevel level) {
+        BlockPos greenhouse = base.offset(290, 0, 0);
+        powered(level, greenhouse, FactoryCraft.GREENHOUSE.value());
+        if (level.getBlockEntity(greenhouse) instanceof AreaMachineBlockEntity be) be.radius = 4;
+        for (int i = 0; i < 6; i++) {
+            BlockPos soil = greenhouse.offset(-2 + i, -2, 2);
+            level.setBlockAndUpdate(soil.below(), Blocks.STONE.defaultBlockState());
+            level.setBlockAndUpdate(soil, Blocks.FARMLAND.defaultBlockState());
+            level.setBlockAndUpdate(soil.above(), ((net.minecraft.world.level.block.CropBlock) Blocks.WHEAT).getStateForAge(i < 3 ? 7 : 0));
+        }
+        BlockPos tank = base.offset(300, 0, 0);
+        level.setBlockAndUpdate(tank.below(), FactoryCraft.FLUID_TANK.value().defaultBlockState());
+        level.setBlockAndUpdate(tank, FactoryCraft.FLUID_TANK.value().defaultBlockState());
+        FluidStorage.offer(level, tank, Direction.UP, net.minecraft.world.level.material.Fluids.WATER, 5000);
+        var handler = level.getCapability(net.neoforged.neoforge.capabilities.Capabilities.Fluid.BLOCK, tank, Direction.UP);
+        if (handler != null) {
+            try (var transaction = net.neoforged.neoforge.transfer.transaction.Transaction.openRoot()) {
+                tankExtracted = handler.extract(net.neoforged.neoforge.transfer.fluid.FluidResource.of(net.minecraft.world.level.material.Fluids.WATER), 2000, transaction);
+                transaction.commit();
+            }
+        }
+        BlockPos desalinator = base.offset(310, 0, 0);
+        powered(level, desalinator, FactoryCraft.DESALINATOR.value());
+        level.setBlockAndUpdate(desalinator.east(), FactoryCraft.FLUID_TANK.value().defaultBlockState());
+        FluidStorage.offer(level, desalinator, Direction.WEST, net.minecraft.world.level.material.Fluids.WATER, 3000);
+        BlockPos plant = base.offset(320, 0, 0);
+        powered(level, plant, FactoryCraft.TREATMENT_PLANT.value());
+        if (level.getBlockEntity(plant) instanceof AreaMachineBlockEntity be) be.radius = 4;
+        box(level, plant.offset(-2, -2, -2), plant.offset(2, -2, 2), Blocks.STONE.defaultBlockState());
+        box(level, plant.offset(-2, -1, 1), plant.offset(2, -1, 2), Nuclear.CONTAMINATED_SOIL.value().defaultBlockState());
+        FluidStorage.offer(level, plant, Direction.WEST, net.minecraft.world.level.material.Fluids.WATER, 4000);
+        BlockPos grate = base.offset(330, 0, 0);
+        level.setBlockAndUpdate(grate.below(), FactoryCraft.FLUID_TANK.value().defaultBlockState());
+        level.setBlockAndUpdate(grate, FactoryCraft.SEWER_GRATE.value().defaultBlockState());
+        level.setBlockAndUpdate(grate.above(), Blocks.WATER.defaultBlockState());
+    }
+
+    private static int tankExtracted = -1;
+
+    private static String tank(ServerLevel level, BlockPos pos, int slot) {
+        return level.getBlockEntity(pos) instanceof FluidStorage.Holder holder ? String.valueOf(holder.fluids().amount(slot)) : "none";
+    }
+
+    private static void logFarm(ServerLevel level) {
+        BlockPos greenhouse = base.offset(290, 0, 0);
+        int young = 0;
+        for (int i = 0; i < 6; i++) {
+            BlockState crop = level.getBlockState(greenhouse.offset(-2 + i, -1, 2));
+            if (crop.is(Blocks.WHEAT) && !((net.minecraft.world.level.block.CropBlock) Blocks.WHEAT).isMaxAge(crop)) young++;
+        }
+        com.mojang.logging.LogUtils.getLogger().info(
+                "FARMTEST greenhouse=[{}] notRipe={} wet={} tank={} extracted={} lowerTank={} desalinator=[{}] intake={} fresh={} sideTank={} contaminatedLeft={} plantWater={} sewerTank={} saltMelts={}",
+                outputs(level, greenhouse), young,
+                level.getBlockState(greenhouse.offset(0, -2, 2)).getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE),
+                tank(level, base.offset(300, 0, 0), 0), tankExtracted, tank(level, base.offset(300, -1, 0), 0),
+                outputs(level, base.offset(310, 0, 0)), tank(level, base.offset(310, 0, 0), 0), tank(level, base.offset(310, 0, 0), 1),
+                tank(level, base.offset(311, 0, 0), 0),
+                count(level, base.offset(318, -1, -2), base.offset(322, -1, 2), Nuclear.CONTAMINATED_SOIL.value()),
+                tank(level, base.offset(320, 0, 0), 0), tank(level, base.offset(330, -1, 0), 0),
+                new ItemStack(FactoryCraft.SALT.value()).is(net.minecraft.tags.ItemTags.create(net.minecraft.resources.Identifier.fromNamespaceAndPath("c", "dusts/salt"))));
     }
 
     private static String outputs(ServerLevel level, BlockPos pos) {
@@ -201,6 +264,7 @@ public final class TerrainSelfTest {
                     multitool.getDestroySpeed(net.minecraft.world.level.block.Blocks.OAK_LOG.defaultBlockState()),
                     ToolForge.trait(multitool), ToolForge.statsFor(new ItemStack(Items.STICK)),
                     smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON))).toString()).orElse("none"));
+            logFarm(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

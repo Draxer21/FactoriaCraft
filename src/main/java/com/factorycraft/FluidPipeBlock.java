@@ -54,6 +54,6 @@ public final class FluidPipeBlock extends PipeBlock {
     static boolean connects(BlockGetter level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         return state.getBlock() instanceof FluidPipeBlock || state.getBlock() instanceof AbstractCauldronBlock
-                || level.getBlockEntity(pos) instanceof PumpBlockEntity || level.getBlockEntity(pos) instanceof GeneratorBlockEntity;
+                || level.getBlockEntity(pos) instanceof FluidStorage.Holder || level.getBlockEntity(pos) instanceof PumpBlockEntity || level.getBlockEntity(pos) instanceof GeneratorBlockEntity;
     }
 }
