@@ -73,8 +73,8 @@ public final class CableCarRenderer extends EntityRenderer<CableCarEntity, Cable
         state.beams.clear();
         if (!(entity.level() instanceof ClientLevel level)) return;
         Vec3 origin = entity.getPosition(partialTicks);
-        BlockState cable = Blocks.BLACK_CONCRETE.defaultBlockState();
-        BlockState mast = Blocks.GRAY_CONCRETE.defaultBlockState();
+        BlockState cable = Blocks.COAL_BLOCK.defaultBlockState();
+        BlockState mast = Blocks.SMOOTH_STONE.defaultBlockState();
         Vec3 previous = entity.cable(0);
         for (int i = 1; i <= SEGMENTS; i++) {
             Vec3 next = entity.cable(i / (double) SEGMENTS);
