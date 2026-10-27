@@ -19,7 +19,7 @@ public final class ZoneProtection {
     }
 
     @SubscribeEvent
-    public static void onBreak(BlockEvent.BreakEvent event) {
+    public static void onBreak(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
         if (!(event.getLevel() instanceof Level level)) return;
         if (!ZoneControllerBlockEntity.allowed(level, event.getPos(), event.getPlayer())) {
             event.setCanceled(true);
