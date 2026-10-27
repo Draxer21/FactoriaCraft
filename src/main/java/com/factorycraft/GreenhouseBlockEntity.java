@@ -10,7 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
@@ -41,7 +42,7 @@ public final class GreenhouseBlockEntity extends AreaMachineBlockEntity {
     }
 
     private boolean needsWork(ServerLevel level, BlockPos pos, BlockState state) {
-        if (state.getBlock() instanceof FarmBlock) return state.getValue(FarmBlock.MOISTURE) < FarmBlock.MAX_MOISTURE;
+        if (state.is(Blocks.FARMLAND)) return state.getValue(BlockStateProperties.MOISTURE) < 7;
         if (state.getBlock() instanceof CropBlock crop) return true;
         return state.getBlock() instanceof BonemealableBlock plant && plant.isValidBonemealTarget(level, pos, state)
                 && !(state.getBlock() instanceof net.minecraft.world.level.block.GrassBlock);
@@ -66,8 +67,8 @@ public final class GreenhouseBlockEntity extends AreaMachineBlockEntity {
     @Override
     protected boolean workAt(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (state.getBlock() instanceof FarmBlock) {
-            level.setBlock(pos, state.setValue(FarmBlock.MOISTURE, FarmBlock.MAX_MOISTURE), Block.UPDATE_CLIENTS);
+        if (state.is(Blocks.FARMLAND)) {
+            level.setBlock(pos, state.setValue(BlockStateProperties.MOISTURE, 7), Block.UPDATE_CLIENTS);
         } else if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
             List<ItemStack> drops = new ArrayList<>(Block.getDrops(state, level, pos, null));
             Item seed = crop.asItem();
