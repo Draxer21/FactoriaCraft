@@ -22,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 public final class StorageTerminalMenu extends AbstractContainerMenu {
     public static final int WIDTH = 194;
     public static final int GRID_X = 8;
-    public static final int GRID_Y = 32;
+    public static final int GRID_Y = 34;
     public static final int COLUMNS = 9;
     public static final int ROWS = 6;
     public static final int INV_Y = GRID_Y + ROWS * 18 + 14;

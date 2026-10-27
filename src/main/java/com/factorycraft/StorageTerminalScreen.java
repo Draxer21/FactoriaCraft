@@ -35,7 +35,7 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
     @Override
     protected void init() {
         super.init();
-        search = new EditBox(this.font, leftPos + 80, topPos + 5, 106, 12, Component.translatable("gui.factorycraft.terminal.search"));
+        search = new EditBox(this.font, leftPos + 8, topPos + 17, 110, 12, Component.translatable("gui.factorycraft.terminal.search"));
         search.setMaxLength(40);
         search.setHint(Component.translatable("gui.factorycraft.terminal.search"));
         search.setResponder(text -> scroll = 0);
@@ -173,7 +173,11 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
                 String text = format(shown.get(index).count());
                 int sx = gx + col * 18;
                 int sy = gy + row * 18;
-                graphics.text(this.font, text, sx + 18 - this.font.width(text), sy + 10, 0xFFFFFFFF);
+                graphics.pose().pushMatrix();
+                graphics.pose().translate(sx + 17 - this.font.width(text) / 2.0F, sy + 13);
+                graphics.pose().scale(0.5F, 0.5F);
+                graphics.text(this.font, text, 0, 0, 0xFFFFFFFF);
+                graphics.pose().popMatrix();
             }
         }
         int hovered = entryAt(mouseX, mouseY);
@@ -187,6 +191,10 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
         }
         String info = Component.translatable("gui.factorycraft.terminal.info", TerminalListPayload.latest.inventories(),
                 TerminalListPayload.latest.entries().size()).getString();
-        graphics.text(this.font, info, leftPos + 8, topPos + 20, 0xFF404040);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(leftPos + 122, topPos + 20);
+        graphics.pose().scale(0.75F, 0.75F);
+        graphics.text(this.font, info, 0, 0, 0xFF404040);
+        graphics.pose().popMatrix();
     }
 }
