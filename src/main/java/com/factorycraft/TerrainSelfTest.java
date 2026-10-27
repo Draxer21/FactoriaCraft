@@ -225,13 +225,15 @@ public final class TerrainSelfTest {
         BlockPos garage = base.offset(80, 0, 16);
         if (!(level.getBlockEntity(garage) instanceof GarageBlockEntity be)) return;
         java.util.List<CargoShipEntity> ships = level.getEntitiesOfClass(CargoShipEntity.class, new net.minecraft.world.phys.AABB(garage).inflate(12));
+        String holdBefore = ships.isEmpty() ? "none" : ships.get(0).getItem(0).toString();
+        if (!ships.isEmpty()) ships.get(0).setItem(1, new ItemStack(Items.REDSTONE, 7));
         String parked = be.parkNearest().getString();
         ItemStack packed = be.getItem(0).copy();
         CargoShipEntity back = Logistics.CARGO_SHIP.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
         if (back != null) VehicleItem.restore(packed, back);
         garageResult = "shipsNear=" + ships.size() + " parked='" + parked + "' item=" + packed.getItem()
                 + " shipGone=" + (ships.isEmpty() ? "?" : String.valueOf(ships.get(0).isRemoved()))
-                + " restoredHold=" + (back == null ? "null" : back.getItem(0).toString()) + " fuel=" + GarageBlockEntity.fuelOf(packed)
+                + " holdBefore=" + holdBefore + " restoredHold=" + (back == null ? "null" : back.getItem(0) + "," + back.getItem(1)) + " fuel=" + GarageBlockEntity.fuelOf(packed)
                 + " tag=" + packed.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
                         .copyTag().getCompound(GarageBlockEntity.VEHICLE_KEY).map(t -> t.keySet() + " items=" + t.get("Items")).orElse("none");
     }
