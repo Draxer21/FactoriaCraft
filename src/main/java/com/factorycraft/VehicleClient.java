@@ -115,10 +115,10 @@ public final class VehicleClient {
                 for (int i = 0; i < items.length; i++) demo.add(new TerminalListPayload.Entry(new net.minecraft.world.item.ItemStack(items[i]), (long) (i * 977 + 13) * (i % 3 + 1)));
                 TerminalListPayload.latest = new TerminalListPayload(5, demo);
                 var inv = mc.player.getInventory();
-                mc.gui.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
+                mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
             } else if (parts[0].equals("cablecar")) {
-                mc.gui.setScreen(null);
+                mc.setScreen(null);
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..40]");
                 int x = mc.player.getBlockX();
                 int z = mc.player.getBlockZ();
