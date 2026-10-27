@@ -102,7 +102,7 @@ public final class CableCarRenderer extends EntityRenderer<CableCarEntity, Cable
             poseStack.mulPose(Axis.XP.rotation(-pitch));
             poseStack.scale(beam.thickness(), beam.thickness(), (float) length);
             poseStack.translate(-0.5F, -0.5F, 0.0F);
-            collector.submitMovingBlock(poseStack, beam.block(), state.outlineColor);
+            collector.submitMovingBlock(poseStack, beam.block());
             poseStack.popPose();
         }
         poseStack.pushPose();
