@@ -177,6 +177,8 @@ public final class NukeBlast {
             if (!level.isLoaded(pos)) continue;
             BlockState state = level.getBlockState(pos);
             if (state.isAir() || state.getDestroySpeed(level, pos) < 0) continue;
+            // Armour plating and shutters are made to take it.
+            if (state.getBlock().getExplosionResistance() >= Defense.BLAST_PROOF) continue;
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         }
     }

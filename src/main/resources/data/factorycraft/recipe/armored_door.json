@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SS",
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": "factorycraft:armor_plating"
+  },
+  "result": {
+    "id": "factorycraft:armored_door",
+    "count": 1
+  }
+}

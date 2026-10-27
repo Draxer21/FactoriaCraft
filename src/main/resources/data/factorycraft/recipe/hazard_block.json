@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "YBY",
+    "BPB",
+    "YBY"
+  ],
+  "key": {
+    "Y": "minecraft:yellow_dye",
+    "B": "minecraft:black_dye",
+    "P": "#c:plates/iron"
+  },
+  "result": {
+    "id": "factorycraft:hazard_block",
+    "count": 4
+  }
+}

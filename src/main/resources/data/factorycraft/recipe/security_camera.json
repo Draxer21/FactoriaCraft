@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GCP",
+    " S "
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:circuit_board",
+    "S": "minecraft:iron_bars"
+  },
+  "result": {
+    "id": "factorycraft:security_camera",
+    "count": 1
+  }
+}

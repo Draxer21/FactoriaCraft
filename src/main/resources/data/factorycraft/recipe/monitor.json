@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GCG",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "minecraft:glass_pane",
+    "C": "factorycraft:circuit_board",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:monitor",
+    "count": 1
+  }
+}

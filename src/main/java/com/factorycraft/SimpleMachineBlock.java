@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 /** A machine block whose behaviour is all in its block entity (generator, washer, press, mixer...). */
-public final class SimpleMachineBlock extends MachineBlock {
+public class SimpleMachineBlock extends MachineBlock {
     private final Supplier<? extends BlockEntityType<? extends MachineBlockEntity>> type;
     private final MapCodec<SimpleMachineBlock> codec;
 

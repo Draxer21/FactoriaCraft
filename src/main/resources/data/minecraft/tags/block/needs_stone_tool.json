@@ -69,6 +69,14 @@
     "factorycraft:storage_terminal",
     "factorycraft:drone_port",
     "factorycraft:garage",
-    "factorycraft:cable_station"
+    "factorycraft:cable_station",
+    "factorycraft:alarm",
+    "factorycraft:security_camera",
+    "factorycraft:monitor",
+    "factorycraft:lift_pad",
+    "factorycraft:hazard_block",
+    "factorycraft:steel_panel",
+    "factorycraft:steel_grate",
+    "factorycraft:industrial_bricks"
   ]
 }

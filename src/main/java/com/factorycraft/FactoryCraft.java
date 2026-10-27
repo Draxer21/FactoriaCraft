@@ -934,6 +934,7 @@ public final class FactoryCraft {
         Exotic.init();
         Gear.init();
         Logistics.init();
+        Defense.init();
         container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);

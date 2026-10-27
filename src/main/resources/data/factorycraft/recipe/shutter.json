@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GRG",
+    "PPP"
+  ],
+  "key": {
+    "P": "#c:plates/steel",
+    "G": "#c:gears/iron",
+    "R": "minecraft:piston"
+  },
+  "result": {
+    "id": "factorycraft:shutter",
+    "count": 2
+  }
+}

@@ -33,6 +33,7 @@ public final class TerrainSelfTest {
         try {
             if (ticks == START) setUp(level);
             if (ticks == START + 100) garageTest(level);
+            if (ticks == START + 100) defenseMobs(level);
             if (ticks == START + 300 || ticks == START + 600 || ticks == CHECK) check(level);
         } catch (RuntimeException e) {
             com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST FAILED {}", e.toString());
@@ -98,6 +99,7 @@ public final class TerrainSelfTest {
         setUpEnergy(level);
         setUpFarm(level);
         setUpLogistics(level);
+        setUpDefense(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -238,6 +240,80 @@ public final class TerrainSelfTest {
                         .copyTag().getCompound(GarageBlockEntity.VEHICLE_KEY).map(t -> t.keySet() + " items=" + t.get("Items")).orElse("none");
     }
 
+    private static String blastResult = "";
+
+    private static BlockPos defenseRow() {
+        return base.offset(0, 0, -16);
+    }
+
+    private static void setUpDefense(ServerLevel level) {
+        BlockPos row = defenseRow();
+        BlockState stone = Blocks.STONE.defaultBlockState();
+        // Turret on a stone floor, its generator beside it.
+        box(level, row.offset(-2, -1, -3), row.offset(10, -1, 3), stone);
+        level.setBlockAndUpdate(row, Defense.TURRET.value().defaultBlockState());
+        level.setBlockAndUpdate(row.west(), FactoryCraft.GENERATOR.value().defaultBlockState());
+        if (level.getBlockEntity(row.west()) instanceof Energy.Source generator) generator.setStored(100_000);
+        // Alarm with a caged husk next to it.
+        BlockPos alarm = row.offset(60, 0, 0);
+        box(level, alarm.offset(-1, -1, -1), alarm.offset(5, -1, 1), stone);
+        level.setBlockAndUpdate(alarm, Defense.ALARM.value().defaultBlockState());
+        box(level, alarm.offset(3, 0, -1), alarm.offset(5, 2, 1), Blocks.GLASS.defaultBlockState());
+        box(level, alarm.offset(4, 0, 0), alarm.offset(4, 1, 0), Blocks.AIR.defaultBlockState());
+        // Shutter: two controllers 5 above a floor, a redstone block beside the first.
+        BlockPos shutter = row.offset(100, 5, 0);
+        box(level, shutter.offset(-1, -6, -1), shutter.offset(2, -6, 1), stone);
+        level.setBlockAndUpdate(shutter, Defense.SHUTTER.value().defaultBlockState());
+        level.setBlockAndUpdate(shutter.east(), Defense.SHUTTER.value().defaultBlockState());
+        level.setBlockAndUpdate(shutter.west(), Blocks.REDSTONE_BLOCK.defaultBlockState());
+        // Lift pads 10 apart.
+        BlockPos pad = row.offset(120, 0, 0);
+        level.setBlockAndUpdate(pad, Defense.LIFT_PAD.value().defaultBlockState());
+        level.setBlockAndUpdate(pad.above(10), Defense.LIFT_PAD.value().defaultBlockState());
+        // TNT-sized blast between stone, reinforced concrete and armour plating.
+        BlockPos blast = row.offset(140, 0, 0);
+        level.setBlockAndUpdate(blast.west(), Defense.REINFORCED_CONCRETE.value().defaultBlockState());
+        level.setBlockAndUpdate(blast.east(), stone);
+        level.setBlockAndUpdate(blast.north(), Defense.ARMOR_PLATING.value().defaultBlockState());
+        level.explode(null, blast.getX() + 0.5, blast.getY() + 0.5, blast.getZ() + 0.5, 4.0F, net.minecraft.world.level.Level.ExplosionInteraction.TNT);
+        blastResult = "concrete=" + level.getBlockState(blast.west()).is(Defense.REINFORCED_CONCRETE.value())
+                + " plating=" + level.getBlockState(blast.north()).is(Defense.ARMOR_PLATING.value())
+                + " stone=" + level.getBlockState(blast.east()).is(Blocks.STONE);
+    }
+
+    private static net.minecraft.world.entity.@org.jspecify.annotations.Nullable Entity husk(ServerLevel level, double x, double y, double z) {
+        var type = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getValue(net.minecraft.resources.Identifier.withDefaultNamespace("husk"));
+        var husk = type.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (husk == null) return null;
+        husk.setPos(x, y, z);
+        if (husk instanceof net.minecraft.world.entity.Mob mob) mob.setPersistenceRequired();
+        level.addFreshEntity(husk);
+        return husk;
+    }
+
+    private static net.minecraft.world.entity.@org.jspecify.annotations.Nullable Entity turretTarget;
+
+    private static void defenseMobs(ServerLevel level) {
+        BlockPos row = defenseRow();
+        turretTarget = husk(level, row.getX() + 7.5, row.getY(), row.getZ() + 0.5);
+        husk(level, row.getX() + 64.5, row.getY(), row.getZ() + 0.5);
+    }
+
+    private static void logDefense(ServerLevel level) {
+        BlockPos row = defenseRow();
+        int shots = level.getBlockEntity(row) instanceof TurretBlockEntity t ? t.shots : -1;
+        BlockPos alarm = row.offset(60, 0, 0);
+        BlockPos shutter = row.offset(100, 5, 0);
+        int depthA = level.getBlockEntity(shutter) instanceof ShutterControllerBlockEntity a ? a.depth(level) : -1;
+        int depthB = level.getBlockEntity(shutter.east()) instanceof ShutterControllerBlockEntity b ? b.depth(level) : -1;
+        BlockPos pad = row.offset(120, 0, 0);
+        com.mojang.logging.LogUtils.getLogger().info(
+                "DEFENSETEST turretShots={} targetDead={} alarmOn={} alarmSignal={} shutterDepth={}/{} liftUp={} liftDown={} blast[{}]",
+                shots, turretTarget == null ? "null" : String.valueOf(!turretTarget.isAlive()),
+                level.getBlockState(alarm).getValue(MachineBlock.LIT), level.hasNeighborSignal(alarm.north()),
+                depthA, depthB, LiftPadBlock.next(level, pad, true), LiftPadBlock.next(level, pad.above(10), false), blastResult);
+    }
+
     private static void logLogistics(ServerLevel level) {
         BlockPos row = base.offset(0, 0, 16);
         int drones = level.getBlockEntity(row.offset(20, 0, 0)) instanceof DronePortBlockEntity a ? a.drones() : -1;
@@ -355,6 +431,7 @@ public final class TerrainSelfTest {
                     smelt.map(r -> r.value().assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(Items.RAW_IRON))).toString()).orElse("none"));
             logFarm(level);
             logLogistics(level);
+            logDefense(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

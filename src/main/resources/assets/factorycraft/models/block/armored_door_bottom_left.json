@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "factorycraft:block/armored_door_bottom",
+    "top": "factorycraft:block/armored_door_top"
+  }
+}

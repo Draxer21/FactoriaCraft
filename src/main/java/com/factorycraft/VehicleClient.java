@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"transport:1", "terminal", "summon:cargo_ship", "cablecar", "look"};
+    private static final String[] DEMO_CHAPTERS = {"defense:1", "defense:last", "showcase", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -117,6 +117,27 @@ public final class VehicleClient {
                 var inv = mc.player.getInventory();
                 mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("showcase")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("gamemode spectator");
+                int x = mc.player.getBlockX();
+                int z = mc.player.getBlockZ();
+                mc.player.connection.sendCommand("fill " + (x - 8) + " 117 " + (z + 4) + " " + (x + 8) + " 117 " + (z + 16) + " minecraft:smooth_stone");
+                String[] blocks = {"turret", "alarm", "security_camera", "monitor", "lift_pad", "steel_scaffold", "reinforced_concrete",
+                        "armor_plating", "hazard_block", "steel_panel", "steel_grate", "industrial_bricks", "warning_lamp"};
+                for (int i = 0; i < blocks.length; i++) {
+                    mc.player.connection.sendCommand("setblock " + (x - 6 + i) + " 118 " + (z + 8) + " factorycraft:" + blocks[i] + (i < 4 ? "[facing=south]" : ""));
+                }
+                mc.player.connection.sendCommand("setblock " + (x - 2) + " 118 " + (z + 12) + " factorycraft:armored_door[half=lower,facing=south]");
+                mc.player.connection.sendCommand("setblock " + (x - 2) + " 119 " + (z + 12) + " factorycraft:armored_door[half=upper,facing=south]");
+                for (int i = 0; i < 3; i++) {
+                    mc.player.connection.sendCommand("setblock " + (x + 2 + i) + " 122 " + (z + 12) + " factorycraft:shutter[facing=north]");
+                    mc.player.connection.sendCommand("fill " + (x + 2 + i) + " 118 " + (z + 12) + " " + (x + 2 + i) + " 121 " + (z + 12) + " factorycraft:shutter_panel[axis=x]");
+                }
+                mc.player.connection.sendCommand("setblock " + (x + 6) + " 118 " + (z + 12) + " factorycraft:steel_scaffold");
+                mc.player.connection.sendCommand("setblock " + (x + 6) + " 119 " + (z + 12) + " factorycraft:steel_scaffold");
+                mc.player.connection.sendCommand("tp @s " + x + " 121 " + (z + 1) + " 0 25");
             } else if (parts[0].equals("cablecar")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("kill @e[type=!player,distance=..40]");

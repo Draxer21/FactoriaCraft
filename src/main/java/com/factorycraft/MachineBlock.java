@@ -62,8 +62,35 @@ public abstract class MachineBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (placer instanceof Player player && level.getBlockEntity(pos) instanceof Owned owned) owned.setOwner(player.getUUID());
+    }
+
+    @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                           Player player, InteractionHand hand, BlockHitResult hit) {
+        // Security cameras: wrench the camera, then the monitor.
+        if (stack.getItem() instanceof WrenchItem
+                && (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity || level.getBlockEntity(pos) instanceof MonitorBlockEntity)) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                    net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+            if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity) {
+                tag.putIntArray("CameraFrom", new int[] {pos.getX(), pos.getY(), pos.getZ()});
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.monitor.pick"));
+            } else if (level.getBlockEntity(pos) instanceof MonitorBlockEntity monitor) {
+                int[] from = tag.getIntArray("CameraFrom").orElse(new int[0]);
+                if (from.length == 3) {
+                    monitor.link(player, new BlockPos(from[0], from[1], from[2]));
+                    tag.remove("CameraFrom");
+                } else {
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.monitor.how"));
+                }
+            }
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+            return InteractionResult.SUCCESS_SERVER;
+        }
         // Drone ports: dock delivery drones, link with the wrench.
         if (level.getBlockEntity(pos) instanceof DronePortBlockEntity port) {
             if (stack.is(Logistics.DELIVERY_DRONE_ITEM.value())) {
@@ -150,6 +177,13 @@ public abstract class MachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PumpBlockEntity pump) {
             if (!level.isClientSide()) pump.click(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof MonitorBlockEntity monitor) {
+            if (!level.isClientSide()) {
+                if (player.isShiftKeyDown()) monitor.clear(player);
+                else if (player instanceof net.minecraft.server.level.ServerPlayer server) monitor.watch(server);
+            }
             return InteractionResult.SUCCESS;
         }
         if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof GarageBlockEntity garage) {
