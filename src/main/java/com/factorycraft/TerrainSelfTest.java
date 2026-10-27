@@ -174,7 +174,7 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info(
                 "FARMTEST greenhouse=[{}] notRipe={} wet={} tank={} extracted={} lowerTank={} desalinator=[{}] intake={} fresh={} sideTank={} contaminatedLeft={} plantWater={} sewerTank={} saltMelts={}",
                 outputs(level, greenhouse), young,
-                level.getBlockState(greenhouse.offset(0, -2, 2)).getValue(net.minecraft.world.level.block.FarmBlock.MOISTURE),
+                level.getBlockState(greenhouse.offset(0, -2, 2)).getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.MOISTURE),
                 tank(level, base.offset(300, 0, 0), 0), tankExtracted, tank(level, base.offset(300, -1, 0), 0),
                 outputs(level, base.offset(310, 0, 0)), tank(level, base.offset(310, 0, 0), 0), tank(level, base.offset(310, 0, 0), 1),
                 tank(level, base.offset(311, 0, 0), 0),

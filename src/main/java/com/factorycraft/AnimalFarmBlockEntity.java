@@ -84,7 +84,7 @@ public final class AnimalFarmBlockEntity extends PoweredMachineBlockEntity {
                 busy = true;
             }
             int bucket = slotOf(Items.BUCKET);
-            if (bucket >= 0 && (animal.getType() == EntityType.COW || animal.getType() == EntityType.MOOSHROOM) && canStore(List.of(new ItemStack(Items.MILK_BUCKET)))
+            if (bucket >= 0 && milkable(animal) && canStore(List.of(new ItemStack(Items.MILK_BUCKET)))
                     && drawPower(level, ENERGY_PER_ACTION)) {
                 items.get(bucket).shrink(1);
                 store(List.of(new ItemStack(Items.MILK_BUCKET)));
@@ -101,6 +101,11 @@ public final class AnimalFarmBlockEntity extends PoweredMachineBlockEntity {
         }
         if (busy) setChanged();
         return busy || !animals.isEmpty();
+    }
+
+    private static boolean milkable(Animal animal) {
+        String id = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(animal.getType()).getPath();
+        return id.equals("cow") || id.equals("mooshroom");
     }
 
     private int foodSlot(Animal animal) {
