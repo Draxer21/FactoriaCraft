@@ -78,14 +78,15 @@ public final class GarageBlockEntity extends PoweredMachineBlockEntity {
     /** Parks the nearest empty vehicle; returns what happened. */
     Component parkNearest() {
         if (level == null) return Component.empty();
-        int free = 0;
-        for (int i = 0; i < getContainerSize(); i++) if (items.get(i).isEmpty()) free++;
-        if (free == 0) return Component.translatable("message.factorycraft.garage.full");
+        int free = -1;
+        for (int i = 0; i < getContainerSize() && free < 0; i++) if (items.get(i).isEmpty()) free = i;
+        if (free < 0) return Component.translatable("message.factorycraft.garage.full");
         AbstractBoat vehicle = level.getEntitiesOfClass(AbstractBoat.class, new AABB(worldPosition).inflate(8.0), GarageBlockEntity::parkable)
                 .stream().min(Comparator.comparingDouble(e -> e.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition)))).orElse(null);
         if (vehicle == null) return Component.translatable("message.factorycraft.garage.none");
         Component name = vehicle.getName();
-        store(List.of(pack(vehicle)));
+        // Straight into a free slot (they aren't output slots, so store() wouldn't take it).
+        items.set(free, pack(vehicle));
         setChanged();
         level.playSound(null, worldPosition, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8F, 0.8F);
         return Component.translatable("message.factorycraft.garage.parked", name);
