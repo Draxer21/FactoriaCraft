@@ -118,7 +118,7 @@ public final class VehicleClient {
                 mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
             } else if (parts[0].equals("showcase")) {
-                mc.gui.setScreen(null);
+                mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("gamemode spectator");
                 int x = mc.player.getBlockX();
