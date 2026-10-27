@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"economy:1", "stats", "smog", "look"};
+    private static final String[] DEMO_CHAPTERS = {"stats", "smog", "look", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -138,12 +138,8 @@ public final class VehicleClient {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("tp @s ~ ~ ~ 0 0");
-                var server = mc.getSingleplayerServer();
-                net.minecraft.core.BlockPos at = mc.player.blockPosition();
-                if (server != null) server.execute(() -> {
-                    AirQuality.spread(server.overworld(), at, 900);
-                    com.mojang.logging.LogUtils.getLogger().info("GUIDE_DEMO smog air={}", AirQuality.get(server.overworld(), at));
-                });
+                mc.player.connection.sendCommand("gamemode creative");
+                mc.player.connection.sendCommand("factorycraft air 900");
             } else if (parts[0].equals("showcase")) {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
