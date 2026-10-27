@@ -32,6 +32,24 @@ public final class EnvironmentClient {
     }
 
     @SubscribeEvent
+    public static void registerHud(net.neoforged.neoforge.client.event.RegisterGuiLayersEvent event) {
+        event.registerBelow(net.neoforged.neoforge.client.gui.VanillaGuiLayers.HOTBAR,
+                net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "smog_haze"), EnvironmentClient::renderHaze);
+    }
+
+    /** A brown (or sickly green, in acid rain) veil over the view, on top of the closer fog. */
+    private static void renderHaze(net.minecraft.client.gui.GuiGraphicsExtractor graphics, net.minecraft.client.DeltaTracker delta) {
+        if (haze < 0.02F || DefenseClient.watching()) return;
+        int alpha = Math.round(haze * 110);
+        int rgb = acid ? 0x6B7A3A : 0x7A6448;
+        graphics.fill(0, 0, graphics.guiWidth(), graphics.guiHeight(), (alpha << 24) | rgb);
+    }
+
+    static float haze() {
+        return haze;
+    }
+
+    @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
