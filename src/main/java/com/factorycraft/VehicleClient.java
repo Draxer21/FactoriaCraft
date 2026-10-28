@@ -133,9 +133,9 @@ public final class VehicleClient {
                     }
                     lines.add(new StatsPayload.Line(new net.minecraft.world.item.ItemStack(items[k]), series, sum));
                 }
-                mc.gui.setScreen(new StatsScreen(new StatsPayload(total, lines)));
+                mc.setScreen(new StatsScreen(new StatsPayload(total, lines)));
             } else if (parts[0].equals("smog")) {
-                mc.gui.setScreen(null);
+                mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");
                 mc.player.connection.sendCommand("tp @s ~ ~ ~ 0 0");
                 mc.player.connection.sendCommand("gamemode creative");

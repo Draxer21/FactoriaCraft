@@ -23,7 +23,7 @@ public final class EnvironmentClient {
     @SubscribeEvent
     public static void registerPayloads(RegisterClientPayloadHandlersEvent event) {
         event.register(PollutionPayload.TYPE, (payload, context) -> PollutionPayload.latest = payload);
-        event.register(StatsPayload.TYPE, (payload, context) -> Minecraft.getInstance().gui.setScreen(new StatsScreen(payload)));
+        event.register(StatsPayload.TYPE, (payload, context) -> Minecraft.getInstance().setScreen(new StatsScreen(payload)));
     }
 
     static float target() {
