@@ -2,12 +2,18 @@
   "layers": {
     "humanoid": [
       {
-        "texture": "factorycraft:lead"
+        "texture": "minecraft:iron",
+        "dyeable": {
+          "color_when_undyed": 9345220
+        }
       }
     ],
     "humanoid_leggings": [
       {
-        "texture": "factorycraft:lead"
+        "texture": "minecraft:iron",
+        "dyeable": {
+          "color_when_undyed": 9345220
+        }
       }
     ]
   }
