@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " D ",
+    "SAS",
+    "CCC"
+  ],
+  "key": {
+    "D": "minecraft:daylight_detector",
+    "S": "#c:plates/steel",
+    "A": "factorycraft:advanced_circuit",
+    "C": "factorycraft:copper_coil"
+  },
+  "result": {
+    "id": "factorycraft:orbital_receiver",
+    "count": 1
+  }
+}

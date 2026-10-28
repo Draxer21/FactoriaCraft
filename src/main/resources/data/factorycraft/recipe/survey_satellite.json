@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SES",
+    "AGA",
+    "SRS"
+  ],
+  "key": {
+    "S": "#c:plates/stainless_steel",
+    "E": "minecraft:spyglass",
+    "A": "factorycraft:advanced_circuit",
+    "G": "minecraft:gold_block",
+    "R": "minecraft:compass"
+  },
+  "result": {
+    "id": "factorycraft:survey_satellite",
+    "count": 1
+  }
+}

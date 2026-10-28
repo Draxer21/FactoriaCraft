@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/launch_pad"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/launch_pad_on"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/launch_pad"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/launch_pad_on"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/launch_pad"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/launch_pad_on"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/launch_pad"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/launch_pad_on"
+    }
+  }
+}

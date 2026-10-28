@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "AGA",
+    "PSP"
+  ],
+  "key": {
+    "P": "factorycraft:photon_array",
+    "S": "#c:plates/stainless_steel",
+    "A": "factorycraft:advanced_circuit",
+    "G": "minecraft:gold_block"
+  },
+  "result": {
+    "id": "factorycraft:solar_satellite",
+    "count": 1
+  }
+}

@@ -30,6 +30,7 @@ public final class ExcavatorClientEvents {
         event.registerLayerDefinition(DroneModel.LAYER_LOCATION, DroneModel::createLayer);
         event.registerLayerDefinition(CargoShipModel.LAYER_LOCATION, CargoShipModel::createLayer);
         event.registerLayerDefinition(CableCarModel.LAYER_LOCATION, CableCarModel::createLayer);
+        event.registerLayerDefinition(RocketModel.LAYER_LOCATION, RocketModel::createLayer);
     }
 
     @SubscribeEvent
@@ -61,6 +62,10 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.GREENHOUSE_MENU.value(), ProcessingScreen::new);
         event.register(Logistics.STORAGE_TERMINAL_MENU.value(), StorageTerminalScreen::new);
         event.register(Logistics.DRONE_PORT_MENU.value(), ProcessingScreen::new);
+        event.register(Endgame.ACCELERATOR_MENU.value(), ProcessingScreen::new);
+        event.register(Endgame.LAUNCH_PAD_MENU.value(), ProcessingScreen::new);
+        event.register(Economy.RECYCLER_MENU.value(), ProcessingScreen::new);
+        event.register(Economy.VENDING_MACHINE_MENU.value(), ProcessingScreen::new);
         event.register(Logistics.GARAGE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.ANIMAL_FARM_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.DESALINATOR_MENU.value(), ProcessingScreen::new);
@@ -93,6 +98,7 @@ public final class ExcavatorClientEvents {
         event.registerEntityRenderer(FactoryCraft.DRONE.value(), DroneRenderer::new);
         event.registerEntityRenderer(Logistics.DELIVERY_DRONE.value(), DroneRenderer::new);
         event.registerEntityRenderer(Logistics.CABLE_CAR.value(), CableCarRenderer::new);
+        event.registerEntityRenderer(Endgame.ROCKET_ENTITY.value(), RocketRenderer::new);
         event.registerEntityRenderer(Logistics.CARGO_SHIP.value(), context -> new WorkVehicleRenderer(context, "cargo_ship",
                 CargoShipModel.LAYER_LOCATION, 1.5F, CargoShipModel::new, CargoShipModel.LAMP_PARTS, CargoShipModel.BEAM_ORIGINS));
         event.registerEntityRenderer(Nuclear.MINI_NUKE_ENTITY.value(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);

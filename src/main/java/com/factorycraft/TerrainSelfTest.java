@@ -34,6 +34,7 @@ public final class TerrainSelfTest {
             if (ticks == START) setUp(level);
             if (ticks == START + 100) garageTest(level);
             if (ticks == START + 100) defenseMobs(level);
+            if (ticks == START + 120) teleportTest(level);
             if (ticks == START + 300 || ticks == START + 600 || ticks == CHECK) check(level);
         } catch (RuntimeException e) {
             com.mojang.logging.LogUtils.getLogger().info("TERRAINTEST FAILED {}", e.toString());
@@ -101,6 +102,7 @@ public final class TerrainSelfTest {
         setUpLogistics(level);
         setUpDefense(level);
         setUpEnvironment(level);
+        setUpEndgame(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -394,6 +396,71 @@ public final class TerrainSelfTest {
                 economyResult);
     }
 
+    private static String teleportResult = "";
+    private static String launchResult = "";
+
+    private static BlockPos endRow() {
+        return base.offset(160, 0, -16);
+    }
+
+    private static void setUpEndgame(ServerLevel level) {
+        BlockPos row = endRow();
+        // Accelerator with 24 magnets, coal blocks in.
+        powered(level, row, Endgame.ACCELERATOR.value());
+        box(level, row.offset(1, 0, 0), row.offset(8, 0, 2), Endgame.MAGNET.value().defaultBlockState());
+        if (level.getBlockEntity(row) instanceof AcceleratorBlockEntity be) be.setItem(0, new ItemStack(Items.COAL_BLOCK, 2));
+        // Antimatter reactor with one cell.
+        BlockPos reactor = row.offset(20, 0, 0);
+        level.setBlockAndUpdate(reactor, Endgame.ANTIMATTER_REACTOR.value().defaultBlockState());
+        if (level.getBlockEntity(reactor) instanceof AntimatterReactorBlockEntity be) be.setItem(0, new ItemStack(Endgame.ANTIMATTER_CELL.value()));
+        // Teleporters 20 apart.
+        BlockPos padA = row.offset(30, 0, 0);
+        BlockPos padB = row.offset(50, 0, 0);
+        powered(level, padA, Endgame.TELEPORTER.value());
+        level.setBlockAndUpdate(padB, Endgame.TELEPORTER.value().defaultBlockState());
+        if (level.getBlockEntity(padA) instanceof TeleporterBlockEntity a && level.getBlockEntity(padB) instanceof TeleporterBlockEntity b) {
+            a.link(padB, level.dimension());
+            b.link(padA, level.dimension());
+        }
+        // Launch pad, loaded, and an orbital receiver.
+        BlockPos pad = row.offset(70, 0, 0);
+        level.setBlockAndUpdate(pad, Endgame.LAUNCH_PAD.value().defaultBlockState());
+        level.setBlockAndUpdate(pad.west(), FactoryCraft.GENERATOR.value().defaultBlockState());
+        if (level.getBlockEntity(pad.west()) instanceof Energy.Source generator) generator.setStored(100_000);
+        if (level.getBlockEntity(pad) instanceof LaunchPadBlockEntity be) {
+            be.setItem(0, new ItemStack(Endgame.ROCKET.value()));
+            be.setItem(1, new ItemStack(Endgame.SOLAR_SATELLITE.value()));
+            be.setItem(2, new ItemStack(Endgame.ROCKET_FUEL.value(), 8));
+            launchResult = "start='" + be.start(level).getString() + "' solarBefore=" + Orbit.get(level).solar();
+        }
+        level.setBlockAndUpdate(row.offset(80, 0, 0), Endgame.ORBITAL_RECEIVER.value().defaultBlockState());
+    }
+
+    private static void teleportTest(ServerLevel level) {
+        BlockPos padA = endRow().offset(30, 0, 0);
+        var type = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getValue(net.minecraft.resources.Identifier.withDefaultNamespace("armor_stand"));
+        var stand = type.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (stand == null || !(level.getBlockEntity(padA) instanceof TeleporterBlockEntity pad)) return;
+        stand.setPos(padA.getX() + 0.5, padA.getY() + 1, padA.getZ() + 0.5);
+        level.addFreshEntity(stand);
+        String msg = pad.teleport(stand).getString();
+        teleportResult = "msg='" + msg + "' standX=" + Math.round(stand.getX() - endRow().getX());
+    }
+
+    private static void logEndgame(ServerLevel level) {
+        BlockPos row = endRow();
+        int magnets = level.getBlockEntity(row) instanceof AcceleratorBlockEntity a ? a.magnets() : -1;
+        String reactor = level.getBlockEntity(row.offset(20, 0, 0)) instanceof AntimatterReactorBlockEntity r
+                ? "stored=" + r.stored() + " rate=" + r.rate() + " burn=" + r.burn() : "none";
+        int receiver = level.getBlockEntity(row.offset(80, 0, 0)) instanceof Energy.Source s ? s.rate() : -1;
+        int rockets = level.getEntitiesOfClass(RocketEntity.class, new net.minecraft.world.phys.AABB(row.offset(60, -10, -10).getX(), level.getMinY(),
+                row.getZ() - 10, row.getX() + 80, level.getMaxY() + 100, row.getZ() + 10)).size();
+        Orbit orbit = Orbit.get(level);
+        com.mojang.logging.LogUtils.getLogger().info(
+                "ENDGAMETEST magnets={} accelerator=[{}] reactor[{}] teleport[{}] launch[{}] rocketsFlying={} orbit={}/{} receiverRate={}",
+                magnets, outputs(level, row), reactor, teleportResult, launchResult, rockets, orbit.solar(), orbit.survey(), receiver);
+    }
+
     private static void logLogistics(ServerLevel level) {
         BlockPos row = base.offset(0, 0, 16);
         int drones = level.getBlockEntity(row.offset(20, 0, 0)) instanceof DronePortBlockEntity a ? a.drones() : -1;
@@ -513,6 +580,7 @@ public final class TerrainSelfTest {
             logLogistics(level);
             logDefense(level);
             logEnvironment(level);
+            logEndgame(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

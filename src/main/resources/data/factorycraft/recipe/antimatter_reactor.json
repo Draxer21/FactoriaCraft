@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "VAV",
+    "CNC",
+    "VAV"
+  ],
+  "key": {
+    "V": "factorycraft:voidnite_ingot",
+    "A": "factorycraft:advanced_circuit",
+    "C": "factorycraft:containment_cell",
+    "N": "minecraft:nether_star"
+  },
+  "result": {
+    "id": "factorycraft:antimatter_reactor",
+    "count": 1
+  }
+}

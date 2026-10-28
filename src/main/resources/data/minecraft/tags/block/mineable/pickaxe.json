@@ -118,6 +118,12 @@
     "factorycraft:vending_machine",
     "factorycraft:contract_board",
     "factorycraft:stats_terminal",
-    "factorycraft:zone_controller"
+    "factorycraft:zone_controller",
+    "factorycraft:superconducting_magnet",
+    "factorycraft:accelerator",
+    "factorycraft:antimatter_reactor",
+    "factorycraft:teleporter",
+    "factorycraft:launch_pad",
+    "factorycraft:orbital_receiver"
   ]
 }

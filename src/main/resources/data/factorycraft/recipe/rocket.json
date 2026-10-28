@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "PAP",
+    "FTF"
+  ],
+  "key": {
+    "N": "factorycraft:armor_plating",
+    "P": "#c:plates/stainless_steel",
+    "A": "factorycraft:advanced_circuit",
+    "F": "#c:plates/steel",
+    "T": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "factorycraft:rocket",
+    "count": 1
+  }
+}

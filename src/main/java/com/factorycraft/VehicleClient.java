@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"stats", "smog", "look", "look"};
+    private static final String[] DEMO_CHAPTERS = {"endgame:1", "rocket", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -118,6 +118,16 @@ public final class VehicleClient {
                 var inv = mc.player.getInventory();
                 mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("rocket")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("gamemode spectator");
+                int x = mc.player.getBlockX();
+                int z = mc.player.getBlockZ();
+                mc.player.connection.sendCommand("fill " + (x - 4) + " 117 " + (z + 8) + " " + (x + 4) + " 117 " + (z + 16) + " minecraft:smooth_stone");
+                mc.player.connection.sendCommand("setblock " + x + " 118 " + (z + 12) + " factorycraft:launch_pad");
+                mc.player.connection.sendCommand("summon factorycraft:rocket " + x + ".5 119 " + (z + 12) + ".5 {Age:-110}");
+                mc.player.connection.sendCommand("tp @s " + x + ".5 124 " + (z - 6) + ".5 0 15");
             } else if (parts[0].equals("stats")) {
                 java.util.List<StatsPayload.Line> lines = new java.util.ArrayList<>();
                 int[] total = new int[ProductionStats.SHOWN];

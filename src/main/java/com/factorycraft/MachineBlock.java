@@ -89,6 +89,31 @@ public abstract class MachineBlock extends BaseEntityBlock {
             zone.bind(player, stack);
             return InteractionResult.SUCCESS_SERVER;
         }
+        // Teleporters: wrench one pad, then the other.
+        if (stack.getItem() instanceof WrenchItem && level.getBlockEntity(pos) instanceof TeleporterBlockEntity pad) {
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            net.minecraft.nbt.CompoundTag tag = stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA,
+                    net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+            int[] from = tag.getIntArray("TeleFrom").orElse(new int[0]);
+            var fromLevel = tag.read("TeleFromLevel", Level.RESOURCE_KEY_CODEC);
+            BlockPos source = from.length == 3 ? new BlockPos(from[0], from[1], from[2]) : null;
+            net.minecraft.server.level.ServerLevel sourceLevel = source != null && fromLevel.isPresent() && level.getServer() != null
+                    ? level.getServer().getLevel(fromLevel.get()) : null;
+            if (sourceLevel != null && !(source.equals(pos) && sourceLevel == level)
+                    && sourceLevel.getBlockEntity(source) instanceof TeleporterBlockEntity first) {
+                first.link(pos, level.dimension());
+                pad.link(source, sourceLevel.dimension());
+                tag.remove("TeleFrom");
+                tag.remove("TeleFromLevel");
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.teleporter.linked"));
+            } else {
+                tag.putIntArray("TeleFrom", new int[] {pos.getX(), pos.getY(), pos.getZ()});
+                tag.store("TeleFromLevel", Level.RESOURCE_KEY_CODEC, level.dimension());
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.teleporter.pick"));
+            }
+            stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+            return InteractionResult.SUCCESS_SERVER;
+        }
         // Security cameras: wrench the camera, then the monitor.
         if (stack.getItem() instanceof WrenchItem
                 && (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity || level.getBlockEntity(pos) instanceof MonitorBlockEntity)) {
@@ -196,6 +221,14 @@ public abstract class MachineBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof PumpBlockEntity pump) {
             if (!level.isClientSide()) pump.click(player);
+            return InteractionResult.SUCCESS;
+        }
+        if (level.getBlockEntity(pos) instanceof TeleporterBlockEntity pad) {
+            if (!level.isClientSide()) player.sendOverlayMessage(pad.teleport(player));
+            return InteractionResult.SUCCESS;
+        }
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof LaunchPadBlockEntity launchPad) {
+            if (!level.isClientSide()) player.sendOverlayMessage(launchPad.start(level));
             return InteractionResult.SUCCESS;
         }
         if (level.getBlockEntity(pos) instanceof StatsTerminalBlockEntity) {
