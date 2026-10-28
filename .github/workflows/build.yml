@@ -85,7 +85,7 @@ jobs:
           {
             if grep -q 'Done (' server.log; then echo '### [${{ matrix.mc }}] Server started OK'; else echo '### [${{ matrix.mc }}] Server did NOT start'; fi
             echo '```'
-            grep -o "SELFTEST.*\|TERRAINTEST.*\|MATERIALSTEST.*\|EXOTICTEST.*\|FORGETEST.*\|ENERGYTEST.*\|FARMTEST.*\|LOGISTICSTEST.*\|DEFENSETEST.*\|ENVTEST.*\|ENDGAMETEST.*" server.log | tail -12
+            grep -o "SELFTEST.*\|TERRAINTEST.*\|MATERIALSTEST.*\|EXOTICTEST.*\|FORGETEST.*\|ENERGYTEST.*\|FARMTEST.*\|LOGISTICSTEST.*\|DEFENSETEST.*\|ENVTEST.*\|ENDGAMETEST.*\|RESEARCHTEST.*" server.log | tail -13
             grep -E -i -B1 -A4 "exception|error|failed|couldn't|could not|unknown|missing|invalid" server.log \
               | grep -v -E "DEBUG|^\s*at java\.|^\s*at jdk\." | head -c 60000
             echo '```'

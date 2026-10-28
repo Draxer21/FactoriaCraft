@@ -28,9 +28,9 @@ public final class EnvironmentClient {
 =======
         event.register(ResearchPayload.TYPE, (payload, context) -> {
             if (ResearchScreen.current != null) ResearchScreen.current.update(payload);
-            else Minecraft.getInstance().gui.setScreen(new ResearchScreen(payload));
+            else Minecraft.getInstance().setScreen(new ResearchScreen(payload));
         });
-        event.register(StatsPayload.TYPE, (payload, context) -> Minecraft.getInstance().gui.setScreen(new StatsScreen(payload)));
+        event.register(StatsPayload.TYPE, (payload, context) -> Minecraft.getInstance().setScreen(new StatsScreen(payload)));
 >>>>>>> 35d5690 (Stage 11 research tree: research station turns materials into world-wide points, tree screen with 19 nodes, locked machines/vehicles/items can't be placed or used until researched (config researchRequired), /factorycraft research [unlockall]; version 0.21.0)
     }
 

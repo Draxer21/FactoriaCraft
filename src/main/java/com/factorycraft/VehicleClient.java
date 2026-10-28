@@ -119,7 +119,7 @@ public final class VehicleClient {
                 mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
             } else if (parts[0].equals("tree")) {
-                mc.gui.setScreen(null);
+                mc.setScreen(null);
                 mc.player.connection.sendCommand("factorycraft research");
             } else if (parts[0].equals("rocket")) {
                 mc.setScreen(null);
