@@ -18,13 +18,21 @@ public final class ZoneProtection {
         player.sendOverlayMessage(Component.translatable("message.factorycraft.zone.denied"));
     }
 
+    /** Stops strangers from mining (works the same on every NeoForge version this mod supports). */
     @SubscribeEvent
-    public static void onBreak(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
-        if (!(event.getLevel() instanceof Level level)) return;
-        if (!ZoneControllerBlockEntity.allowed(level, event.getPos(), event.getPlayer())) {
+    public static void onMine(PlayerInteractEvent.LeftClickBlock event) {
+        if (!ZoneControllerBlockEntity.allowed(event.getLevel(), event.getPos(), event.getEntity())) {
             event.setCanceled(true);
-            deny(event.getPlayer());
+            if (!event.getLevel().isClientSide()) deny(event.getEntity());
         }
+    }
+
+    @SubscribeEvent
+    public static void onBreakSpeed(net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity();
+        event.getPosition().ifPresent(pos -> {
+            if (!ZoneControllerBlockEntity.allowed(player.level(), pos, player)) event.setNewSpeed(0.0F);
+        });
     }
 
     @SubscribeEvent
