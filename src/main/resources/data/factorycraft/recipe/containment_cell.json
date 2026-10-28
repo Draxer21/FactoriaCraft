@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "GEG",
+    " S "
+  ],
+  "key": {
+    "S": "#c:plates/steel",
+    "G": "factorycraft:tempered_glass",
+    "E": "factorycraft:stable_ender_crystal"
+  },
+  "result": {
+    "id": "factorycraft:containment_cell",
+    "count": 2
+  }
+}

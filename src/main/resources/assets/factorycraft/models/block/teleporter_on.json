@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "factorycraft:block/teleporter_top_on",
+    "side": "factorycraft:block/machine_side",
+    "bottom": "factorycraft:block/machine_bottom"
+  }
+}

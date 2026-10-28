@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HHH",
+    "SAS",
+    "CCC"
+  ],
+  "key": {
+    "H": "factorycraft:hazard_block",
+    "S": "#c:plates/steel",
+    "A": "factorycraft:advanced_circuit",
+    "C": "factorycraft:reinforced_concrete"
+  },
+  "result": {
+    "id": "factorycraft:launch_pad",
+    "count": 1
+  }
+}

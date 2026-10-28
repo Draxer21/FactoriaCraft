@@ -15,6 +15,12 @@
     "factorycraft:reinforced_concrete",
     "factorycraft:armored_door",
     "factorycraft:turret",
-    "factorycraft:shutter"
+    "factorycraft:shutter",
+    "factorycraft:superconducting_magnet",
+    "factorycraft:accelerator",
+    "factorycraft:antimatter_reactor",
+    "factorycraft:teleporter",
+    "factorycraft:launch_pad",
+    "factorycraft:orbital_receiver"
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GRG",
+    "SAS",
+    "SSS"
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "R": "minecraft:lightning_rod",
+    "S": "#c:plates/iron",
+    "A": "factorycraft:advanced_circuit"
+  },
+  "result": {
+    "id": "factorycraft:uplink",
+    "count": 1
+  }
+}

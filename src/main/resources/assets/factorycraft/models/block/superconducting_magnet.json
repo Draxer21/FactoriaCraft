@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "factorycraft:block/superconducting_magnet",
+    "end": "factorycraft:block/machine_top"
+  }
+}

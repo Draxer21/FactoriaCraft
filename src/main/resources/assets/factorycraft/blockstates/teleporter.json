@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/teleporter"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/teleporter_on"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/teleporter"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/teleporter_on"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/teleporter"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/teleporter_on"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/teleporter"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/teleporter_on"
+    }
+  }
+}

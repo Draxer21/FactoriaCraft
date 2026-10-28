@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MAM",
+    "VBV",
+    "MAM"
+  ],
+  "key": {
+    "M": "factorycraft:superconducting_magnet",
+    "A": "factorycraft:advanced_circuit",
+    "V": "factorycraft:voidnite_ingot",
+    "B": "minecraft:beacon"
+  },
+  "result": {
+    "id": "factorycraft:accelerator",
+    "count": 1
+  }
+}

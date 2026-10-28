@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "factorycraft:block/orbital_receiver"
+    },
+    "facing=north,lit=true": {
+      "model": "factorycraft:block/orbital_receiver_on"
+    },
+    "facing=east,lit=false": {
+      "model": "factorycraft:block/orbital_receiver"
+    },
+    "facing=east,lit=true": {
+      "model": "factorycraft:block/orbital_receiver_on"
+    },
+    "facing=south,lit=false": {
+      "model": "factorycraft:block/orbital_receiver"
+    },
+    "facing=south,lit=true": {
+      "model": "factorycraft:block/orbital_receiver_on"
+    },
+    "facing=west,lit=false": {
+      "model": "factorycraft:block/orbital_receiver"
+    },
+    "facing=west,lit=true": {
+      "model": "factorycraft:block/orbital_receiver_on"
+    }
+  }
+}

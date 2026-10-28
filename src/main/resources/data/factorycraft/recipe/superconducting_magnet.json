@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SCS",
+    "IWI",
+    "SCS"
+  ],
+  "key": {
+    "S": "#c:plates/steel",
+    "C": "factorycraft:copper_coil",
+    "I": "factorycraft:chorus_insulation",
+    "W": "factorycraft:copper_wire"
+  },
+  "result": {
+    "id": "factorycraft:superconducting_magnet",
+    "count": 4
+  }
+}
