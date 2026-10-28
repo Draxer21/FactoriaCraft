@@ -407,8 +407,8 @@ public final class TerrainSelfTest {
         BlockPos row = endRow();
         // Accelerator with 24 magnets, coal blocks in.
         powered(level, row, Endgame.ACCELERATOR.value());
-        box(level, row.offset(1, 0, 0), row.offset(8, 0, 2), Endgame.MAGNET.value().defaultBlockState());
-        if (level.getBlockEntity(row) instanceof AcceleratorBlockEntity be) be.setItem(0, new ItemStack(Items.COAL_BLOCK, 2));
+        box(level, row.offset(1, 0, 0), row.offset(8, 0, 3), Endgame.MAGNET.value().defaultBlockState());
+        if (level.getBlockEntity(row) instanceof AcceleratorBlockEntity be) be.setItem(0, new ItemStack(Items.COAL_BLOCK, 1));
         // Antimatter reactor with one cell.
         BlockPos reactor = row.offset(20, 0, 0);
         level.setBlockAndUpdate(reactor, Endgame.ANTIMATTER_REACTOR.value().defaultBlockState());
