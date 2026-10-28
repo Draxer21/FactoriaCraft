@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"research:1", "tree", "look"};
+    private static final String[] DEMO_CHAPTERS = {"nuclear:last", "armor", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -118,6 +118,20 @@ public final class VehicleClient {
                 var inv = mc.player.getInventory();
                 mc.gui.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("armor")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("time set noon");
+                mc.player.connection.sendCommand("gamemode spectator");
+                int x = mc.player.getBlockX();
+                int z = mc.player.getBlockZ();
+                mc.player.connection.sendCommand("fill " + (x - 3) + " 117 " + (z + 1) + " " + (x + 3) + " 117 " + (z + 6) + " minecraft:smooth_stone");
+                mc.player.connection.sendCommand("summon minecraft:armor_stand " + x + ".5 118 " + (z + 4) + ".5 {Rotation:[180f,0f],ShowArms:1b,equipment:{"
+                        + "head:{id:\"factorycraft:lead_helmet\",count:1},chest:{id:\"factorycraft:lead_chestplate\",count:1},"
+                        + "legs:{id:\"factorycraft:lead_leggings\",count:1},feet:{id:\"factorycraft:lead_boots\",count:1}}}");
+                mc.player.connection.sendCommand("summon minecraft:armor_stand " + (x + 2) + ".5 118 " + (z + 4) + ".5 {Rotation:[180f,0f],equipment:{"
+                        + "head:{id:\"minecraft:iron_helmet\",count:1},chest:{id:\"minecraft:iron_chestplate\",count:1},"
+                        + "legs:{id:\"minecraft:iron_leggings\",count:1},feet:{id:\"minecraft:iron_boots\",count:1}}}");
+                mc.player.connection.sendCommand("tp @s " + (x + 1) + ".5 119.6 " + (z + 1) + ".2 0 10");
             } else if (parts[0].equals("tree")) {
                 mc.gui.setScreen(null);
                 mc.player.connection.sendCommand("factorycraft research");
