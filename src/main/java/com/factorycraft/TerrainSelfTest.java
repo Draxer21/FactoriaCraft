@@ -450,6 +450,8 @@ public final class TerrainSelfTest {
     private static void logEndgame(ServerLevel level) {
         BlockPos row = endRow();
         int magnets = level.getBlockEntity(row) instanceof AcceleratorBlockEntity a ? a.magnets() : -1;
+        String accel = level.getBlockEntity(row) instanceof AcceleratorBlockEntity a
+                ? "time=" + a.time() + " net=" + a.energyLink().stored(level) + " find=" + (a.find(level) != null) + " lit=" + level.getBlockState(row).getValue(MachineBlock.LIT) : "none";
         String reactor = level.getBlockEntity(row.offset(20, 0, 0)) instanceof AntimatterReactorBlockEntity r
                 ? "stored=" + r.stored() + " rate=" + r.rate() + " burn=" + r.burn() : "none";
         int receiver = level.getBlockEntity(row.offset(80, 0, 0)) instanceof Energy.Source s ? s.rate() : -1;
@@ -457,8 +459,8 @@ public final class TerrainSelfTest {
                 row.getZ() - 10, row.getX() + 80, level.getMaxY() + 100, row.getZ() + 10)).size();
         Orbit orbit = Orbit.get(level);
         com.mojang.logging.LogUtils.getLogger().info(
-                "ENDGAMETEST magnets={} accelerator=[{}] reactor[{}] teleport[{}] launch[{}] rocketsFlying={} orbit={}/{} receiverRate={}",
-                magnets, outputs(level, row), reactor, teleportResult, launchResult, rockets, orbit.solar(), orbit.survey(), receiver);
+                "ENDGAMETEST magnets={} accel[{}] accelerator=[{}] reactor[{}] teleport[{}] launch[{}] rocketsFlying={} orbit={}/{} receiverRate={}",
+                magnets, accel, outputs(level, row), reactor, teleportResult, launchResult, rockets, orbit.solar(), orbit.survey(), receiver);
     }
 
     private static void logLogistics(ServerLevel level) {
