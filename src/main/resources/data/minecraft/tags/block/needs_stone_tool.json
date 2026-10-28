@@ -81,6 +81,7 @@
     "factorycraft:recycler",
     "factorycraft:vending_machine",
     "factorycraft:contract_board",
-    "factorycraft:stats_terminal"
+    "factorycraft:stats_terminal",
+    "factorycraft:research_station"
   ]
 }

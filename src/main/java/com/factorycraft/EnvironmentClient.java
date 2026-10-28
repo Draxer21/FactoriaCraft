@@ -23,6 +23,11 @@ public final class EnvironmentClient {
     @SubscribeEvent
     public static void registerPayloads(RegisterClientPayloadHandlersEvent event) {
         event.register(PollutionPayload.TYPE, (payload, context) -> PollutionPayload.latest = payload);
+        event.register(ResearchPayload.TYPE, (payload, context) -> {
+            var mc = Minecraft.getInstance();
+            if (mc.screen instanceof ResearchScreen screen) screen.update(payload);
+            else mc.gui.setScreen(new ResearchScreen(payload));
+        });
         event.register(StatsPayload.TYPE, (payload, context) -> Minecraft.getInstance().gui.setScreen(new StatsScreen(payload)));
     }
 

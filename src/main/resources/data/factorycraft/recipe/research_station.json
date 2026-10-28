@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BGB",
+    "PCP",
+    "PPP"
+  ],
+  "key": {
+    "B": "minecraft:book",
+    "G": "minecraft:glass_pane",
+    "P": "#c:plates/iron",
+    "C": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:research_station",
+    "count": 1
+  }
+}

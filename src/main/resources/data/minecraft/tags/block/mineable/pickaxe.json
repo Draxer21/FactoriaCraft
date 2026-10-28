@@ -124,6 +124,7 @@
     "factorycraft:antimatter_reactor",
     "factorycraft:teleporter",
     "factorycraft:launch_pad",
-    "factorycraft:orbital_receiver"
+    "factorycraft:orbital_receiver",
+    "factorycraft:research_station"
   ]
 }

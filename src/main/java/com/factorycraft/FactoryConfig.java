@@ -42,6 +42,10 @@ public final class FactoryConfig {
     private static final ModConfigSpec.DoubleValue POLLUTION_STRENGTH = BUILDER
             .comment("Pollution multiplier. 0.5 = half.")
             .defineInRange("pollutionStrength", 1.0, 0.0, 10.0);
+    static { BUILDER.pop().push("research"); }
+    private static final ModConfigSpec.BooleanValue RESEARCH = BUILDER
+            .comment("Advanced machines, vehicles and items must be researched (research station) before they can be placed or used")
+            .define("researchRequired", true);
     static { BUILDER.pop(); }
 
     public static final ModConfigSpec SPEC = BUILDER.build();
@@ -59,5 +63,6 @@ public final class FactoryConfig {
     public static boolean radiation() { return !loaded() || RADIATION.getAsBoolean(); }
     public static double radiationStrength() { return loaded() ? RADIATION_STRENGTH.get() : 1.0; }
     public static boolean pollution() { return !loaded() || POLLUTION.getAsBoolean(); }
+    public static boolean researchRequired() { return !loaded() || RESEARCH.getAsBoolean(); }
     public static double pollutionStrength() { return loaded() ? POLLUTION_STRENGTH.get() : 1.0; }
 }

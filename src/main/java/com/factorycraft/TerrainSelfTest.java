@@ -103,6 +103,7 @@ public final class TerrainSelfTest {
         setUpDefense(level);
         setUpEnvironment(level);
         setUpEndgame(level);
+        setUpResearch(level);
         BlockPos builder = base.offset(160, 0, 0);
         powered(level, builder, FactoryCraft.BUILDER.value());
         if (level.getBlockEntity(builder) instanceof BuilderBlockEntity be) {
@@ -463,6 +464,28 @@ public final class TerrainSelfTest {
                 magnets, accel, outputs(level, row), reactor, teleportResult, launchResult, rockets, orbit.solar(), orbit.survey(), receiver);
     }
 
+    private static String researchBefore = "";
+
+    private static void setUpResearch(ServerLevel level) {
+        BlockPos station = base.offset(260, 0, -16);
+        powered(level, station, ResearchBlocks.STATION.value());
+        if (level.getBlockEntity(station) instanceof ResearchStationBlockEntity be) {
+            be.setItem(0, new ItemStack(Materials.CIRCUIT.value(), 3));
+            be.setItem(1, new ItemStack(Materials.ADVANCED_CIRCUIT.value(), 2));
+        }
+        researchBefore = "points=" + Research.state(level).points() + " turretLocked=" + (Research.lockOf(level, new ItemStack(Defense.TURRET_ITEM.value())) != null)
+                + " generatorLocked=" + (Research.lockOf(level, new ItemStack(FactoryCraft.GENERATOR.value())) != null);
+    }
+
+    private static void logResearch(ServerLevel level) {
+        int points = Research.state(level).points();
+        String electricity = Research.unlock(level, "electricity").getString();
+        String defense = Research.unlock(level, "defense").getString();
+        com.mojang.logging.LogUtils.getLogger().info("RESEARCHTEST before[{}] pointsAfterStudy={} electricity='{}' defense='{}' batteryLocked={} nodes={} pointsLeft={}",
+                researchBefore, points, electricity, defense, Research.lockOf(level, new ItemStack(FactoryCraft.BATTERY_ITEM.value())) != null,
+                Research.TREE.size(), Research.state(level).points());
+    }
+
     private static void logLogistics(ServerLevel level) {
         BlockPos row = base.offset(0, 0, 16);
         int drones = level.getBlockEntity(row.offset(20, 0, 0)) instanceof DronePortBlockEntity a ? a.drones() : -1;
@@ -583,6 +606,7 @@ public final class TerrainSelfTest {
             logDefense(level);
             logEnvironment(level);
             logEndgame(level);
+            logResearch(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
