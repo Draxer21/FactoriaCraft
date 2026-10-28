@@ -63,6 +63,7 @@ public final class ExcavatorClientEvents {
         event.register(Logistics.STORAGE_TERMINAL_MENU.value(), StorageTerminalScreen::new);
         event.register(Logistics.DRONE_PORT_MENU.value(), ProcessingScreen::new);
         event.register(Endgame.ACCELERATOR_MENU.value(), ProcessingScreen::new);
+        event.register(ResearchBlocks.STATION_MENU.value(), ProcessingScreen::new);
         event.register(Endgame.LAUNCH_PAD_MENU.value(), ProcessingScreen::new);
         event.register(Economy.RECYCLER_MENU.value(), ProcessingScreen::new);
         event.register(Economy.VENDING_MACHINE_MENU.value(), ProcessingScreen::new);

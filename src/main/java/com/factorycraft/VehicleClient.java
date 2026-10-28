@@ -84,7 +84,7 @@ public final class VehicleClient {
     // ---------------------------------------------------------------- ticking
 
     private static final boolean GUIDE_DEMO = Boolean.getBoolean("factorycraft.guideDemo");
-    private static final String[] DEMO_CHAPTERS = {"endgame:1", "rocket", "look"};
+    private static final String[] DEMO_CHAPTERS = {"research:1", "tree", "look"};
     private static int demoTicks;
 
     /** CI: once in a world, show one chapter's recipes every 5 seconds. */
@@ -118,6 +118,9 @@ public final class VehicleClient {
                 var inv = mc.player.getInventory();
                 mc.setScreen(new StorageTerminalScreen(StorageTerminalMenu.client(0, inv), inv,
                         net.minecraft.network.chat.Component.translatable("block.factorycraft.storage_terminal")));
+            } else if (parts[0].equals("tree")) {
+                mc.gui.setScreen(null);
+                mc.player.connection.sendCommand("factorycraft research");
             } else if (parts[0].equals("rocket")) {
                 mc.setScreen(null);
                 mc.player.connection.sendCommand("time set noon");

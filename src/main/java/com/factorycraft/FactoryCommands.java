@@ -25,6 +25,24 @@ public final class FactoryCommands {
     @SubscribeEvent
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("factorycraft")
+                .then(Commands.literal("research")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) ResearchBlocks.sendTree(player);
+                            return Research.state(context.getSource().getLevel()).points();
+                        })
+                        .then(Commands.literal("unlockall").executes(context -> {
+                            CommandSourceStack source = context.getSource();
+                            if (!mayChange(source)) {
+                                source.sendFailure(Component.translatable("message.factorycraft.command.creative"));
+                                return 0;
+                            }
+                            for (Research.Node node : Research.TREE) {
+                                Research.addPoints(source.getLevel(), node.cost());
+                                Research.unlock(source.getLevel(), node.id());
+                            }
+                            source.sendSuccess(() -> Component.translatable("message.factorycraft.research.all"), true);
+                            return Research.TREE.size();
+                        })))
                 .then(Commands.literal("air")
                         .executes(context -> {
                             CommandSourceStack source = context.getSource();

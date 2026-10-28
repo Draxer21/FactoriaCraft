@@ -227,6 +227,10 @@ public abstract class MachineBlock extends BaseEntityBlock {
             if (!level.isClientSide()) player.sendOverlayMessage(pad.teleport(player));
             return InteractionResult.SUCCESS;
         }
+        if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof ResearchStationBlockEntity) {
+            if (player instanceof net.minecraft.server.level.ServerPlayer server) ResearchBlocks.sendTree(server);
+            return InteractionResult.SUCCESS;
+        }
         if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof LaunchPadBlockEntity launchPad) {
             if (!level.isClientSide()) player.sendOverlayMessage(launchPad.start(level));
             return InteractionResult.SUCCESS;

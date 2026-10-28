@@ -88,6 +88,7 @@ final class GuideRecipes {
                     "voidnite_ingot_from_raw_blasting", "cobalt_block", "voidnite_block"}),
             Map.entry("forge", new String[] {"tool_forge", "drill_mould", "hammer_mould", "chainsaw_mould", "shovel_mould", "multitool_mould",
                     "exoskeleton", "work_helmet", "work_jacket", "work_pants", "work_boots", "jetpack_mk2"}),
+            Map.entry("research", new String[] {"research_station"}),
             Map.entry("endgame", new String[] {"superconducting_magnet", "accelerator", "containment_cell", "antimatter_reactor", "teleporter", "launch_pad", "rocket", "rocket_fuel", "solar_satellite", "survey_satellite", "orbital_receiver", "uplink"}),
             Map.entry("economy", new String[] {"air_meter", "recycler", "vending_machine", "contract_board", "stats_terminal", "zone_controller", "access_card"}),
             Map.entry("defense", new String[] {"turret", "alarm", "security_camera", "monitor", "shutter", "armored_door", "reinforced_concrete", "armor_plating", "steel_scaffold", "lift_pad", "hazard_block", "steel_grate"}),
