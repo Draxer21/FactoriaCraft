@@ -25,9 +25,19 @@ public final class ResearchScreen extends Screen {
     private final Map<String, int[]> boxes = new HashMap<>();
     private int scroll;
 
+    /** The tree screen while it's open (to refresh it after an unlock). */
+    static ResearchScreen current;
+
     public ResearchScreen(ResearchPayload data) {
         super(Component.translatable("gui.factorycraft.research.title"));
         this.data = data;
+        current = this;
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        if (current == this) current = null;
     }
 
     void update(ResearchPayload data) {

@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -73,8 +72,7 @@ public final class ResearchBlocks {
         if (event.getEntity().isCreative() || event.getLevel().isClientSide()) return;
         Research.Node node = Research.lockOf(event.getLevel(), event.getItemStack());
         if (node == null) return;
-        // The block can still be used (chests open); the locked item does nothing.
-        event.setUseItem(TriState.FALSE);
+        event.setCanceled(true);
         locked(event.getEntity(), node);
     }
 
