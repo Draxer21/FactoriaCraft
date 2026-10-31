@@ -1,0 +1,39 @@
+name: Probe
+on: push
+permissions:
+  contents: write
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/probe'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir b && cd b
+          {
+          echo '```'
+          for slug in bonded amber; do
+            curl -s "https://api.modrinth.com/v2/project/$slug/version?loaders=%5B%22neoforge%22%5D&game_versions=%5B%2226.2%22%5D" > $slug.json
+            python3 -c "import json;d=json.load(open('$slug.json'));print('$slug', [(v['version_number'],v['files'][0]['url']) for v in d[:2]])"
+            url=$(python3 -c "import json;d=json.load(open('$slug.json'));print(d[0]['files'][0]['url'] if d else '')")
+            [ -n "$url" ] && curl -sL "$url" -o $slug.jar
+          done
+          unzip -o -q bonded.jar -d bonded
+          find bonded -name "*.class" | sed 's|bonded/||' | grep -v '\$' | head -80
+          echo "== strings"
+          for c in $(find bonded -name "*.class"); do javap -c -p "$c" 2>/dev/null | grep -o -E "isDamageableItem|getMaxDamage|ItemTags\.[A-Z_]+|TagKey|DataComponents\.[A-Z_]+|bonded:[a-z_/]+|instanceof [a-zA-Z/]+" ; done | sort | uniq -c | sort -rn | head -60
+          echo "== api"
+          for c in $(find bonded -path "*api*" -name "*.class"); do javap -p "$c" 2>/dev/null; done | head -120
+          echo "== tags in jar"; find bonded -path "*tags*" | head -30
+          for f in $(find bonded -path "*tags*" -name "*.json" | head -10); do echo "-- $f"; cat $f; done
+          echo "== config"; for c in $(find bonded -iname "*config*.class"); do javap -p -constants "$c" 2>/dev/null | head -60; done
+          echo '```'
+          } > ../report.md 2>&1
+          cd ..; head -c 65000 report.md > r2.md
+          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@r2.md
