@@ -25,14 +25,10 @@ jobs:
             [ -n "$url" ] && curl -sL "$url" -o $slug.jar
           done
           unzip -o -q bonded.jar -d bonded
-          find bonded -name "*.class" | sed 's|bonded/||' | grep -v '\$' | head -80
-          echo "== strings"
-          for c in $(find bonded -name "*.class"); do javap -c -p "$c" 2>/dev/null | grep -o -E "isDamageableItem|getMaxDamage|ItemTags\.[A-Z_]+|TagKey|DataComponents\.[A-Z_]+|bonded:[a-z_/]+|instanceof [a-zA-Z/]+" ; done | sort | uniq -c | sort -rn | head -60
-          echo "== api"
-          for c in $(find bonded -path "*api*" -name "*.class"); do javap -p "$c" 2>/dev/null; done | head -120
-          echo "== tags in jar"; find bonded -path "*tags*" | head -30
-          for f in $(find bonded -path "*tags*" -name "*.json" | head -10); do echo "-- $f"; cat $f; done
-          echo "== config"; for c in $(find bonded -iname "*config*.class"); do javap -p -constants "$c" 2>/dev/null | head -60; done
+          for c in rules/BondedRulesLoader rules/GearRule rules/BondedRules leveling/levelers/RangedWeaponsLeveler leveling/levelers/MeleeWeaponsLeveler leveling/levelers/MiningToolsLeveler leveling/levelers/UtilityToolLeveler leveling/levelers/ArmorLeveler leveling/GameplayHooks registry/Tags registry/TierMap; do
+            echo "== $c"; javap -p -c -constants -cp bonded com.iamkaf.bonded.$(echo $c | tr / .) 2>/dev/null | grep -E "ldc|public|private|static|getstatic|invoke(static|virtual|interface).*(Tag|is|Event|register|experience)" | grep -v "lambda" | head -45
+          done
+          echo "== resource files"; find bonded -type f ! -name "*.class" | grep -v "lang/\|textures/\|models/\|blockstates\|sounds" | head -60
           echo '```'
           } > ../report.md 2>&1
           cd ..; head -c 65000 report.md > r2.md
