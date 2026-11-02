@@ -949,5 +949,6 @@ public final class FactoryCraft {
         AirQuality.ATTACHMENTS.register(modEventBus);
         POI_TYPES.register(modEventBus);
         PROFESSIONS.register(modEventBus);
+        modEventBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) -> event.enqueueWork(BondedCompat::init));
     }
 }

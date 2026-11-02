@@ -63,12 +63,12 @@ public final class GammaRifleItem extends Item implements ItemEnergy.Chargeable 
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6F, 1.6F);
             return InteractionResult.FAIL;
         }
-        fire(server, player);
+        fire(server, player, stack);
         player.getCooldowns().addCooldown(stack, 10);
         return InteractionResult.SUCCESS_SERVER;
     }
 
-    private static void fire(ServerLevel level, Player player) {
+    private static void fire(ServerLevel level, Player player, ItemStack rifle) {
         Vec3 start = player.getEyePosition();
         Vec3 end = start.add(player.getLookAngle().scale(RANGE));
         BlockHitResult block = level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
@@ -88,7 +88,10 @@ public final class GammaRifleItem extends Item implements ItemEnergy.Chargeable 
         }
         if (target != null) {
             end = targetHit;
-            target.hurtServer(level, level.damageSources().playerAttack(player), DAMAGE);
+            if (target.hurtServer(level, level.damageSources().playerAttack(player), DAMAGE)) {
+                // Bonded (optional): the beam is not a projectile, so award ranged experience here.
+                BondedCompat.award(player, rifle, target.isAlive() ? 1 : 3);
+            }
             target.addEffect(new MobEffectInstance(MobEffects.WITHER, 80, 1));
             level.sendParticles(ParticleTypes.EXPLOSION, end.x, end.y, end.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
