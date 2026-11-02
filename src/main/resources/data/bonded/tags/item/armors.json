@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "factorycraft:lead_helmet",
+    "factorycraft:lead_chestplate",
+    "factorycraft:lead_leggings",
+    "factorycraft:lead_boots",
+    "factorycraft:work_helmet",
+    "factorycraft:work_jacket",
+    "factorycraft:work_pants",
+    "factorycraft:work_boots",
+    "factorycraft:exoskeleton",
+    "factorycraft:jetpack",
+    "factorycraft:jetpack_mk2"
+  ]
+}

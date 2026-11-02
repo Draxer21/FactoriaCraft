@@ -477,6 +477,21 @@ public final class TerrainSelfTest {
                 + " generatorLocked=" + (Research.lockOf(level, new ItemStack(FactoryCraft.GENERATOR.value())) != null);
     }
 
+    private static void logBonded() {
+        java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
+                net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                        net.minecraft.resources.Identifier.fromNamespaceAndPath("bonded", path));
+        com.mojang.logging.LogUtils.getLogger().info(
+                "BONDEDTEST loaded={} upgrades={} xpHook={} drillDigging={} titanDigging={} bladeMelee={} rifleRanged={} exoArmor={} leadArmor={}",
+                BondedCompat.loaded(), BondedCompat.upgrades, BondedCompat.experienceHook,
+                new ItemStack(FactoryCraft.DIAMOND_DRILL.value()).is(tag.apply("digging_equipment")),
+                new ItemStack(FactoryCraft.TITAN_HAMMER.value()).is(tag.apply("digging_equipment")),
+                new ItemStack(Nuclear.IRRADIATED_BLADE.value()).is(tag.apply("melee_weapons")),
+                new ItemStack(Nuclear.GAMMA_RIFLE.value()).is(tag.apply("ranged_weapons")),
+                new ItemStack(Gear.EXOSKELETON.value()).is(tag.apply("armors")),
+                new ItemStack(Nuclear.LEAD_CHESTPLATE.value()).is(tag.apply("armors")));
+    }
+
     private static void logResearch(ServerLevel level) {
         int points = Research.state(level).points();
         String electricity = Research.unlock(level, "electricity").getString();
@@ -607,6 +622,7 @@ public final class TerrainSelfTest {
             logEnvironment(level);
             logEndgame(level);
             logResearch(level);
+            logBonded();
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
