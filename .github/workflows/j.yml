@@ -1,0 +1,20 @@
+name: Collect jars
+on: push
+permissions:
+  contents: write
+  actions: read
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/bonded-jars'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir out && cd out
+          for id in 41377182362 41377193371 ; do gh run download $id -R ${{ github.repository }} -D a$id; done
+          find . -name '*.jar' -exec mv {} . \;
+          find . -mindepth 1 -type d -exec rm -rf {} +
+          ls -la
+          git init -q && git checkout -q -b bonded-jars-out && git add . && git -c user.name=ci -c user.email=ci@local commit -qm jars
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" bonded-jars-out
