@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public final class ExcavatorEntity extends Boat implements VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
+public final class ExcavatorEntity extends Boat implements net.minecraft.world.entity.HasCustomInventoryScreen, VehicleHitbox.Holder, VehicleLights.Holder, VehicleEngine.Holder {
     private static final EntityDataAccessor<Boolean> ENGINE_ON =
             SynchedEntityData.defineId(ExcavatorEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> FUEL =
@@ -184,6 +184,12 @@ public final class ExcavatorEntity extends Boat implements VehicleHitbox.Holder,
             return InteractionResult.SUCCESS;
         }
         return super.interact(player, hand, location);
+    }
+
+    /** Inventory key while riding: the module screen (the excavator has no storage bay). */
+    @Override
+    public void openCustomInventoryScreen(Player player) {
+        if (!level().isClientSide()) VehicleMenu.open(player, this, new net.minecraft.world.SimpleContainer(0), 0);
     }
 
     @Override
