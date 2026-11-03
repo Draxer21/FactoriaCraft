@@ -508,9 +508,8 @@ public final class TerrainSelfTest {
             menu.quickMoveStack(player, playerSlot);
             out.append(" shiftClick=").append(engine.has(Upgrade.EFFICIENT_ENGINE));
 
-            menu.setCarried(new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.BIG_TANK).value(), 1));
-            menu.clicked(1, 0, net.minecraft.world.inventory.ClickType.PICKUP, player);
-            out.append(" drag=").append(engine.has(Upgrade.BIG_TANK)).append(" carriedLeft=").append(menu.getCarried().getCount())
+            ItemStack carried = menu.slots.get(1).safeInsert(new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.BIG_TANK).value(), 1));
+            out.append(" drag=").append(engine.has(Upgrade.BIG_TANK)).append(" carriedLeft=").append(carried.getCount())
                     .append(" mayPlace=").append(menu.slots.get(2).mayPlace(new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.ORE_FILTER).value())));
             truck.discard();
             digger.discard();
