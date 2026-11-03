@@ -70,4 +70,10 @@ public final class IndustrialLampBlockEntity extends MachineBlockEntity implemen
         if (reason != EntitySpawnReason.NATURAL && reason != EntitySpawnReason.CHUNK_GENERATION) return;
         if (covered(event.getEntity().level(), event.getEntity().blockPosition())) event.setSpawnCancelled(true);
     }
+
+    /** Forget the previous world's positions (single player loads several worlds in one session). */
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onServerStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        LAMPS.clear();
+    }
 }

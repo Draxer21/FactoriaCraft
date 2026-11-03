@@ -188,6 +188,11 @@ public final class Research {
             Map.entry("minecraft:nether_star", 100), Map.entry("minecraft:ender_pearl", 2), Map.entry("minecraft:blaze_rod", 2));
 
     /** Research points one of this item is worth, or 0. */
+    /** Item id -> research points, for recipe viewers. */
+    public static Map<String, Integer> valueTable() {
+        return VALUES;
+    }
+
     public static int value(ItemStack stack) {
         if (stack.isEmpty()) return 0;
         return VALUES.getOrDefault(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString(), 0);

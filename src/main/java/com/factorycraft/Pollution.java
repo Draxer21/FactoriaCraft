@@ -115,4 +115,10 @@ public final class Pollution {
             level.sendParticles(ParticleTypes.GLOW, item.getX(), item.getY() + 0.3, item.getZ(), 4, 0.2, 0.2, 0.2, 0.01);
         }
     }
+
+    /** Forget the previous world's positions (single player loads several worlds in one session). */
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onServerStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        PURIFIERS.clear();
+    }
 }
