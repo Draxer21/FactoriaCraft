@@ -938,6 +938,7 @@ public final class FactoryCraft {
         Economy.init();
         Endgame.init();
         ResearchBlocks.init();
+        ProductionStats.init();
         container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, FactoryConfig.SPEC);
         BLOCKS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);

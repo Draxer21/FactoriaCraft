@@ -477,6 +477,49 @@ public final class TerrainSelfTest {
                 + " generatorLocked=" + (Research.lockOf(level, new ItemStack(FactoryCraft.GENERATOR.value())) != null);
     }
 
+    /** Installs modules the three ways a player can: right-click, shift-click in the screen, and drag into a slot. */
+    private static void logModules(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            var player = net.neoforged.neoforge.common.util.FakePlayerFactory.getMinecraft(level);
+            BlockPos at = base.offset(0, 2, -40);
+            player.setPos(at.getX(), at.getY(), at.getZ());
+            net.minecraft.world.InteractionHand hand = net.minecraft.world.InteractionHand.MAIN_HAND;
+
+            DumpTruckEntity truck = FactoryCraft.DUMP_TRUCK.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+            truck.setPos(at.getX() + 3, at.getY(), at.getZ());
+            level.addFreshEntity(truck);
+            player.setItemInHand(hand, new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.TURBO).value(), 2));
+            var r = truck.interact(player, hand, truck.position());
+            out.append("rightClick=").append(r).append(" turbo=").append(VehicleEngine.of(truck).has(Upgrade.TURBO))
+                    .append(" handLeft=").append(player.getMainHandItem().getCount());
+
+            ExcavatorEntity digger = FactoryCraft.EXCAVATOR.value().create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+            digger.setPos(at.getX() - 6, at.getY(), at.getZ());
+            level.addFreshEntity(digger);
+            VehicleEngine engine = VehicleEngine.of(digger);
+            player.getInventory().clearContent();
+            player.getInventory().setItem(9, new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.EFFICIENT_ENGINE).value(), 1));
+            VehicleMenu menu = new VehicleMenu(1, player.getInventory(), new net.minecraft.world.SimpleContainer(0), engine.modules(), 0, digger);
+            int playerSlot = -1;
+            for (int i = 0; i < menu.slots.size(); i++) {
+                if (menu.slots.get(i).container == player.getInventory() && menu.slots.get(i).getContainerSlot() == 9) playerSlot = i;
+            }
+            menu.quickMoveStack(player, playerSlot);
+            out.append(" shiftClick=").append(engine.has(Upgrade.EFFICIENT_ENGINE));
+
+            menu.setCarried(new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.BIG_TANK).value(), 1));
+            menu.clicked(1, 0, net.minecraft.world.inventory.ClickType.PICKUP, player);
+            out.append(" drag=").append(engine.has(Upgrade.BIG_TANK)).append(" carriedLeft=").append(menu.getCarried().getCount())
+                    .append(" mayPlace=").append(menu.slots.get(2).mayPlace(new ItemStack(FactoryCraft.UPGRADE_ITEMS.get(Upgrade.ORE_FILTER).value())));
+            truck.discard();
+            digger.discard();
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("MODULETEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -623,6 +666,7 @@ public final class TerrainSelfTest {
             logEndgame(level);
             logResearch(level);
             logBonded();
+            logModules(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

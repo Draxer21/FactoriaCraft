@@ -23,7 +23,8 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * JEI integration (only loaded when JEI is installed): shows the recipes of
- * the crusher, ore washer, press and centrifuge, with the machines as
+ * the crusher, ore washer, press, centrifuge, tannery, alloy smelter, mixer,
+ * refinery, fermenter, particle accelerator and research values, with the machines as
  * crafting stations. Crafting/furnace/smithing recipes already show in JEI.
  */
 @JeiPlugin
@@ -39,7 +40,12 @@ public final class JeiCompat implements IModPlugin {
             machine("press", "factorycraft:press"),
             machine("centrifuge", "factorycraft:centrifuge"),
             machine("tannery", "factorycraft:tannery"),
-            machine("alloy", "factorycraft:alloy_smelter"));
+            machine("alloy", "factorycraft:alloy_smelter"),
+            machine("mixer", "factorycraft:mixer"),
+            machine("refinery", "factorycraft:refinery"),
+            machine("fermenter", "factorycraft:fermenter"),
+            machine("accelerator", "factorycraft:accelerator"),
+            machine("research", "factorycraft:research_station"));
 
     private static Machine machine(String id, String block) {
         return new Machine(id, block, IRecipeType.create(FactoryCraft.MOD_ID, id, MachineRecipe.class));

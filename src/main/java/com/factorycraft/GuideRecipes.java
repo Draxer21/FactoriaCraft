@@ -304,6 +304,49 @@ final class GuideRecipes {
                     if (d.outputs().get(0).shown().getItem() instanceof Radiation.Source) result.add(d);
                 }
             }
+            case "accelerator" -> {
+                ItemStack station = item("factorycraft:accelerator");
+                for (AcceleratorBlockEntity.Transmutation t : AcceleratorBlockEntity.RECIPES) {
+                    result.add(single(new ItemStack(t.input().get()), List.of(Slot.of(new ItemStack(t.output().get(), t.count()))), station));
+                }
+            }
+            case "refinery" -> {
+                ItemStack station = item("factorycraft:refinery");
+                result.add(single(new ItemStack(FactoryCraft.CRUDE_OIL.value()), List.of(
+                        Slot.of(new ItemStack(FactoryCraft.DIESEL.value())), Slot.of(new ItemStack(Materials.PLASTIC.value())),
+                        Slot.of(new ItemStack(FactoryCraft.ASPHALT_ITEM.value(), 2))), station));
+            }
+            case "fermenter" -> {
+                ItemStack station = item("factorycraft:fermenter");
+                List<ItemStack> crops = new ArrayList<>();
+                FermenterBlockEntity.CROPS.stream()
+                        .sorted((a, b) -> BuiltInRegistries.ITEM.getKey(a).compareTo(BuiltInRegistries.ITEM.getKey(b)))
+                        .forEach(crop -> crops.add(new ItemStack(crop, FermenterBlockEntity.PER_CANISTER)));
+                result.add(single(new Slot(crops, null), List.of(Slot.of(new ItemStack(FactoryCraft.BIOFUEL.value()))), station));
+            }
+            case "mixer" -> {
+                ItemStack station = item("factorycraft:mixer");
+                for (net.minecraft.world.item.DyeColor color : net.minecraft.world.item.DyeColor.values()) {
+                    Item dye = BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getSerializedName() + "_dye"));
+                    Item powder = BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getSerializedName() + "_concrete_powder"));
+                    if (dye == Items.AIR || powder == Items.AIR) continue;
+                    List<Slot> in = new ArrayList<>();
+                    for (int i = 0; i < 3; i++) in.add(Slot.of(ItemStack.EMPTY));
+                    in.add(Slot.of(new ItemStack(dye)));
+                    in.add(new Slot(List.of(new ItemStack(Items.SAND, 4), new ItemStack(Items.RED_SAND, 4)), null));
+                    in.add(Slot.of(new ItemStack(Items.GRAVEL, 4)));
+                    result.add(new Display(in, List.of(Slot.of(new ItemStack(powder, 8))), station));
+                }
+            }
+            case "research" -> {
+                ItemStack station = item("factorycraft:research_station");
+                Research.valueTable().entrySet().stream()
+                        .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                        .forEach(entry -> {
+                            ItemStack in = item(entry.getKey());
+                            if (!in.isEmpty()) result.add(single(in, List.of(new Slot(List.of(station.copy()), "+" + entry.getValue())), station));
+                        });
+            }
             default -> { }
         }
     }

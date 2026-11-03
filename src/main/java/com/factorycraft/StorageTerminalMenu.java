@@ -32,6 +32,8 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
     private final Player player;
     private int timer;
     private int lastHash;
+    private @Nullable StorageNetwork cached;
+    private long cachedAt;
 
     public static StorageTerminalMenu client(int id, Inventory inventory) {
         return new StorageTerminalMenu(id, inventory, null);
@@ -63,8 +65,7 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
         ItemStack rest = network.insert(slot.getItem().copy());
         slot.setByPlayer(rest);
         slot.setChanged();
-        timer = 0;
-        sendList();
+        sendList(true);
         return ItemStack.EMPTY;
     }
 
@@ -73,20 +74,39 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
         super.broadcastChanges();
         if (pos != null && !player.level().isClientSide() && ++timer >= 10) {
             timer = 0;
-            sendList();
+            sendList(false);
         }
     }
 
-    private void sendList() {
-        StorageNetwork network = network();
+    /** The network for the periodic list refresh: re-walked every 2 seconds, not every half second. */
+    private @Nullable StorageNetwork cachedNetwork() {
+        long now = player.level().getGameTime();
+        if (cached == null || now - cachedAt >= 40) {
+            cached = network();
+            cachedAt = now;
+        }
+        return cached;
+    }
+
+    /** Sends the grid to the client; unless {@code force}, only when something changed. */
+    private void sendList(boolean force) {
+        StorageNetwork network = force ? network() : cachedNetwork();
+        if (force) {
+            cached = network;
+            cachedAt = player.level().getGameTime();
+        }
         if (network == null || !(player instanceof ServerPlayer server)) return;
         List<TerminalListPayload.Entry> entries = new ArrayList<>();
         for (Map.Entry<ItemResource, Long> e : network.contents().entrySet()) {
             entries.add(new TerminalListPayload.Entry(e.getKey().toStack(1), e.getValue()));
             if (entries.size() >= 2000) break;
         }
-        int hash = entries.hashCode() * 31 + network.inventories();
-        if (hash == lastHash && timer != 0) return;
+        int hash = network.inventories();
+        for (TerminalListPayload.Entry entry : entries) {
+            hash = hash * 31 + ItemStack.hashItemAndComponents(entry.stack());
+            hash = hash * 31 + Long.hashCode(entry.count());
+        }
+        if (hash == lastHash && !force) return;
         lastHash = hash;
         PacketDistributor.sendToPlayer(server, new TerminalListPayload(network.inventories(), entries));
     }
@@ -121,7 +141,6 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
             }
         }
         broadcastChanges();
-        timer = 0;
-        sendList();
+        sendList(true);
     }
 }
