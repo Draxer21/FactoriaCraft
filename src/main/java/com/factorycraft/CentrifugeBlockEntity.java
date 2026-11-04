@@ -19,7 +19,7 @@ import org.jspecify.annotations.Nullable;
 public final class CentrifugeBlockEntity extends PoweredMachineBlockEntity {
     record Stage(Supplier<Item> input, int count, Supplier<Item> output) {}
 
-    static final List<Stage> STAGES = List.of(
+    static final List<Stage> DEFAULTS = List.of(
             new Stage(() -> Nuclear.URANIUM_DUST.value(), 4, () -> Nuclear.ENRICHED_URANIUM_1.value()),
             new Stage(() -> Nuclear.ENRICHED_URANIUM_1.value(), 4, () -> Nuclear.ENRICHED_URANIUM_2.value()),
             new Stage(() -> Nuclear.ENRICHED_URANIUM_2.value(), 4, () -> Nuclear.ENRICHED_URANIUM_3.value()));
@@ -57,4 +57,7 @@ public final class CentrifugeBlockEntity extends PoweredMachineBlockEntity {
     protected List<ItemStack> produce(Level level, Operation operation) {
         return operation.maxOutputs();
     }
+
+    /** Built-in stages plus datapack ones (see MachineRecipes). */
+    static List<Stage> STAGES = DEFAULTS;
 }

@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 public final class PressBlockEntity extends PoweredMachineBlockEntity {
     record Pressing(Supplier<Item> input, int count, Supplier<Item> output, int outCount) {}
 
-    static final List<Pressing> RECIPES = List.of(
+    static final List<Pressing> DEFAULTS = List.of(
             new Pressing(() -> Items.IRON_INGOT, 1, () -> FactoryCraft.IRON_PLATE.value(), 1),
             new Pressing(() -> Items.COPPER_INGOT, 1, () -> FactoryCraft.COPPER_PLATE.value(), 1),
             new Pressing(() -> Items.GOLD_INGOT, 1, () -> FactoryCraft.GOLD_PLATE.value(), 1),
@@ -69,4 +69,7 @@ public final class PressBlockEntity extends PoweredMachineBlockEntity {
     protected List<ItemStack> produce(Level level, Operation operation) {
         return operation.maxOutputs().stream().map(ItemStack::copy).toList();
     }
+
+    /** Built-in recipes plus datapack ones (see MachineRecipes). */
+    static List<Pressing> RECIPES = DEFAULTS;
 }
