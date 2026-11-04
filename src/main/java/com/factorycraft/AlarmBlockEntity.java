@@ -23,8 +23,8 @@ import org.jspecify.annotations.Nullable;
  * signal on every side, to shut shutters, open doors or switch on lamps.
  */
 public final class AlarmBlockEntity extends MachineBlockEntity implements Owned {
-    private static final double MOB_RANGE = 16.0;
-    private static final double PLAYER_RANGE = 10.0;
+    static final double MOB_RANGE = 16.0;
+    static final double PLAYER_RANGE = 10.0;
     private @Nullable UUID owner;
     private int timer;
     private int hold;

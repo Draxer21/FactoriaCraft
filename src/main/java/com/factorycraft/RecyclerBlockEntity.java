@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
  * recipe, other mods' too. Every batch recycled also clears the air a little.
  */
 public final class RecyclerBlockEntity extends PoweredMachineBlockEntity {
-    private static final double RECOVERY = 0.6;
+    static final double RECOVERY = 0.6;
 
     public RecyclerBlockEntity(BlockPos pos, BlockState state) {
         super(Economy.RECYCLER_BLOCK_ENTITY.value(), pos, state, 1, ProcessingMenu.BIG_OUTPUTS);

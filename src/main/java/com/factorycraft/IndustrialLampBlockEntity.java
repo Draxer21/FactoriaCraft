@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 @EventBusSubscriber(modid = FactoryCraft.MOD_ID)
 public final class IndustrialLampBlockEntity extends MachineBlockEntity implements Energy.Consumer {
     public static final int RANGE = 32;
-    private static final int ENERGY = 5;
+    static final int ENERGY = 5;
     /** Powered lamps: position -> last tick they had power (per dimension). */
     private static final Map<ResourceKey<Level>, Map<BlockPos, Long>> LAMPS = new ConcurrentHashMap<>();
 

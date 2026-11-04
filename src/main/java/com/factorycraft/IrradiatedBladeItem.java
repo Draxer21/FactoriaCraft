@@ -25,7 +25,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 public final class IrradiatedBladeItem extends Item implements ItemEnergy.Chargeable {
     public static final int CAPACITY = 40_000;
     private static final int HIT = 400;
-    private static final float BONUS = 8.0F;
+    static final float BONUS = 8.0F;
 
     public IrradiatedBladeItem(Properties properties) {
         super(properties);

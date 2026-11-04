@@ -27,8 +27,8 @@ import org.jspecify.annotations.Nullable;
  */
 public final class AnimalFarmBlockEntity extends PoweredMachineBlockEntity {
     private static final int INPUTS = 4;
-    private static final int RANGE = 6;
-    private static final int CAP = 16;
+    static final int RANGE = 6;
+    static final int CAP = 16;
     private static final int ENERGY_PER_ACTION = 40;
     private int timer;
 
