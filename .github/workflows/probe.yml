@@ -16,7 +16,10 @@ jobs:
           url=$(curl -sL https://opengameart.org/content/30-cc0-sfx-loops | grep -o 'https://opengameart.org/sites/default/files/[^"]*\.zip' | head -1)
           echo "oga=$url"
           curl -sL "$url" -o oga.zip && unzip -q -o oga.zip -d oga
-          curl -sL https://github.com/Loppansson/kenney-sci-fi-sounds-for-godot/archive/0dd04139bb9e1a3477afd4f26434efdc6d86aac5.zip -o k.zip && unzip -q -o k.zip -d kenney
+          for page in sci-fi-sounds impact-sounds; do
+            k=$(curl -sL https://opengameart.org/content/$page | grep -o 'https://opengameart.org/sites/default/files/[^"]*\.zip' | head -1)
+            echo "$page=$k"; curl -sL "$k" -o $page.zip && unzip -q -o $page.zip -d kenney/$page || true
+          done
           mkdir -p ../out
           find oga kenney -type f \( -iname '*.wav' -o -iname '*.ogg' -o -iname '*.mp3' -o -iname '*.flac' \) | while read f; do
             n=$(echo "$f" | sed 's|/|__|g; s| |_|g'); n="${n%.*}.ogg"
