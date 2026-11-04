@@ -102,4 +102,10 @@ public final class AcceleratorBlockEntity extends PoweredMachineBlockEntity {
     protected List<ItemStack> produce(Level level, Operation operation) {
         return operation.maxOutputs().stream().map(ItemStack::copy).toList();
     }
+
+    @Override
+    public void jadeInfo(java.util.List<Component> lines) {
+        lines.add(Component.translatable("jade.factorycraft.magnets", magnets, MIN_MAGNETS));
+        super.jadeInfo(lines);
+    }
 }

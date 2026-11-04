@@ -807,5 +807,11 @@
   "tooltip.factorycraft.info.stone_drill": "Charged: vein mode (up to %s ores) or tunnel mode (%s deep). Right-click the air switches mode; sneak + right-click scans ores.",
   "tooltip.factorycraft.info.stone_hammer": "Mines a 3×3 area facing the way you look. Sneak to break a single block.",
   "tooltip.factorycraft.info.stone_chainsaw": "Cutting a log fells the whole natural tree. Sneak to cut a single block.",
-  "tooltip.factorycraft.info.stone_excavating_shovel": "Digs a 3×3 area of dirt, sand, gravel... Sneak to dig a single block."
+  "tooltip.factorycraft.info.stone_excavating_shovel": "Digs a 3×3 area of dirt, sand, gravel... Sneak to dig a single block.",
+  "jade.factorycraft.upgrades": "Upgrades:",
+  "jade.factorycraft.progress": "Progress: %s%%",
+  "jade.factorycraft.magnets": "Magnets: %s (needs %s)",
+  "jade.factorycraft.heat": "Heat: %s%%",
+  "jade.factorycraft.water": "Water: %s / %s buckets",
+  "config.jade.plugin_factorycraft.machine_info": "FactoryCraft machine info"
 }

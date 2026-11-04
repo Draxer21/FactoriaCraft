@@ -35,12 +35,18 @@ runs {
 repositories {
     // JEI (optional recipe viewer): compiled against its API, loaded in dev runs to test the plugin.
     maven { url = 'https://maven.blamejared.com' }
+    // Jade (optional block overlay): compiled against its jar from Modrinth.
+    exclusiveContent {
+        forRepository { maven { url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
 }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     compileOnly "mezz.jei:jei-${jei_mc}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_mc}-neoforge-api:${jei_version}"
+    compileOnly "maven.modrinth:jade:${jade_version}"
     if (minecraft_version == jei_mc) runtimeOnly "mezz.jei:jei-${jei_mc}-neoforge:${jei_version}"
 }
 
