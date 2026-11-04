@@ -40,5 +40,101 @@
       "factorycraft:hydraulic"
     ],
     "subtitle": "subtitles.factorycraft.hydraulic"
+  },
+  "machine_hum": {
+    "sounds": [
+      "factorycraft:machine_hum"
+    ],
+    "subtitle": "subtitles.factorycraft.machine_hum"
+  },
+  "crusher_loop": {
+    "sounds": [
+      "factorycraft:crusher_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.crusher_loop"
+  },
+  "centrifuge_loop": {
+    "sounds": [
+      "factorycraft:centrifuge_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.centrifuge_loop"
+  },
+  "pump_loop": {
+    "sounds": [
+      "factorycraft:pump_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.pump_loop"
+  },
+  "generator_loop": {
+    "sounds": [
+      "factorycraft:generator_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.generator_loop"
+  },
+  "reactor_loop": {
+    "sounds": [
+      "factorycraft:reactor_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.reactor_loop"
+  },
+  "accelerator_loop": {
+    "sounds": [
+      "factorycraft:accelerator_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.accelerator_loop"
+  },
+  "computer_loop": {
+    "sounds": [
+      "factorycraft:computer_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.computer_loop"
+  },
+  "alarm_loop": {
+    "sounds": [
+      "factorycraft:alarm_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.alarm_loop"
+  },
+  "press_loop": {
+    "sounds": [
+      "factorycraft:press_loop"
+    ],
+    "subtitle": "subtitles.factorycraft.press_loop"
+  },
+  "turret_shot": {
+    "sounds": [
+      "factorycraft:turret_shot"
+    ],
+    "subtitle": "subtitles.factorycraft.turret_shot"
+  },
+  "gamma_shot": {
+    "sounds": [
+      "factorycraft:gamma_shot"
+    ],
+    "subtitle": "subtitles.factorycraft.gamma_shot"
+  },
+  "teleport": {
+    "sounds": [
+      "factorycraft:teleport"
+    ],
+    "subtitle": "subtitles.factorycraft.teleport"
+  },
+  "reactor_siren": {
+    "sounds": [
+      "factorycraft:reactor_siren"
+    ],
+    "subtitle": "subtitles.factorycraft.reactor_siren"
+  },
+  "rocket_launch": {
+    "sounds": [
+      "factorycraft:rocket_launch"
+    ],
+    "subtitle": "subtitles.factorycraft.rocket_launch"
+  },
+  "rocket_ignition": {
+    "sounds": [
+      "factorycraft:rocket_ignition"
+    ],
+    "subtitle": "subtitles.factorycraft.rocket_ignition"
   }
 }

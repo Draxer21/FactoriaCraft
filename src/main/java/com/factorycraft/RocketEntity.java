@@ -30,7 +30,7 @@ public final class RocketEntity extends Entity {
         rocket.survey = survey;
         rocket.setPos(x, y, z);
         level.addFreshEntity(rocket);
-        level.playSound(null, x, y, z, SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.BLOCKS, 4.0F, 0.4F);
+        level.playSound(null, x, y, z, FactoryCraft.ROCKET_IGNITION.value(), SoundSource.BLOCKS, 4.0F, 0.8F);
     }
 
     @Override
@@ -43,7 +43,7 @@ public final class RocketEntity extends Entity {
         int smoke = age < IGNITION ? 6 : 3;
         server.sendParticles(ParticleTypes.FLAME, true, true, getX(), getY() - 0.2, getZ(), 8, 0.15, 0.1, 0.15, 0.05);
         server.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, true, true, getX(), getY() - 0.5, getZ(), smoke, 0.4, 0.2, 0.4, 0.02);
-        if (age % 20 == 0) server.playSound(null, getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.BLOCKS, 3.0F, 0.3F);
+        if (age % 90 == 0) server.playSound(null, getX(), getY(), getZ(), FactoryCraft.ROCKET_LAUNCH.value(), SoundSource.BLOCKS, 6.0F, 0.9F);
         if (getY() > server.getMaxY() + 48) {
             Orbit.launch(server, survey);
             Orbit orbit = Orbit.get(server);
