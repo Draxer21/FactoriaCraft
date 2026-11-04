@@ -12,7 +12,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir out && cd out
-          for id in 41653204491 41653224810 ; do gh run download $id -R ${{ github.repository }} -D a$id; done
+          for id in 41934905553 41934932597 ; do gh run download $id -R ${{ github.repository }} -D a$id; done
           find . -name '*.jar' -exec mv {} . \;
           find . -mindepth 1 -type d -exec rm -rf {} +
           ls -la
