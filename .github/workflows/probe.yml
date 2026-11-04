@@ -7,29 +7,23 @@ jobs:
     if: github.ref == 'refs/heads/probe'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '25'
-      - name: Probe
+      - name: Fetch CC0 sounds
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir b && cd b
-          {
-          echo '```'
-          for slug in bonded amber; do
-            curl -s "https://api.modrinth.com/v2/project/$slug/version?loaders=%5B%22neoforge%22%5D&game_versions=%5B%2226.2%22%5D" > $slug.json
-            python3 -c "import json;d=json.load(open('$slug.json'));print('$slug', [(v['version_number'],v['files'][0]['url']) for v in d[:2]])"
-            url=$(python3 -c "import json;d=json.load(open('$slug.json'));print(d[0]['files'][0]['url'] if d else '')")
-            [ -n "$url" ] && curl -sL "$url" -o $slug.jar
+          sudo apt-get install -y -qq ffmpeg > /dev/null
+          mkdir s && cd s
+          url=$(curl -sL https://opengameart.org/content/30-cc0-sfx-loops | grep -o 'https://opengameart.org/sites/default/files/[^"]*\.zip' | head -1)
+          echo "oga=$url"
+          curl -sL "$url" -o oga.zip && unzip -q -o oga.zip -d oga
+          curl -sL https://github.com/Loppansson/kenney-sci-fi-sounds-for-godot/archive/0dd04139bb9e1a3477afd4f26434efdc6d86aac5.zip -o k.zip && unzip -q -o k.zip -d kenney
+          mkdir -p ../out
+          find oga kenney -type f \( -iname '*.wav' -o -iname '*.ogg' -o -iname '*.mp3' -o -iname '*.flac' \) | while read f; do
+            n=$(echo "$f" | sed 's|/|__|g; s| |_|g'); n="${n%.*}.ogg"
+            ffmpeg -loglevel error -y -i "$f" -ac 1 -ar 44100 -c:a libvorbis -q:a 4 "../out/$n"
+            d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "../out/$n")
+            echo "$n $d" >> ../out/list.txt
           done
-          unzip -o -q bonded.jar -d bonded
-          for c in rules/BondedRulesLoader rules/GearRule rules/BondedRules leveling/levelers/RangedWeaponsLeveler leveling/levelers/MeleeWeaponsLeveler leveling/levelers/MiningToolsLeveler leveling/levelers/UtilityToolLeveler leveling/levelers/ArmorLeveler leveling/GameplayHooks registry/Tags registry/TierMap; do
-            echo "== $c"; javap -p -c -constants -cp bonded com.iamkaf.bonded.$(echo $c | tr / .) 2>/dev/null | grep -E "ldc|public|private|static|getstatic|invoke(static|virtual|interface).*(Tag|is|Event|register|experience)" | grep -v "lambda" | head -45
-          done
-          echo "== resource files"; find bonded -type f ! -name "*.class" | grep -v "lang/\|textures/\|models/\|blockstates\|sounds" | head -60
-          echo '```'
-          } > ../report.md 2>&1
-          cd ..; head -c 65000 report.md > r2.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@r2.md
+          find oga kenney -iname '*licen*' -o -iname '*.txt' -o -iname '*.md' | head -20 | while read f; do echo "== $f"; head -30 "$f"; done > ../out/licenses.txt
+          cd ../out && git init -q && git checkout -q -b sound-probe && git add . && git -c user.name=ci -c user.email=ci@local commit -qm sounds
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" sound-probe
