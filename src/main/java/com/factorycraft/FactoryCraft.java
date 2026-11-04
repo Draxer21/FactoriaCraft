@@ -48,6 +48,22 @@ public final class FactoryCraft {
     public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> DRILL_LOOP = sound("drill_loop");
     public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> CRANE_WINCH = sound("crane_winch");
     public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> HYDRAULIC = sound("hydraulic");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> MACHINE_HUM = sound("machine_hum");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> CRUSHER_LOOP = sound("crusher_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> CENTRIFUGE_LOOP = sound("centrifuge_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> PUMP_LOOP = sound("pump_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> GENERATOR_LOOP = sound("generator_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> REACTOR_LOOP = sound("reactor_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> ACCELERATOR_LOOP = sound("accelerator_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> COMPUTER_LOOP = sound("computer_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> ALARM_LOOP = sound("alarm_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> PRESS_LOOP = sound("press_loop");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> TURRET_SHOT = sound("turret_shot");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> GAMMA_SHOT = sound("gamma_shot");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> TELEPORT = sound("teleport");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> REACTOR_SIREN = sound("reactor_siren");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> ROCKET_LAUNCH = sound("rocket_launch");
+    public static final DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> ROCKET_IGNITION = sound("rocket_ignition");
 
     private static DeferredHolder<net.minecraft.sounds.SoundEvent, net.minecraft.sounds.SoundEvent> sound(String name) {
         return SOUND_EVENTS.register(name, () -> net.minecraft.sounds.SoundEvent.createVariableRangeEvent(

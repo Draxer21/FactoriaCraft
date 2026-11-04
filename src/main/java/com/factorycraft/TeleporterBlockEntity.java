@@ -76,10 +76,10 @@ public final class TeleporterBlockEntity extends MachineBlockEntity implements E
         int cost = cost(there);
         if (link.draw(here, cost) < cost) return Component.translatable("message.factorycraft.teleporter.power", cost);
         here.sendParticles(ParticleTypes.PORTAL, entity.getX(), entity.getY() + 1, entity.getZ(), 60, 0.4, 0.8, 0.4, 0.3);
-        here.playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 1.0F, 0.8F);
+        here.playSound(null, worldPosition, FactoryCraft.TELEPORT.value(), SoundSource.BLOCKS, 1.0F, 0.9F);
         entity.teleportTo(there, target.getX() + 0.5, target.getY() + 1.0, target.getZ() + 0.5, Set.of(), entity.getYRot(), entity.getXRot(), true);
         there.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX() + 0.5, target.getY() + 1.5, target.getZ() + 0.5, 60, 0.4, 0.8, 0.4, 0.1);
-        there.playSound(null, target, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 1.0F, 1.2F);
+        there.playSound(null, target, FactoryCraft.TELEPORT.value(), SoundSource.BLOCKS, 1.0F, 1.1F);
         cooldown = 20;
         other.cooldown = 20;
         return Component.translatable("message.factorycraft.teleporter.done", cost);

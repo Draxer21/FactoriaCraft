@@ -94,7 +94,7 @@ public final class TurretBlockEntity extends MachineBlockEntity implements Energ
             server.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 1, 0, 0, 0, 0);
         }
         server.sendParticles(ParticleTypes.CRIT, to.x, to.y, to.z, 6, 0.2, 0.2, 0.2, 0.1);
-        server.playSound(null, worldPosition, SoundEvents.CROSSBOW_SHOOT, SoundSource.BLOCKS, 0.8F, 1.6F);
+        server.playSound(null, worldPosition, FactoryCraft.TURRET_SHOT.value(), SoundSource.BLOCKS, 0.9F, 0.9F + server.getRandom().nextFloat() * 0.2F);
         return true;
     }
 

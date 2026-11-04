@@ -105,8 +105,7 @@ public final class GammaRifleItem extends Item implements ItemEnergy.Chargeable 
             level.sendParticles(ParticleTypes.GLOW, p.x, p.y, p.z, 1, 0.02, 0.02, 0.02, 0.0);
             if (((int) (d * 2)) % 3 == 0) level.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 1, 0.05, 0.05, 0.05, 0.0);
         }
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0F, 2.0F);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.8F, 1.4F);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), FactoryCraft.GAMMA_SHOT.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     // ---------------------------------------------------------------- display

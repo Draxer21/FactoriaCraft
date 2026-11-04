@@ -1,0 +1,8 @@
+FactoryCraft sound credits (all CC0 / public domain, no attribution required, credited with thanks):
+- "30 CC0 SFX loops" from OpenGameArt.org (https://opengameart.org/content/30-cc0-sfx-loops), CC0:
+  machine_hum (machine_08), crusher_loop (machine_06), centrifuge_loop (machine_03), pump_loop (pump_01), alarm_loop (alarm_03), reactor_siren (alarm_01)
+- Kenney "Sci-Fi Sounds" (www.kenney.nl, https://opengameart.org/content/sci-fi-sounds), CC0:
+  generator_loop (spaceEngine_003), reactor_loop (spaceEngineLow_002), accelerator_loop (forceField_001), computer_loop (computerNoise_002),
+  press_loop (impactMetal_001), turret_shot (laserSmall_004), gamma_shot (laserLarge_001), teleport (forceField_002),
+  rocket_launch (thrusterFire_003), rocket_ignition (lowFrequency_explosion_000)
+Files were converted to mono, trimmed into seamless loops and level-matched.

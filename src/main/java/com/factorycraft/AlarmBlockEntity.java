@@ -55,10 +55,7 @@ public final class AlarmBlockEntity extends MachineBlockEntity implements Owned 
             else if (hold > 0) hold -= 10;
         }
         boolean on = hold > 0;
-        if (on && timer % 10 == 0) {
-            float pitch = (timer / 10) % 2 == 0 ? 1.4F : 1.0F;
-            server.playSound(null, worldPosition, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 2.0F, pitch);
-        }
+        // The siren itself is a looping client sound (MachineSounds) while the alarm is lit.
         return on;
     }
 

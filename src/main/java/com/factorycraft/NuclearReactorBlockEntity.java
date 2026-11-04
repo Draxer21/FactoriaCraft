@@ -188,8 +188,8 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
             if (heat > MAX_HEAT * 7 / 10 && level.getGameTime() % 20 == 0) {
                 server.sendParticles(ParticleTypes.LARGE_SMOKE, worldPosition.getX() + 0.5, worldPosition.getY() + 1.1,
                         worldPosition.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.02);
-                level.playSound(null, worldPosition, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 1.5F,
-                        heat > MAX_HEAT * 9 / 10 ? 2.0F : 1.2F);
+                if (level.getGameTime() % 40 == 0) level.playSound(null, worldPosition, FactoryCraft.REACTOR_SIREN.value(), SoundSource.BLOCKS, 2.0F,
+                        heat > MAX_HEAT * 9 / 10 ? 1.25F : 1.0F);
             }
             // Radiation leak when the reactor isn't shielded.
             if (running && level.getGameTime() % 100 == 0) {

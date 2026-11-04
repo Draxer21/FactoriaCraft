@@ -760,5 +760,21 @@
   "research.factorycraft.weapons": "Armas nucleares",
   "research.factorycraft.nuclear_engines": "Motores nucleares",
   "research.factorycraft.space": "Programa espacial",
-  "research.factorycraft.antimatter": "Antimateria"
+  "research.factorycraft.antimatter": "Antimateria",
+  "subtitles.factorycraft.machine_hum": "Máquina zumba",
+  "subtitles.factorycraft.crusher_loop": "Trituradora muele",
+  "subtitles.factorycraft.centrifuge_loop": "Centrífuga gira",
+  "subtitles.factorycraft.pump_loop": "Bomba bombea",
+  "subtitles.factorycraft.generator_loop": "Generador funciona",
+  "subtitles.factorycraft.reactor_loop": "Reactor zumba",
+  "subtitles.factorycraft.accelerator_loop": "Acelerador chisporrotea",
+  "subtitles.factorycraft.computer_loop": "Estación de investigación calcula",
+  "subtitles.factorycraft.alarm_loop": "Alarma suena",
+  "subtitles.factorycraft.press_loop": "Prensa golpea",
+  "subtitles.factorycraft.turret_shot": "Torreta dispara",
+  "subtitles.factorycraft.gamma_shot": "Rifle gamma dispara",
+  "subtitles.factorycraft.teleport": "Teletransportador se activa",
+  "subtitles.factorycraft.reactor_siren": "Sirena del reactor",
+  "subtitles.factorycraft.rocket_launch": "Cohete ruge",
+  "subtitles.factorycraft.rocket_ignition": "Cohete se enciende"
 }

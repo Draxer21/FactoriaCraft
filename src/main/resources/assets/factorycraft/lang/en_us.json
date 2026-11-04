@@ -760,5 +760,21 @@
   "research.factorycraft.weapons": "Nuclear Weapons",
   "research.factorycraft.nuclear_engines": "Nuclear Engines",
   "research.factorycraft.space": "Space Program",
-  "research.factorycraft.antimatter": "Antimatter"
+  "research.factorycraft.antimatter": "Antimatter",
+  "subtitles.factorycraft.machine_hum": "Machine hums",
+  "subtitles.factorycraft.crusher_loop": "Crusher grinds",
+  "subtitles.factorycraft.centrifuge_loop": "Centrifuge spins",
+  "subtitles.factorycraft.pump_loop": "Pump pumps",
+  "subtitles.factorycraft.generator_loop": "Generator runs",
+  "subtitles.factorycraft.reactor_loop": "Reactor hums",
+  "subtitles.factorycraft.accelerator_loop": "Accelerator crackles",
+  "subtitles.factorycraft.computer_loop": "Research station computes",
+  "subtitles.factorycraft.alarm_loop": "Alarm rings",
+  "subtitles.factorycraft.press_loop": "Press stamps",
+  "subtitles.factorycraft.turret_shot": "Turret fires",
+  "subtitles.factorycraft.gamma_shot": "Gamma rifle fires",
+  "subtitles.factorycraft.teleport": "Teleporter warps",
+  "subtitles.factorycraft.reactor_siren": "Reactor siren wails",
+  "subtitles.factorycraft.rocket_launch": "Rocket roars",
+  "subtitles.factorycraft.rocket_ignition": "Rocket ignites"
 }
