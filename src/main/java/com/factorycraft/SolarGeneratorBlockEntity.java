@@ -29,7 +29,7 @@ public final class SolarGeneratorBlockEntity extends MachineBlockEntity implemen
     public static final int OUTPUT = 16;
     public static final int ENERGY_PER_FUEL = 40;
     private static final int CHARGE_RATE = 200;
-    private static final double VEHICLE_RANGE = 4.0;
+    static final double VEHICLE_RANGE = 4.0;
 
     private int energy;
     private int rate;

@@ -29,8 +29,8 @@ public final class DronePortBlockEntity extends PoweredMachineBlockEntity {
     public static final int CARGO = 6;
     public static final int RANGE = 512;
     public static final int MAX_DRONES = 4;
-    private static final int STACKS_PER_TRIP = 4;
-    private static final int ENERGY_PER_TRIP = 400;
+    static final int STACKS_PER_TRIP = 4;
+    static final int ENERGY_PER_TRIP = 400;
 
     private @Nullable BlockPos target;
     private int drones;

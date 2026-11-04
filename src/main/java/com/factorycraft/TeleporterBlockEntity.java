@@ -23,8 +23,8 @@ import org.jspecify.annotations.Nullable;
  * from the network of the pad you leave from.
  */
 public final class TeleporterBlockEntity extends MachineBlockEntity implements Energy.Consumer {
-    private static final int BASE_COST = 2000;
-    private static final int CROSS_DIMENSION_COST = 50_000;
+    static final int BASE_COST = 2000;
+    static final int CROSS_DIMENSION_COST = 50_000;
     private final Energy.Link link = new Energy.Link(this);
     private @Nullable BlockPos target;
     private @Nullable ResourceKey<Level> targetLevel;

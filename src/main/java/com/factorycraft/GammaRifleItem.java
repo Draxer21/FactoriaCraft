@@ -35,9 +35,9 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class GammaRifleItem extends Item implements ItemEnergy.Chargeable {
     public static final int CAPACITY = 60_000;
-    private static final int SHOT = 1_500;
-    private static final double RANGE = 48.0;
-    private static final float DAMAGE = 14.0F;
+    static final int SHOT = 1_500;
+    static final double RANGE = 48.0;
+    static final float DAMAGE = 14.0F;
 
     public GammaRifleItem(Properties properties) {
         super(properties);

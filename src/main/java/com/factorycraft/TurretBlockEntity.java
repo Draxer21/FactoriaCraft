@@ -32,8 +32,8 @@ import org.jspecify.annotations.Nullable;
 public final class TurretBlockEntity extends MachineBlockEntity implements Energy.Consumer, Owned {
     public static final double RANGE = 20.0;
     private static final int INTERVAL = 10;
-    private static final float DAMAGE = 7.0F;
-    private static final int ENERGY_PER_SHOT = 150;
+    static final float DAMAGE = 7.0F;
+    static final int ENERGY_PER_SHOT = 150;
 
     private final Energy.Link link = new Energy.Link(this);
     private @Nullable UUID owner;

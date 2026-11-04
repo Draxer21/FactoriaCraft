@@ -45,8 +45,8 @@ public final class DrillItem extends Item {
     private final int tier;
     private static final int ENERGY_PER_BLOCK = 25;
     private static final int SCAN_COST = 1_500;
-    private static final int VEIN_MAX = 64;
-    private static final int TUNNEL_DEPTH = 3;
+    static final int VEIN_MAX = 64;
+    static final int TUNNEL_DEPTH = 3;
 
     private enum Mode { VEIN, TUNNEL }
 
