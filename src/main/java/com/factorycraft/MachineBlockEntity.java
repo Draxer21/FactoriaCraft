@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  *  - Right-click with an empty hand to take the finished products by hand.
  *  - Hoppers underneath can also pull the products out.
  */
-public abstract class MachineBlockEntity extends BlockEntity implements WorldlyContainer {
+public abstract class MachineBlockEntity extends BlockEntity implements WorldlyContainer, JadeInfo {
     private static final int OUTPUT_INTERVAL = 8;
     private static final int MAX_ITEMS_ON_BELT = 3;
 
@@ -212,6 +212,22 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
             boosted.add(copy);
         }
         return boosted;
+    }
+
+    /** Jade overlay: installed machine upgrades. Subclasses add their own state. */
+    @Override
+    public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        if (upgradeCount() == 0) return;
+        net.minecraft.network.chat.MutableComponent text = net.minecraft.network.chat.Component.translatable("jade.factorycraft.upgrades");
+        boolean first = true;
+        for (MachineUpgrade type : MachineUpgrade.values()) {
+            int n = upgrades[type.ordinal()];
+            if (n == 0) continue;
+            text.append(first ? " " : " · ").append(net.minecraft.network.chat.Component.translatable(
+                    "upgrade.factorycraft.machine." + type.name().toLowerCase() + ".short")).append(" " + n);
+            first = false;
+        }
+        lines.add(text);
     }
 
     /** " [Speed 2 · Eff. 1]" after the machine's name in its screen. */

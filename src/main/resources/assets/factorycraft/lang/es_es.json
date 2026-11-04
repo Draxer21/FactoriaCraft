@@ -807,5 +807,11 @@
   "tooltip.factorycraft.info.stone_drill": "Con carga: modo veta (hasta %s minerales) o modo túnel (%s de profundidad). Clic derecho al aire cambia de modo; agacharse + clic derecho escanea minerales.",
   "tooltip.factorycraft.info.stone_hammer": "Pica un área de 3×3 hacia donde miras. Agáchate para romper un solo bloque.",
   "tooltip.factorycraft.info.stone_chainsaw": "Al cortar un tronco tala el árbol natural entero. Agáchate para cortar un solo bloque.",
-  "tooltip.factorycraft.info.stone_excavating_shovel": "Cava un área de 3×3 de tierra, arena, grava... Agáchate para cavar un solo bloque."
+  "tooltip.factorycraft.info.stone_excavating_shovel": "Cava un área de 3×3 de tierra, arena, grava... Agáchate para cavar un solo bloque.",
+  "jade.factorycraft.upgrades": "Mejoras:",
+  "jade.factorycraft.progress": "Progreso: %s%%",
+  "jade.factorycraft.magnets": "Imanes: %s (necesita %s)",
+  "jade.factorycraft.heat": "Calor: %s%%",
+  "jade.factorycraft.water": "Agua: %s / %s baldes",
+  "config.jade.plugin_factorycraft.machine_info": "Información de máquinas de FactoryCraft"
 }

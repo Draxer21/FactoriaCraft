@@ -178,4 +178,13 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
         output.putInt("Progress", progress);
         output.putInt("FE", link.feInput().getAmountAsInt());
     }
+
+    @Override
+    public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        if (progress > 0) {
+            int total = Math.max(1, scaledTime(time()));
+            lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.progress", Math.min(100, progress * 100 / total)));
+        }
+        super.jadeInfo(lines);
+    }
 }

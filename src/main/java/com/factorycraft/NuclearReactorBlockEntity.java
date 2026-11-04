@@ -306,4 +306,11 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         output.putInt("Heat", heat);
         output.putInt("Water", water);
     }
+
+    @Override
+    public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.heat", heat * 100 / MAX_HEAT));
+        lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.water", water / BUCKET, WATER_CAPACITY / BUCKET));
+        super.jadeInfo(lines);
+    }
 }
