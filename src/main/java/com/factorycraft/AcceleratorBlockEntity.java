@@ -29,7 +29,7 @@ public final class AcceleratorBlockEntity extends PoweredMachineBlockEntity {
 
     record Transmutation(Supplier<Item> input, Supplier<Item> output, int count) {}
 
-    static final List<Transmutation> RECIPES = List.of(
+    static final List<Transmutation> DEFAULTS = List.of(
             new Transmutation(() -> Endgame.CONTAINMENT_CELL.value(), () -> Endgame.ANTIMATTER_CELL.value(), 1),
             new Transmutation(() -> Items.COAL_BLOCK, () -> Items.DIAMOND, 1),
             new Transmutation(() -> Items.AMETHYST_BLOCK, () -> Items.ECHO_SHARD, 1),
@@ -108,4 +108,7 @@ public final class AcceleratorBlockEntity extends PoweredMachineBlockEntity {
         lines.add(Component.translatable("jade.factorycraft.magnets", magnets, MIN_MAGNETS));
         super.jadeInfo(lines);
     }
+
+    /** Built-in transmutations plus datapack ones (see MachineRecipes). */
+    static List<Transmutation> RECIPES = DEFAULTS;
 }

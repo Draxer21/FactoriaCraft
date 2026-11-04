@@ -16,7 +16,9 @@ public final class CrusherRecipes {
     /** {@code source} is the Item or TagKey shown in the guide. */
     record Entry(Predicate<ItemStack> input, Supplier<Item> output, int count, Object source) {}
 
-    static final List<Entry> ENTRIES = new ArrayList<>();
+    static List<Entry> ENTRIES = new ArrayList<>();
+    /** The built-in entries, kept so a datapack reload can start over from them. */
+    static List<Entry> DEFAULTS = List.of();
 
     static {
         // Raw metals: 1 -> 2 dust. Ore blocks (silk touch): 1 -> 4 dust.
@@ -75,6 +77,10 @@ public final class CrusherRecipes {
             add(m.oreItem().value(), () -> m.dust().value(), 4);
             add(m.deepOreItem().value(), () -> m.dust().value(), 4);
         }
+    }
+
+    static {
+        DEFAULTS = List.copyOf(ENTRIES);
     }
 
     private CrusherRecipes() {}

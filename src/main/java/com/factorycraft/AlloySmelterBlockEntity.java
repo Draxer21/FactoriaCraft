@@ -33,7 +33,7 @@ public final class AlloySmelterBlockEntity extends PoweredMachineBlockEntity {
         return stack -> stack.is(item.get());
     }
 
-    static final List<Alloying> RECIPES = List.of(
+    static final List<Alloying> DEFAULTS = List.of(
             // Steel: iron with carbon.
             new Alloying(tag("ingots/iron"), 1, item(() -> Items.COAL), 2, () -> Materials.STEEL.ingot().value(), 1, "c:ingots/iron", Items.COAL),
             new Alloying(tag("ingots/iron"), 1, item(() -> Items.CHARCOAL), 2, () -> Materials.STEEL.ingot().value(), 1, "c:ingots/iron", Items.CHARCOAL),
@@ -99,4 +99,7 @@ public final class AlloySmelterBlockEntity extends PoweredMachineBlockEntity {
         for (ItemStack stack : operation.maxOutputs()) out.add(stack.copy());
         return out;
     }
+
+    /** Built-in recipes plus datapack ones (see MachineRecipes). */
+    static List<Alloying> RECIPES = DEFAULTS;
 }

@@ -519,6 +519,27 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("MODULETEST {}", out);
     }
 
+    /** Datapack machine recipes: add one, replace one, remove one, then go back to the built-ins. */
+    private static void logMachineRecipes() {
+        java.util.function.Function<String, com.google.gson.JsonObject> json = text -> com.google.gson.JsonParser.parseString(text).getAsJsonObject();
+        MachineRecipes.apply(java.util.List.of(
+                json.apply("{\"type\":\"press\",\"input\":\"minecraft:dirt\",\"input_count\":2,\"result\":\"minecraft:coarse_dirt\",\"count\":3}"),
+                json.apply("{\"type\":\"crusher\",\"input\":\"#minecraft:logs\",\"result\":\"minecraft:stick\",\"count\":6}"),
+                json.apply("{\"type\":\"remove\",\"machine\":\"press\",\"input\":\"minecraft:coal\"}"),
+                json.apply("{\"type\":\"alloy_smelter\",\"input_a\":\"minecraft:sand\",\"count_a\":2,\"input_b\":\"#c:ingots/iron\",\"count_b\":1,\"result\":\"minecraft:glass\",\"count\":5}"),
+                json.apply("{\"type\":\"bogus\"}")));
+        boolean dirt = PressBlockEntity.RECIPES.stream().anyMatch(r -> r.input().get() == Items.DIRT && r.outCount() == 3);
+        boolean coalGone = PressBlockEntity.RECIPES.stream().noneMatch(r -> r.input().get() == Items.COAL);
+        ItemStack logs = CrusherRecipes.resultFor(new ItemStack(Items.OAK_LOG));
+        boolean alloy = AlloySmelterBlockEntity.RECIPES.stream().anyMatch(r -> r.output().get() == Items.GLASS);
+        int loaded = MachineRecipes.loaded;
+        MachineRecipes.apply(java.util.List.of());
+        boolean restored = PressBlockEntity.RECIPES.size() == PressBlockEntity.DEFAULTS.size()
+                && CrusherRecipes.ENTRIES.size() == CrusherRecipes.DEFAULTS.size();
+        com.mojang.logging.LogUtils.getLogger().info("RECIPETEST loaded={} pressAdded={} coalRemoved={} crusherTag={} alloyAdded={} restored={} pressDefaults={}",
+                loaded, dirt, coalGone, logs, alloy, restored, PressBlockEntity.DEFAULTS.size());
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -666,6 +687,7 @@ public final class TerrainSelfTest {
             logResearch(level);
             logBonded();
             logModules(level, base);
+            logMachineRecipes();
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
