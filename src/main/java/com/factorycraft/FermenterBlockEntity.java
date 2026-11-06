@@ -52,7 +52,15 @@ public final class FermenterBlockEntity extends PoweredMachineBlockEntity {
     @Override
     protected List<ItemStack> produce(Level level, Operation operation) {
         List<ItemStack> out = new ArrayList<>();
-        for (ItemStack stack : operation.maxOutputs()) out.add(stack.copy());
+        for (ItemStack stack : operation.maxOutputs()) {
+            ItemStack left = stack.copy();
+            // Biofuel goes down the pipes as fluid (1000 mB a canister) when something takes it.
+            while (left.is(FactoryCraft.BIOFUEL.value()) && !left.isEmpty()
+                    && FluidPipes.deliver(level, worldPosition, Fuels.BIOFUEL.value(), FluidStorage.BUCKET)) {
+                left.shrink(1);
+            }
+            if (!left.isEmpty()) out.add(left);
+        }
         return out;
     }
 }

@@ -10,7 +10,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 /** Refinery: one canister of crude oil makes a diesel canister, a plastic sheet and two asphalt blocks. */
-public final class RefineryBlockEntity extends PoweredMachineBlockEntity {
+public final class RefineryBlockEntity extends PoweredMachineBlockEntity implements FluidStorage.Holder {
+    /** Piped crude oil (8 canisters' worth). */
+    private final FluidStorage fluids = new FluidStorage(this::setChanged)
+            .slot(8 * FluidStorage.BUCKET, true, false, fluid -> fluid == Fuels.CRUDE_OIL.value());
+    private boolean fromTank;
+
+    @Override public FluidStorage fluids() { return fluids; }
+
     public RefineryBlockEntity(BlockPos pos, BlockState state) {
         super(FactoryCraft.REFINERY_BLOCK_ENTITY.value(), pos, state, 1);
     }
@@ -32,14 +39,44 @@ public final class RefineryBlockEntity extends PoweredMachineBlockEntity {
 
     @Override
     protected @Nullable Operation find(Level level) {
-        if (!items.get(0).is(FactoryCraft.CRUDE_OIL.value())) return null;
-        return new Operation(new int[] {1}, products());
+        if (items.get(0).is(FactoryCraft.CRUDE_OIL.value())) {
+            fromTank = false;
+            return new Operation(new int[] {1}, products());
+        }
+        if (fluids.amount(0) >= FluidStorage.BUCKET) {
+            fromTank = true;
+            return new Operation(new int[] {0}, products());
+        }
+        return null;
     }
 
     @Override
     protected List<ItemStack> produce(Level level, Operation operation) {
+        if (fromTank) fluids.take(0, FluidStorage.BUCKET);
         List<ItemStack> out = new ArrayList<>();
-        for (ItemStack stack : operation.maxOutputs()) out.add(stack.copy());
+        for (ItemStack stack : operation.maxOutputs()) {
+            // Diesel goes down the pipes as fluid when something takes it.
+            if (stack.is(FactoryCraft.DIESEL.value()) && FluidPipes.deliver(level, worldPosition, Fuels.DIESEL.value(), FluidStorage.BUCKET)) continue;
+            out.add(stack.copy());
+        }
         return out;
+    }
+
+    @Override
+    public void jadeInfo(List<net.minecraft.network.chat.Component> lines) {
+        if (fluids.amount(0) > 0) lines.add(fluids.describe(0));
+        super.jadeInfo(lines);
+    }
+
+    @Override
+    protected void loadAdditional(net.minecraft.world.level.storage.ValueInput input) {
+        super.loadAdditional(input);
+        fluids.load(input);
+    }
+
+    @Override
+    protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput output) {
+        super.saveAdditional(output);
+        fluids.save(output);
     }
 }
