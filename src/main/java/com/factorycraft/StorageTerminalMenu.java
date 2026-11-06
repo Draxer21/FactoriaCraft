@@ -138,8 +138,8 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
             for (AssemblerBlockEntity assembler : network.assemblers()) {
                 if (ItemStack.isSameItemSameComponents(assembler.result(player.level()), action.stack())) {
                     assembler.request(crafts);
-                    player.displayClientMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.assembler.requested",
-                            crafts, action.stack().getHoverName(), assembler.pending()), true);
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.assembler.requested",
+                            crafts, action.stack().getHoverName(), assembler.pending()));
                     break;
                 }
             }
