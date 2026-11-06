@@ -37,7 +37,7 @@ public final class BusMenu extends AbstractContainerMenu implements GhostMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return bus == null || (!bus.isRemoved() && player.distanceToSqr(bus.getBlockPos().getCenter()) <= 64.0);
+        return bus == null || (!bus.isRemoved() && net.minecraft.world.phys.Vec3.atCenterOf(bus.getBlockPos()).distanceToSqr(player.position()) <= 64.0);
     }
 
     @Override
