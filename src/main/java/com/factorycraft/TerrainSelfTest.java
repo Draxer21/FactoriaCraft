@@ -540,6 +540,42 @@ public final class TerrainSelfTest {
                 loaded, dirt, coalGone, logs, alloy, restored, PressBlockEntity.DEFAULTS.size());
     }
 
+    /** Assembler: a planks pattern makes a crafting table; next to a terminal it pulls requested ingredients and stores results. */
+    private static void logAssembler(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos at = base.offset(6, 1, -40);
+            BlockPos terminal = at.east();
+            BlockPos chest = terminal.east();
+            level.setBlock(at, Automation.ASSEMBLER.value().defaultBlockState(), 3);
+            level.setBlock(terminal, Logistics.STORAGE_TERMINAL.value().defaultBlockState(), 3);
+            level.setBlock(chest, net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState(), 3);
+            AssemblerBlockEntity assembler = (AssemblerBlockEntity) level.getBlockEntity(at);
+            var box = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(chest);
+            box.setItem(0, new ItemStack(Items.OAK_PLANKS, 20));
+            for (int slot : new int[] {0, 1, 3, 4}) assembler.setPattern(slot, new ItemStack(Items.OAK_PLANKS));
+            out.append("result=").append(assembler.result(level));
+            out.append(" findEmpty=").append(assembler.find(level) != null);
+            var network = StorageNetwork.scan(level, terminal);
+            out.append(" onNetwork=").append(network.assemblers().size());
+            assembler.request(2);
+            assembler.serveNetwork(level);
+            out.append(" buffer=").append(assembler.getItem(0));
+            var op = assembler.find(level);
+            out.append(" find=").append(op == null ? "null" : op.maxOutputs());
+            assembler.setItem(AssemblerBlockEntity.BUFFER, new ItemStack(Items.CRAFTING_TABLE));
+            assembler.serveNetwork(level);
+            out.append(" pushed=").append(StorageNetwork.scan(level, terminal).count(
+                    net.neoforged.neoforge.transfer.item.ItemResource.of(new ItemStack(Items.CRAFTING_TABLE))));
+            out.append(" chestPlanks=").append(box.getItem(0).getCount());
+            assembler.setPattern(0, new ItemStack(Items.DIRT));
+            out.append(" badPattern=").append(assembler.result(level).isEmpty());
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("ASSEMBLERTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -688,6 +724,7 @@ public final class TerrainSelfTest {
             logBonded();
             logModules(level, base);
             logMachineRecipes();
+            logAssembler(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

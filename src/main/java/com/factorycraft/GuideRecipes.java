@@ -92,7 +92,7 @@ final class GuideRecipes {
             Map.entry("endgame", new String[] {"superconducting_magnet", "accelerator", "containment_cell", "antimatter_reactor", "teleporter", "launch_pad", "rocket", "rocket_fuel", "solar_satellite", "survey_satellite", "orbital_receiver", "uplink"}),
             Map.entry("economy", new String[] {"air_meter", "recycler", "vending_machine", "contract_board", "stats_terminal", "zone_controller", "access_card"}),
             Map.entry("defense", new String[] {"turret", "alarm", "security_camera", "monitor", "shutter", "armored_door", "reinforced_concrete", "armor_plating", "steel_scaffold", "lift_pad", "hazard_block", "steel_grate"}),
-            Map.entry("transport", new String[] {"storage_terminal", "data_cable", "drone_port", "delivery_drone", "cable_station", "steel_cable", "cargo_ship", "garage"}),
+            Map.entry("transport", new String[] {"storage_terminal", "data_cable", "assembler", "drone_port", "delivery_drone", "cable_station", "steel_cable", "cargo_ship", "garage"}),
             Map.entry("farm", new String[] {"greenhouse", "animal_farm", "fluid_tank", "sewer_grate", "desalinator", "treatment_plant", "salt_block", "leather_from_salt"}),
             Map.entry("oil", new String[] {"pumpjack", "refinery", "fermenter", "hydro_turbine", "advanced_solar", "photon_array", "wireless_charger"}),
             Map.entry("terrain", new String[] {"filler", "leveler", "quarry", "drain", "planter", "blueprint", "builder", "industrial_lamp"}),

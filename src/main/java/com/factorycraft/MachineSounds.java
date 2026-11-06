@@ -53,7 +53,7 @@ public final class MachineSounds {
         voice(FactoryCraft.PRESS_LOOP::value, 0.5F, PressBlockEntity.class);
         voice(FactoryCraft.MACHINE_HUM::value, 0.4F, AlloySmelterBlockEntity.class, PackagerBlockEntity.class, TanneryBlockEntity.class,
                 MixerBlockEntity.class, ToolForgeBlockEntity.class, RecyclerBlockEntity.class, OreWasherBlockEntity.class,
-                FermenterBlockEntity.class, LevelerBlockEntity.class, FillerBlockEntity.class, BuilderBlockEntity.class);
+                FermenterBlockEntity.class, AssemblerBlockEntity.class, LevelerBlockEntity.class, FillerBlockEntity.class, BuilderBlockEntity.class);
     }
 
     @SafeVarargs

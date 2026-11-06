@@ -30,6 +30,7 @@ public final class StorageNetwork {
     private record Member(BlockPos pos, ResourceHandler<ItemResource> handler, boolean machine) {}
 
     private final List<Member> members = new ArrayList<>();
+    private final List<AssemblerBlockEntity> assemblers = new ArrayList<>();
 
     private StorageNetwork() {}
 
@@ -61,6 +62,7 @@ public final class StorageNetwork {
                 ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, next, dir.getOpposite());
                 if (handler == null || handler.size() == 0) continue;
                 inventories.add(next);
+                if (be instanceof AssemblerBlockEntity assembler) network.assemblers.add(assembler);
                 boolean machine = be instanceof MachineBlockEntity && !(be instanceof IndustrialChestBlockEntity);
                 network.members.add(new Member(next.immutable(), handler, machine));
             }
@@ -68,6 +70,11 @@ public final class StorageNetwork {
         // Storage first, machines last.
         network.members.sort((a, b) -> Boolean.compare(a.machine(), b.machine()));
         return network;
+    }
+
+    /** Assemblers on the network (they can craft on request). */
+    public List<AssemblerBlockEntity> assemblers() {
+        return assemblers;
     }
 
     public int inventories() {

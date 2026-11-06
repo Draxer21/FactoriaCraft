@@ -151,6 +151,11 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
         return link;
     }
 
+    /** Progress / energy data shared with the screen. */
+    protected final ContainerData data() {
+        return data;
+    }
+
     protected final void setProgress(int value) {
         progress = value;
     }

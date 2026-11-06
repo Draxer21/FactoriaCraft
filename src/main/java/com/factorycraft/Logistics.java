@@ -115,7 +115,7 @@ public final class Logistics {
                     .title(Component.translatable("itemGroup.factorycraft.logistics"))
                     .icon(() -> STORAGE_TERMINAL_ITEM.value().getDefaultInstance())
                     .displayItems((parameters, output) -> {
-                        for (DeferredHolder<Item, Item> item : List.of(STORAGE_TERMINAL_ITEM, DATA_CABLE_ITEM, DRONE_PORT_ITEM,
+                        for (DeferredHolder<Item, Item> item : List.of(STORAGE_TERMINAL_ITEM, DATA_CABLE_ITEM, Automation.ASSEMBLER_ITEM, DRONE_PORT_ITEM,
                                 DELIVERY_DRONE_ITEM, CABLE_STATION_ITEM, STEEL_CABLE, CARGO_SHIP_ITEM, GARAGE_ITEM)) {
                             output.accept(item.value());
                         }
