@@ -37,4 +37,21 @@ public final class Automation {
             BLOCK_ENTITY_TYPES.register("assembler", () -> new BlockEntityType<>(AssemblerBlockEntity::new, ASSEMBLER.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<AssemblerMenu>> ASSEMBLER_MENU = MENUS.register("assembler",
             () -> new MenuType<>(AssemblerMenu::new, FeatureFlags.VANILLA_SET));
+
+    private static BlockBehaviour.Properties bus(String id) {
+        return BlockBehaviour.Properties.of()
+                .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id)))
+                .strength(2.5F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops();
+    }
+
+    public static final DeferredHolder<Block, Block> IMPORT_BUS = BLOCKS.register("import_bus", () -> new BusBlock(bus("import_bus"), false));
+    public static final DeferredHolder<Block, Block> EXPORT_BUS = BLOCKS.register("export_bus", () -> new BusBlock(bus("export_bus"), true));
+    public static final DeferredHolder<Item, Item> IMPORT_BUS_ITEM = ITEMS.registerItem("import_bus",
+            properties -> new BlockItem(IMPORT_BUS.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<Item, Item> EXPORT_BUS_ITEM = ITEMS.registerItem("export_bus",
+            properties -> new BlockItem(EXPORT_BUS.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BusBlockEntity>> BUS_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("bus", () -> new BlockEntityType<>(BusBlockEntity::new, IMPORT_BUS.value(), EXPORT_BUS.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<BusMenu>> BUS_MENU = MENUS.register("bus",
+            () -> new MenuType<>(BusMenu::new, FeatureFlags.VANILLA_SET));
 }

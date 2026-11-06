@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "factorycraft:block/import_bus_front",
+    "side": "factorycraft:block/import_bus_side",
+    "top": "factorycraft:block/import_bus_side"
+  }
+}

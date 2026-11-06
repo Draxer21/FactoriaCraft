@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "PHP",
+    " R "
+  ],
+  "key": {
+    "C": "factorycraft:data_cable",
+    "P": "#c:plates/iron",
+    "H": "minecraft:hopper",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "factorycraft:import_bus",
+    "count": 1
+  }
+}

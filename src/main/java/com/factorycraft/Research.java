@@ -45,7 +45,7 @@ public final class Research {
             node("oil", 25, List.of("electricity"), "pumpjack", "refinery", "fermenter"),
             node("advanced_power", 30, List.of("electricity"), "advanced_solar", "hydro_turbine", "wireless_charger"),
             node("heavy_lifting", 35, List.of("advanced_vehicles"), "crane", "tower_crane", "helicopter", "submarine", "crane_control"),
-            node("logistics", 40, List.of("terrain"), "storage_terminal", "data_cable", "drone_port", "delivery_drone", "cable_station",
+            node("logistics", 40, List.of("terrain"), "storage_terminal", "data_cable", "import_bus", "export_bus", "drone_port", "delivery_drone", "cable_station",
                     "steel_cable", "cargo_ship", "garage", "loading_station", "unloading_station", "route_beacon", "upgrade_autopilot"),
             node("economy", 30, List.of("automation", "farming"), "recycler", "vending_machine", "contract_board", "stats_terminal",
                     "zone_controller", "access_card"),

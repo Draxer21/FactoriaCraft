@@ -126,6 +126,8 @@
     "factorycraft:launch_pad",
     "factorycraft:orbital_receiver",
     "factorycraft:research_station",
-    "factorycraft:assembler"
+    "factorycraft:assembler",
+    "factorycraft:import_bus",
+    "factorycraft:export_bus"
   ]
 }
