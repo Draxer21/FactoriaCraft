@@ -44,6 +44,8 @@ public final class PumpjackBlockEntity extends PoweredMachineBlockEntity impleme
 
     @Override
     protected List<ItemStack> produce(Level level, Operation operation) {
+        // Piped: the oil goes out as fluid to a tank or refinery; otherwise as a canister.
+        if (FluidPipes.deliver(level, worldPosition, Fuels.CRUDE_OIL.value(), FluidStorage.BUCKET)) return List.of();
         return List.of(new ItemStack(FactoryCraft.CRUDE_OIL.value()));
     }
 

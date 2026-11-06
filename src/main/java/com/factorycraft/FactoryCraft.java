@@ -953,6 +953,7 @@ public final class FactoryCraft {
         Defense.init();
         Economy.init();
         Automation.init();
+        Fuels.register(modEventBus);
         Endgame.init();
         ResearchBlocks.init();
         ProductionStats.init();

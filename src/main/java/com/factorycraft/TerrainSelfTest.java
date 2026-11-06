@@ -642,6 +642,37 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("SIDETEST {}", out);
     }
 
+    /** Piped fuels: diesel down a pipe into a tank, crude into a refinery, diesel into a generator that burns it. */
+    private static void logFuels(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos refinery = base.offset(26, 1, -40);
+            BlockPos pipe = refinery.east();
+            BlockPos tank = pipe.east();
+            BlockPos generator = refinery.west();
+            level.setBlock(refinery, FactoryCraft.REFINERY.value().defaultBlockState(), 3);
+            level.setBlock(pipe, FactoryCraft.FLUID_PIPE.value().defaultBlockState(), 3);
+            level.setBlock(tank, FactoryCraft.FLUID_TANK.value().defaultBlockState(), 3);
+            level.setBlock(generator.below(), net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(), 3);
+            out.append("delivered=").append(FluidPipes.deliver(level, refinery, Fuels.DIESEL.value(), FluidStorage.BUCKET));
+            FluidTankBlockEntity box = (FluidTankBlockEntity) level.getBlockEntity(tank);
+            out.append(" tank=").append(box.fluids().amount(0)).append(" ").append(box.fluids().describe(0).getString());
+            RefineryBlockEntity ref = (RefineryBlockEntity) level.getBlockEntity(refinery);
+            out.append(" crudeIn=").append(FluidStorage.offer(level, refinery, Direction.EAST, Fuels.CRUDE_OIL.value(), FluidStorage.BUCKET));
+            out.append(" dieselRefused=").append(!FluidStorage.offer(level, refinery, Direction.EAST, Fuels.DIESEL.value(), FluidStorage.BUCKET));
+            out.append(" refineryFinds=").append(ref.find(level) != null);
+            level.setBlock(generator, FactoryCraft.GENERATOR.value().defaultBlockState(), 3);
+            out.append(" genIn=").append(FluidStorage.offer(level, generator, Direction.UP, Fuels.DIESEL.value(), 2 * FluidStorage.BUCKET));
+            GeneratorBlockEntity gen = (GeneratorBlockEntity) level.getBlockEntity(generator);
+            MachineBlockEntity.serverTick(level, generator, level.getBlockState(generator), gen);
+            out.append(" genLeft=").append(gen.fluids().amount(0)).append(" burning=").append(level.getBlockState(generator).getValue(MachineBlock.LIT));
+            out.append(" crudeName=").append(FluidStorage.fluidName(Fuels.CRUDE_OIL.value()).getString());
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("FUELTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -793,6 +824,7 @@ public final class TerrainSelfTest {
             logAssembler(level, base);
             logBuses(level, base);
             logSides(level, base);
+            logFuels(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

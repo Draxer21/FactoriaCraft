@@ -19,7 +19,13 @@ import net.minecraft.world.level.storage.ValueOutput;
  * and stores the power for machines connected by cable. One coal = 64 000 energy.
  * It only burns while there is room in its buffer, so nothing is wasted.
  */
-public final class GeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, Energy.Source {
+public final class GeneratorBlockEntity extends MachineBlockEntity implements MenuProvider, Energy.Source, FluidStorage.Holder {
+    /** Piped diesel or biofuel: 1000 mB burns like one canister. */
+    private final FluidStorage fluids = new FluidStorage(this::setChanged)
+            .slot(4 * FluidStorage.BUCKET, true, false, Fuels::burnable);
+
+    @Override public FluidStorage fluids() { return fluids; }
+
     public static final int CAPACITY = 100_000;
     /** Energy made per tick of burning fuel. */
     public static final int OUTPUT = 40;
@@ -90,6 +96,15 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
                 if (fuel.isEmpty() && remainder != null) items.set(0, remainder.create());
                 burnLeft = burnMax = burn;
                 setChanged();
+            } else if (fuel.isEmpty() && fluids.amount(0) >= FluidStorage.BUCKET) {
+                net.minecraft.world.level.material.Fluid liquid = fluids.fluid(0);
+                int liquidBurn = level.fuelValues().burnDuration(new ItemStack(Fuels.canister(liquid)));
+                if (liquidBurn > 0) {
+                    cleanFuel = liquid == Fuels.BIOFUEL.value();
+                    fluids.take(0, FluidStorage.BUCKET);
+                    burnLeft = burnMax = liquidBurn;
+                    setChanged();
+                }
             }
         }
         if (burnLeft <= 0) return false;
@@ -169,6 +184,7 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
         energy = input.getIntOr("Energy", 0);
         burnLeft = input.getIntOr("BurnLeft", 0);
         burnMax = input.getIntOr("BurnMax", 0);
+        fluids.load(input);
     }
 
     @Override
@@ -177,5 +193,12 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
         output.putInt("Energy", energy);
         output.putInt("BurnLeft", burnLeft);
         output.putInt("BurnMax", burnMax);
+        fluids.save(output);
+    }
+
+    @Override
+    public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        if (fluids.amount(0) > 0) lines.add(fluids.describe(0));
+        super.jadeInfo(lines);
     }
 }
