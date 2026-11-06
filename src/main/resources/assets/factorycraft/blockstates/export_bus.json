@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "factorycraft:block/export_bus"
+    },
+    "facing=east": {
+      "model": "factorycraft:block/export_bus",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "factorycraft:block/export_bus",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "factorycraft:block/export_bus",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "factorycraft:block/export_bus_vertical"
+    },
+    "facing=down": {
+      "model": "factorycraft:block/export_bus_vertical",
+      "x": 180
+    }
+  }
+}

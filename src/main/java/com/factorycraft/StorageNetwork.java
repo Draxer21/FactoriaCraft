@@ -77,6 +77,14 @@ public final class StorageNetwork {
         return assemblers;
     }
 
+    /** The same network without the inventory at {@code pos} (a bus's own target). */
+    public StorageNetwork without(BlockPos pos) {
+        StorageNetwork copy = new StorageNetwork();
+        for (Member member : members) if (!member.pos().equals(pos)) copy.members.add(member);
+        copy.assemblers.addAll(assemblers);
+        return copy;
+    }
+
     public int inventories() {
         return members.size();
     }

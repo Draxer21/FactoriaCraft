@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-/** Client → server: set (or clear) one slot of the open assembler's pattern. */
+/** Client → server: set (or clear) one ghost slot of the open assembler pattern or bus filter. */
 public record AssemblerPatternPayload(int slot, ItemStack stack) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<AssemblerPatternPayload> TYPE =
             new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "assembler_pattern"));
@@ -21,8 +21,8 @@ public record AssemblerPatternPayload(int slot, ItemStack stack) implements Cust
 
     public static void handle(AssemblerPatternPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
-            if (context.player() instanceof ServerPlayer player && player.containerMenu instanceof AssemblerMenu menu) {
-                menu.setPattern(payload.slot(), payload.stack());
+            if (context.player() instanceof ServerPlayer player && player.containerMenu instanceof GhostMenu menu) {
+                menu.setGhost(payload.slot(), payload.stack());
             }
         });
     }

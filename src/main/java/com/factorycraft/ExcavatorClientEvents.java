@@ -62,6 +62,7 @@ public final class ExcavatorClientEvents {
         event.register(FactoryCraft.GREENHOUSE_MENU.value(), ProcessingScreen::new);
         event.register(Logistics.STORAGE_TERMINAL_MENU.value(), StorageTerminalScreen::new);
         event.register(Automation.ASSEMBLER_MENU.value(), AssemblerScreen::new);
+        event.register(Automation.BUS_MENU.value(), BusScreen::new);
         event.register(Logistics.DRONE_PORT_MENU.value(), ProcessingScreen::new);
         event.register(Endgame.ACCELERATOR_MENU.value(), ProcessingScreen::new);
         event.register(ResearchBlocks.STATION_MENU.value(), ProcessingScreen::new);

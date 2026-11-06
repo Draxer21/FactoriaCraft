@@ -28,6 +28,8 @@ public final class Tooltips {
     private static final Map<String, Info> INFO = new HashMap<>();
 
     static {
+        info("import_bus", "import_bus", () -> new Object[] {BusBlockEntity.PER_MOVE});
+        info("export_bus", "export_bus", () -> new Object[] {BusBlockEntity.PER_MOVE});
         info("assembler", "assembler", () -> new Object[] {AssemblerBlockEntity.ENERGY});
         info("crusher", "crusher", () -> new Object[0]);
         info("industrial_furnace", "industrial_furnace", () -> new Object[] {IndustrialFurnaceBlockEntity.BATCH});

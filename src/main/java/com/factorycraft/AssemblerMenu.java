@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
  * Assembler screen: the 3x3 pattern (ghost slots, set by clicking with an item;
  * nothing is taken), the 3x3 ingredient buffer, 4 outputs and the player inventory.
  */
-public final class AssemblerMenu extends AbstractContainerMenu {
+public final class AssemblerMenu extends AbstractContainerMenu implements GhostMenu {
     public static final int PATTERN_X = 8;
     public static final int BUFFER_X = 70;
     public static final int GRID_Y = 18;
@@ -52,7 +52,8 @@ public final class AssemblerMenu extends AbstractContainerMenu {
     }
 
     /** Server: a pattern slot set from the screen. */
-    void setPattern(int slot, ItemStack stack) {
+    @Override
+    public void setGhost(int slot, ItemStack stack) {
         if (assembler != null) assembler.setPattern(slot, stack);
         broadcastChanges();
     }

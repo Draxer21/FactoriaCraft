@@ -576,6 +576,45 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("ASSEMBLERTEST {}", out);
     }
 
+    /** Import bus empties a chest into the network; export bus stocks another chest with coal from it. */
+    private static void logBuses(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos a = base.offset(14, 1, -40);
+            BlockPos importer = a.east();
+            BlockPos terminal = importer.east();
+            BlockPos storage = terminal.east();
+            BlockPos exporter = terminal.above();
+            BlockPos c = exporter.above();
+            var chest = net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState();
+            level.setBlock(a, chest, 3);
+            level.setBlock(storage, chest, 3);
+            level.setBlock(c, chest, 3);
+            level.setBlock(terminal, Logistics.STORAGE_TERMINAL.value().defaultBlockState(), 3);
+            level.setBlock(importer, Automation.IMPORT_BUS.value().defaultBlockState().setValue(BusBlock.FACING, Direction.WEST), 3);
+            level.setBlock(exporter, Automation.EXPORT_BUS.value().defaultBlockState().setValue(BusBlock.FACING, Direction.UP), 3);
+            var boxA = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(a);
+            var boxB = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(storage);
+            var boxC = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(c);
+            boxA.setItem(0, new ItemStack(Items.IRON_INGOT, 20));
+            boxB.setItem(5, new ItemStack(Items.COAL, 10));
+            BusBlockEntity in = (BusBlockEntity) level.getBlockEntity(importer);
+            BusBlockEntity outBus = (BusBlockEntity) level.getBlockEntity(exporter);
+            out.append("import1=").append(in.move(level)).append(" import2=").append(in.move(level));
+            out.append(" chestA=").append(boxA.getItem(0).getCount()).append(" network=").append(boxB.countItem(Items.IRON_INGOT));
+            out.append(" exportNoFilter=").append(outBus.move(level));
+            outBus.setFilter(0, new ItemStack(Items.COAL));
+            out.append(" export=").append(outBus.move(level)).append(" chestC=").append(boxC.countItem(Items.COAL))
+                    .append(" coalLeft=").append(boxB.countItem(Items.COAL));
+            in.setFilter(0, new ItemStack(Items.GOLD_INGOT));
+            boxA.setItem(1, new ItemStack(Items.IRON_INGOT, 5));
+            out.append(" filtered=").append(in.move(level));
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("BUSTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -725,6 +764,7 @@ public final class TerrainSelfTest {
             logModules(level, base);
             logMachineRecipes();
             logAssembler(level, base);
+            logBuses(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
