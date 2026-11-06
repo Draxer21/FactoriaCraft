@@ -203,7 +203,7 @@
   "guide.factorycraft.powered.title": "Máquinas eléctricas",
   "guide.factorycraft.powered.text": "Lavadora de minerales: grava, arena, tierra, barro... dan pepitas, polvos, pedernal, arcilla. 6 entradas y 8 salidas: lava una de cada entrada a la vez.\n\nPrensa: lingote -> placa (hierro, cobre, oro), 2 placas de hierro -> engranaje, caña -> papel, hielo compactado, 64 carbones -> diamante.\n\nMezcladora: tinte + 4 arena + 4 grava = 8 concreto en polvo; con agua tocándola, concreto sólido.\n\nEmpaquetadora: 9 lingotes -> bloque, 9 pepitas -> lingote, 4 cuarzo -> bloque, etc.\n\nEstación de reparación: con energía, repara las herramientas y armaduras que pongas en sus 4 entradas y las saca como nuevas. Además repara lo que llevan en las manos y la armadura que visten los jugadores a 6 bloques o menos, mientras trabajan.\n\nCurtidora: convierte carne podrida en cuero (2 = 1) y piel de conejo en cuero (4 = 1). Dos entradas que trabajan a la vez. Sin máquina: la carne podrida también se cura en un ahumador o una fogata (más lento).\n\nIncinerador: destruye todo lo que entra (a mano, tolva o cinta), un objeto de cada uno de sus 4 espacios cada medio segundo. No usa energía, pero su humo contamina como un generador diésel salvo que haya un purificador de aire o un filtro de chimenea cerca.\n\nRellenadora: rellena todos los hoyos, lagunas, quebradas y cráteres a su alrededor hasta el nivel donde está puesta, desde el fondo hacia arriba, sin dejar huecos. Trabaja columna por columna (hasta 96 de profundidad) con la tierra, piedra o escombros de sus 6 espacios. Shift + clic derecho con la mano vacía cambia el área: 9×9, 17×17, 33×33 o 49×49 (se marca con partículas). Las cuevas tapadas por suelo firme no se tocan. Cada bloque usa 30 de energía. Cuando termina se queda vigilando: si aparece un hoyo nuevo, lo tapa.",
   "guide.factorycraft.automation.title": "Brazo robótico, bomba y tuberías",
-  "guide.factorycraft.automation.text": "Brazo robótico: toma de lo que tiene DETRÁS (contenedor o cinta) y lo deja DELANTE. Usa energía. Filtro como el clasificador.\n\nBomba: colócala tocando agua o lava; vacía todo el cuerpo de líquido. Lo envía por tuberías a calderos vacíos, generadores (lava) o una cisterna estacionada junto a una tubería. Clic derecho: estado; Shift + clic derecho: modo drenaje (desecha el líquido).",
+  "guide.factorycraft.automation.text": "Brazo robótico: toma de lo que tiene DETRÁS (contenedor o cinta) y lo deja DELANTE. Usa energía. Filtro como el clasificador.\n\nBomba: colócala tocando agua o lava; vacía todo el cuerpo de líquido. Lo envía por tuberías a calderos vacíos, generadores (lava) o una cisterna estacionada junto a una tubería. Clic derecho: estado; Shift + clic derecho: modo drenaje (desecha el líquido).\n\nCaras de las máquinas: agáchate y haz clic derecho con la llave en una cara de una máquina para elegir qué hace: normal (entran objetos y salen productos), solo entrada, salida (solo entrega productos y la máquina los empuja por esa cara) o cerrada. Sin ninguna cara de salida, los productos salen por el frente como antes. Jade muestra las caras que no son normales.",
   "guide.factorycraft.station.title": "Estación de mando",
   "guide.factorycraft.station.text": "Clic derecho: lista todas tus máquinas a 256 bloques con motor, combustible, carga y posición, y los generadores cercanos con su carga. Rueda del ratón para desplazarte.",
   "guide.factorycraft.tools.title": "Herramientas",
@@ -826,5 +826,17 @@
   "block.factorycraft.export_bus": "Bus de exportación",
   "gui.factorycraft.bus.filter": "Filtro: haz clic con un objeto para agregarlo, con la mano vacía para borrarlo.",
   "tooltip.factorycraft.info.import_bus": "Colócalo contra un cofre o máquina y que toque un cable de datos: mueve hasta %s objetos cada medio segundo de ese inventario a la red de almacenamiento. Filtro vacío = todo.",
-  "tooltip.factorycraft.info.export_bus": "Colócalo contra un cofre o máquina y que toque un cable de datos: pone hasta %s de los objetos filtrados cada medio segundo de la red en ese inventario."
+  "tooltip.factorycraft.info.export_bus": "Colócalo contra un cofre o máquina y que toque un cable de datos: pone hasta %s de los objetos filtrados cada medio segundo de la red en ese inventario.",
+  "message.factorycraft.side": "Cara %s: %s",
+  "jade.factorycraft.side": "Cara %s: %s",
+  "side.factorycraft.normal": "normal (entra y sale)",
+  "side.factorycraft.input": "solo entrada",
+  "side.factorycraft.output": "salida (empuja productos)",
+  "side.factorycraft.off": "cerrada",
+  "direction.factorycraft.north": "norte",
+  "direction.factorycraft.south": "sur",
+  "direction.factorycraft.east": "este",
+  "direction.factorycraft.west": "oeste",
+  "direction.factorycraft.up": "arriba",
+  "direction.factorycraft.down": "abajo"
 }

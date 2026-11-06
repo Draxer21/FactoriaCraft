@@ -61,8 +61,17 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         if (state.getValue(MachineBlock.LIT) != working) {
             level.setBlock(pos, state.setValue(MachineBlock.LIT, working), 3);
         }
-        if (level.getGameTime() % OUTPUT_INTERVAL == 0) {
-            machine.pushOutput(level, pos, state.getValue(MachineBlock.FACING));
+        if (level.getGameTime() % OUTPUT_INTERVAL == 0) machine.pushOutputs(level, pos, state);
+    }
+
+    /** Products out of every face set to "output", or out of the front if none is. */
+    void pushOutputs(Level level, BlockPos pos, BlockState state) {
+        if (anyOutputFace()) {
+            for (Direction face : Direction.values()) {
+                if (side(face) == SideMode.OUTPUT) pushOutput(level, pos, face);
+            }
+        } else {
+            pushOutput(level, pos, state.getValue(MachineBlock.FACING));
         }
     }
 
@@ -217,6 +226,13 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
     /** Jade overlay: installed machine upgrades. Subclasses add their own state. */
     @Override
     public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        for (Direction face : Direction.values()) {
+            if (side(face) != SideMode.NORMAL) {
+                lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.side",
+                        net.minecraft.network.chat.Component.translatable("direction.factorycraft." + face.getSerializedName()),
+                        net.minecraft.network.chat.Component.translatable("side.factorycraft." + side(face).name().toLowerCase())));
+            }
+        }
         if (upgradeCount() == 0) return;
         net.minecraft.network.chat.MutableComponent text = net.minecraft.network.chat.Component.translatable("jade.factorycraft.upgrades");
         boolean first = true;
@@ -325,8 +341,46 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         return !isOutputSlot(slot) && accepts(slot, stack);
     }
 
+    // ---------------------------------------------------------------- side configuration
+
+    /** What one face of the machine does (set with sneak + right-click of the wrench). */
+    public enum SideMode {
+        /** Items go in and products come out (the default). */
+        NORMAL,
+        /** Only accepts items. */
+        INPUT,
+        /** Only gives products, and the machine pushes them out of this face. */
+        OUTPUT,
+        /** Closed. */
+        OFF;
+
+        public SideMode next() {
+            return values()[(ordinal() + 1) % values().length];
+        }
+    }
+
+    private final SideMode[] sides = {SideMode.NORMAL, SideMode.NORMAL, SideMode.NORMAL, SideMode.NORMAL, SideMode.NORMAL, SideMode.NORMAL};
+
+    public SideMode side(Direction face) {
+        return sides[face.get3DDataValue()];
+    }
+
+    /** Wrench: next mode for that face; returns the new mode. */
+    public SideMode cycleSide(Direction face) {
+        SideMode mode = side(face).next();
+        sides[face.get3DDataValue()] = mode;
+        setChanged();
+        return mode;
+    }
+
+    private boolean anyOutputFace() {
+        for (SideMode mode : sides) if (mode == SideMode.OUTPUT) return true;
+        return false;
+    }
+
     @Override
     public int[] getSlotsForFace(Direction direction) {
+        if (side(direction) == SideMode.OFF) return new int[0];
         int[] slots = new int[items.size()];
         for (int i = 0; i < slots.length; i++) slots[i] = i;
         return slots;
@@ -334,11 +388,13 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction direction) {
+        if (direction != null && (side(direction) == SideMode.OUTPUT || side(direction) == SideMode.OFF)) return false;
         return canPlaceItem(slot, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
+        if (side(direction) == SideMode.INPUT || side(direction) == SideMode.OFF) return false;
         return isOutputSlot(slot);
     }
 
@@ -352,6 +408,9 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         for (MachineUpgrade type : MachineUpgrade.values()) {
             upgrades[type.ordinal()] = input.getIntOr("Upgrade" + type.name(), 0);
         }
+        int[] saved = input.getIntArray("Sides").orElse(new int[0]);
+        for (int i = 0; i < 6; i++) sides[i] = i < saved.length && saved[i] >= 0 && saved[i] < SideMode.values().length
+                ? SideMode.values()[saved[i]] : SideMode.NORMAL;
     }
 
     @Override
@@ -361,5 +420,12 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         for (MachineUpgrade type : MachineUpgrade.values()) {
             if (upgrades[type.ordinal()] > 0) output.putInt("Upgrade" + type.name(), upgrades[type.ordinal()]);
         }
+        boolean custom = false;
+        int[] saved = new int[6];
+        for (int i = 0; i < 6; i++) {
+            saved[i] = sides[i].ordinal();
+            custom |= sides[i] != SideMode.NORMAL;
+        }
+        if (custom) output.putIntArray("Sides", saved);
     }
 }

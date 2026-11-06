@@ -171,6 +171,17 @@ public abstract class MachineBlock extends BaseEntityBlock {
         }
         // Machine upgrade modules and the wrench.
         if (level.getBlockEntity(pos) instanceof MachineBlockEntity machine) {
+            // Sneak + wrench: cycle what the clicked face does (normal / input / output / off).
+            if (stack.getItem() instanceof WrenchItem && player.isShiftKeyDown() && machine.getContainerSize() > 0) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                Direction face = hit.getDirection();
+                MachineBlockEntity.SideMode mode = machine.cycleSide(face);
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.side",
+                        net.minecraft.network.chat.Component.translatable("direction.factorycraft." + face.getSerializedName()),
+                        net.minecraft.network.chat.Component.translatable("side.factorycraft." + mode.name().toLowerCase())));
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.IRON_TRAPDOOR_CLOSE, net.minecraft.sounds.SoundSource.BLOCKS, 0.6F, 1.4F);
+                return InteractionResult.SUCCESS_SERVER;
+            }
             if (stack.getItem() instanceof MachineUpgradeItem module) {
                 if (level.isClientSide()) return InteractionResult.SUCCESS;
                 if (!machine.supportsUpgrades()) {

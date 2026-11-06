@@ -203,7 +203,7 @@
   "guide.factorycraft.powered.title": "Powered machines",
   "guide.factorycraft.powered.text": "Ore washer: gravel, sand, dirt, mud... give nuggets, dusts, flint, clay. 6 inputs and 8 outputs: washes one from every input at once.\n\nPress: ingot -> plate (iron, copper, gold), 2 iron plates -> gear, sugar cane -> paper, packed ice, 64 coal -> diamond.\n\nMixer: dye + 4 sand + 4 gravel = 8 concrete powder; with water touching it, solid concrete.\n\nPackager: 9 ingots -> block, 9 nuggets -> ingot, 4 quartz -> block, etc.\n\nRepair station: with power, repairs the tools and armor in its 4 inputs and puts them out like new. It also repairs what players within 6 blocks hold and wear, while they work.\n\nTannery: turns rotten flesh into leather (2 = 1) and rabbit hide into leather (4 = 1). Two inputs working at once. Without the machine, rotten flesh also cures into leather in a smoker or on a campfire (slower).\n\nIncinerator: destroys whatever goes in (by hand, hopper or belt), one item from each of its 4 slots every half second. Needs no power, but its smoke pollutes like a diesel generator unless an air purifier or a chimney filter is nearby.\n\nTerrain filler: fills every hole, pond, ravine and crater around it up to the level it stands on, bottom up, leaving no gaps. Works column by column (up to 96 deep) with the dirt, stone or rubble in its 6 slots. Sneak + right-click with an empty hand changes the area: 9×9, 17×17, 33×33 or 49×49 (marked with particles). Caves sealed under solid ground are left alone. Each block uses 30 energy. When done it keeps watch: new holes get filled too.",
   "guide.factorycraft.automation.title": "Robot arm, pump and pipes",
-  "guide.factorycraft.automation.text": "Robot arm: takes from BEHIND (container or belt) and puts it in FRONT. Uses power. Filter like the sorter.\n\nPump: place it touching water or lava; it empties the whole body. Sends it through pipes to empty cauldrons, generators (lava) or a tanker parked against a pipe. Right-click: status; sneak + right-click: drain mode (discards the fluid).",
+  "guide.factorycraft.automation.text": "Robot arm: takes from BEHIND (container or belt) and puts it in FRONT. Uses power. Filter like the sorter.\n\nPump: place it touching water or lava; it empties the whole body. Sends it through pipes to empty cauldrons, generators (lava) or a tanker parked against a pipe. Right-click: status; sneak + right-click: drain mode (discards the fluid).\n\nMachine faces: sneak + right-click a face of a machine with the wrench to choose what it does: normal (items in, products out), input only, output (only gives products, and the machine pushes them out of that face) or closed. With no output face, products leave by the front as before. Jade shows the faces that are not normal.",
   "guide.factorycraft.station.title": "Control station",
   "guide.factorycraft.station.text": "Right-click: lists all machines within 256 blocks with engine, fuel, cargo and position, plus nearby generators with their charge. Mouse wheel scrolls.",
   "guide.factorycraft.tools.title": "Tools",
@@ -826,5 +826,17 @@
   "block.factorycraft.export_bus": "Export Bus",
   "gui.factorycraft.bus.filter": "Filter: click with an item to add it, with an empty hand to clear it.",
   "tooltip.factorycraft.info.import_bus": "Place it against a chest or machine and touch a data cable: moves up to %s items every half second from that inventory into the storage network. Empty filter = everything.",
-  "tooltip.factorycraft.info.export_bus": "Place it against a chest or machine and touch a data cable: puts up to %s of the filtered items every half second from the storage network into that inventory."
+  "tooltip.factorycraft.info.export_bus": "Place it against a chest or machine and touch a data cable: puts up to %s of the filtered items every half second from the storage network into that inventory.",
+  "message.factorycraft.side": "%s face: %s",
+  "jade.factorycraft.side": "%s face: %s",
+  "side.factorycraft.normal": "normal (in and out)",
+  "side.factorycraft.input": "input only",
+  "side.factorycraft.output": "output (pushes products)",
+  "side.factorycraft.off": "closed",
+  "direction.factorycraft.north": "North",
+  "direction.factorycraft.south": "South",
+  "direction.factorycraft.east": "East",
+  "direction.factorycraft.west": "West",
+  "direction.factorycraft.up": "Top",
+  "direction.factorycraft.down": "Bottom"
 }

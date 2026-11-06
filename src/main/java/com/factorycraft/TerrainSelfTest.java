@@ -615,6 +615,33 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("BUSTEST {}", out);
     }
 
+    /** Machine faces: output face pushes into a chest on the side, an input-only face refuses extraction, a closed face shows no slots. */
+    private static void logSides(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos at = base.offset(20, 1, -40);
+            level.setBlock(at, FactoryCraft.CRUSHER.value().defaultBlockState(), 3);
+            level.setBlock(at.east(), net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState(), 3);
+            MachineBlockEntity crusher = (MachineBlockEntity) level.getBlockEntity(at);
+            int out0 = -1;
+            for (int i = 0; i < crusher.getContainerSize(); i++) if (crusher.isOutputSlot(i)) { out0 = i; break; }
+            crusher.setItem(out0, new ItemStack(Items.GRAVEL, 8));
+            out.append("east=").append(crusher.cycleSide(Direction.EAST)).append(",").append(crusher.cycleSide(Direction.EAST));
+            crusher.pushOutputs(level, at, level.getBlockState(at));
+            var box = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(at.east());
+            out.append(" chest=").append(box.countItem(Items.GRAVEL));
+            crusher.cycleSide(Direction.UP);
+            out.append(" upTake=").append(crusher.canTakeItemThroughFace(out0, crusher.getItem(out0), Direction.UP));
+            out.append(" eastPlace=").append(crusher.canPlaceItemThroughFace(0, new ItemStack(Items.RAW_IRON), Direction.EAST));
+            crusher.cycleSide(Direction.DOWN); crusher.cycleSide(Direction.DOWN); crusher.cycleSide(Direction.DOWN);
+            out.append(" downSlots=").append(crusher.getSlotsForFace(Direction.DOWN).length);
+            out.append(" northSlots=").append(crusher.getSlotsForFace(Direction.NORTH).length);
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("SIDETEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -765,6 +792,7 @@ public final class TerrainSelfTest {
             logMachineRecipes();
             logAssembler(level, base);
             logBuses(level, base);
+            logSides(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
