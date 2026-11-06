@@ -33,34 +33,6 @@ public final class ExcavatorClientEvents {
         event.registerLayerDefinition(RocketModel.LAYER_LOCATION, RocketModel::createLayer);
     }
 
-    /** Fuel fluids are drawn with the water texture, tinted (tanks, JEI, Jade). */
-    @SubscribeEvent
-    public static void fluidLooks(net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent event) {
-        fuelLook(event, Fuels.CRUDE_OIL_TYPE.value(), 0xFF1A1410);
-        fuelLook(event, Fuels.DIESEL_TYPE.value(), 0xFFD8B040);
-        fuelLook(event, Fuels.BIOFUEL_TYPE.value(), 0xFF7AB83A);
-    }
-
-    private static void fuelLook(net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent event,
-                                 net.neoforged.neoforge.fluids.FluidType type, int tint) {
-        event.registerFluidType(new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
-            @Override
-            public net.minecraft.resources.Identifier getStillTexture() {
-                return net.minecraft.resources.Identifier.withDefaultNamespace("block/water_still");
-            }
-
-            @Override
-            public net.minecraft.resources.Identifier getFlowingTexture() {
-                return net.minecraft.resources.Identifier.withDefaultNamespace("block/water_flow");
-            }
-
-            @Override
-            public int getTintColor() {
-                return tint;
-            }
-        }, type);
-    }
-
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(FactoryCraft.DUMP_TRUCK_MENU.value(), DumpTruckScreen::new);
