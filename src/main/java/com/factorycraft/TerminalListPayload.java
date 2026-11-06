@@ -10,15 +10,19 @@ import net.minecraft.world.item.ItemStack;
 
 /** Server → client: what the open storage terminal's network holds. */
 public record TerminalListPayload(int inventories, List<Entry> entries) implements CustomPacketPayload {
-    public record Entry(ItemStack stack, long count) {
+    public record Entry(ItemStack stack, long count, boolean craftable) {
+        public Entry(ItemStack stack, long count) {
+            this(stack, count, false);
+        }
+
         @Override
         public int hashCode() {
-            return ItemStack.hashItemAndComponents(stack) * 31 + Long.hashCode(count);
+            return (ItemStack.hashItemAndComponents(stack) * 31 + Long.hashCode(count)) * 2 + (craftable ? 1 : 0);
         }
 
         @Override
         public boolean equals(Object other) {
-            return other instanceof Entry e && e.count == count && ItemStack.isSameItemSameComponents(e.stack, stack);
+            return other instanceof Entry e && e.count == count && e.craftable == craftable && ItemStack.isSameItemSameComponents(e.stack, stack);
         }
     }
 
@@ -32,13 +36,14 @@ public record TerminalListPayload(int inventories, List<Entry> entries) implemen
                 for (Entry entry : payload.entries()) {
                     ItemStack.STREAM_CODEC.encode(buf, entry.stack());
                     buf.writeVarLong(entry.count());
+                    buf.writeBoolean(entry.craftable());
                 }
             },
             buf -> {
                 int inventories = buf.readVarInt();
                 int size = Math.min(buf.readVarInt(), 4096);
                 List<Entry> entries = new ArrayList<>(size);
-                for (int i = 0; i < size; i++) entries.add(new Entry(ItemStack.STREAM_CODEC.decode(buf), buf.readVarLong()));
+                for (int i = 0; i < size; i++) entries.add(new Entry(ItemStack.STREAM_CODEC.decode(buf), buf.readVarLong(), buf.readBoolean()));
                 return new TerminalListPayload(inventories, entries);
             });
 

@@ -88,6 +88,11 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
                 return true;
             }
             int index = entryAt(event.x(), event.y());
+            if (index >= 0 && shown.get(index).craftable() && (event.button() == 2 || shown.get(index).count() == 0)) {
+                ClientPacketDistributor.sendToServer(new TerminalActionPayload(TerminalActionPayload.CRAFT,
+                        shown.get(index).stack(), false, event.hasShiftDown()));
+                return true;
+            }
             if (index >= 0) {
                 ClientPacketDistributor.sendToServer(new TerminalActionPayload(TerminalActionPayload.EXTRACT,
                         shown.get(index).stack(), single, event.hasShiftDown()));
@@ -139,6 +144,7 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
                 if (index >= shown.size()) continue;
                 TerminalListPayload.Entry entry = shown.get(index);
                 graphics.item(entry.stack(), sx + 1, sy + 1);
+                if (entry.craftable()) graphics.fill(sx + 1, sy + 1, sx + 4, sy + 4, 0xFF40C0FF);
             }
         }
         // Scroll bar.
@@ -170,7 +176,8 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
             for (int col = 0; col < COLUMNS; col++) {
                 int index = (scroll + row) * COLUMNS + col;
                 if (index >= shown.size()) continue;
-                String text = format(shown.get(index).count());
+                TerminalListPayload.Entry entry = shown.get(index);
+                String text = entry.count() == 0 && entry.craftable() ? "+" : format(entry.count());
                 int sx = gx + col * 18;
                 int sy = gy + row * 18;
                 graphics.pose().pushMatrix();
@@ -187,7 +194,15 @@ public final class StorageTerminalScreen extends AbstractContainerScreen<Storage
             int sx = gx + col * 18;
             int sy = gy + row * 18;
             graphics.fill(sx + 1, sy + 1, sx + 17, sy + 17, 0x80FFFFFF);
-            graphics.setTooltipForNextFrame(this.font, shown.get(hovered).stack(), mouseX, mouseY);
+            TerminalListPayload.Entry entry = shown.get(hovered);
+            if (entry.craftable()) {
+                java.util.List<Component> lines = new java.util.ArrayList<>(net.minecraft.client.gui.screens.Screen.getTooltipFromItem(minecraft, entry.stack()));
+                lines.add(Component.translatable(entry.count() == 0 ? "gui.factorycraft.terminal.craft_empty" : "gui.factorycraft.terminal.craft")
+                        .withStyle(net.minecraft.ChatFormatting.AQUA));
+                graphics.setComponentTooltipForNextFrame(this.font, lines, mouseX, mouseY);
+            } else {
+                graphics.setTooltipForNextFrame(this.font, entry.stack(), mouseX, mouseY);
+            }
         }
         String info = Component.translatable("gui.factorycraft.terminal.info", TerminalListPayload.latest.inventories(),
                 TerminalListPayload.latest.entries().size()).getString();

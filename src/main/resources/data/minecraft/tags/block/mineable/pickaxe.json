@@ -125,6 +125,7 @@
     "factorycraft:teleporter",
     "factorycraft:launch_pad",
     "factorycraft:orbital_receiver",
-    "factorycraft:research_station"
+    "factorycraft:research_station",
+    "factorycraft:assembler"
   ]
 }

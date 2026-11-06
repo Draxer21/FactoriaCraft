@@ -12,6 +12,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record TerminalActionPayload(int action, ItemStack stack, boolean single, boolean toInventory) implements CustomPacketPayload {
     public static final int EXTRACT = 0;
     public static final int INSERT_CARRIED = 1;
+    /** Ask an assembler on the network to craft {@code stack} (1, or 16 with shift). */
+    public static final int CRAFT = 2;
 
     public static final CustomPacketPayload.Type<TerminalActionPayload> TYPE =
             new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "terminal_action"));

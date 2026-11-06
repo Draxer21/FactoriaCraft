@@ -952,6 +952,7 @@ public final class FactoryCraft {
         Logistics.init();
         Defense.init();
         Economy.init();
+        Automation.init();
         Endgame.init();
         ResearchBlocks.init();
         ProductionStats.init();

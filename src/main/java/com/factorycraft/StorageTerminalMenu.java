@@ -97,14 +97,23 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
         }
         if (network == null || !(player instanceof ServerPlayer server)) return;
         List<TerminalListPayload.Entry> entries = new ArrayList<>();
+        List<ItemStack> craftable = new ArrayList<>();
+        for (AssemblerBlockEntity assembler : network.assemblers()) {
+            ItemStack result = assembler.result(player.level());
+            if (!result.isEmpty() && craftable.stream().noneMatch(c -> ItemStack.isSameItemSameComponents(c, result))) craftable.add(result);
+        }
         for (Map.Entry<ItemResource, Long> e : network.contents().entrySet()) {
-            entries.add(new TerminalListPayload.Entry(e.getKey().toStack(1), e.getValue()));
+            ItemStack stack = e.getKey().toStack(1);
+            boolean canCraft = craftable.removeIf(c -> ItemStack.isSameItemSameComponents(c, stack));
+            entries.add(new TerminalListPayload.Entry(stack, e.getValue(), canCraft));
             if (entries.size() >= 2000) break;
         }
+        for (ItemStack c : craftable) entries.add(new TerminalListPayload.Entry(c.copyWithCount(1), 0, true));
         int hash = network.inventories();
         for (TerminalListPayload.Entry entry : entries) {
             hash = hash * 31 + ItemStack.hashItemAndComponents(entry.stack());
             hash = hash * 31 + Long.hashCode(entry.count());
+            hash = hash * 2 + (entry.craftable() ? 1 : 0);
         }
         if (hash == lastHash && !force) return;
         lastHash = hash;
@@ -123,6 +132,16 @@ public final class StorageTerminalMenu extends AbstractContainerMenu {
                 if (network.insert(one).isEmpty()) carried.shrink(1);
             } else {
                 setCarried(network.insert(carried));
+            }
+        } else if (action.action() == TerminalActionPayload.CRAFT && !action.stack().isEmpty()) {
+            int crafts = action.toInventory() ? 16 : 1;
+            for (AssemblerBlockEntity assembler : network.assemblers()) {
+                if (ItemStack.isSameItemSameComponents(assembler.result(player.level()), action.stack())) {
+                    assembler.request(crafts);
+                    player.displayClientMessage(net.minecraft.network.chat.Component.translatable("message.factorycraft.assembler.requested",
+                            crafts, action.stack().getHoverName(), assembler.pending()), true);
+                    break;
+                }
             }
         } else if (action.action() == TerminalActionPayload.EXTRACT && !action.stack().isEmpty()) {
             ItemResource resource = ItemResource.of(action.stack());

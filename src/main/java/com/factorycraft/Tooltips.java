@@ -28,6 +28,7 @@ public final class Tooltips {
     private static final Map<String, Info> INFO = new HashMap<>();
 
     static {
+        info("assembler", "assembler", () -> new Object[] {AssemblerBlockEntity.ENERGY});
         info("crusher", "crusher", () -> new Object[0]);
         info("industrial_furnace", "industrial_furnace", () -> new Object[] {IndustrialFurnaceBlockEntity.BATCH});
         info("generator", "generator", () -> new Object[] {GeneratorBlockEntity.OUTPUT, n(GeneratorBlockEntity.CAPACITY)});
