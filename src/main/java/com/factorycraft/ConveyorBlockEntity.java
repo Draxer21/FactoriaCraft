@@ -74,7 +74,7 @@ public final class ConveyorBlockEntity extends BlockEntity {
                         }
                         if (target != null) {
                             // Through the face the belt points at, so machine side settings apply.
-                            ItemStack rest = HopperBlockEntity.addItem(null, target, item.getItem().copy(), facing.getOpposite());
+                            net.minecraft.world.item.ItemStack rest = HopperBlockEntity.addItem(null, target, item.getItem().copy(), facing.getOpposite());
                             if (rest.isEmpty()) item.discard();
                             else item.setItem(rest);
                         }
