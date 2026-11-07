@@ -33,6 +33,26 @@ public final class ExcavatorClientEvents {
         event.registerLayerDefinition(RocketModel.LAYER_LOCATION, RocketModel::createLayer);
     }
 
+    /** Fuel fluids are drawn with the water texture, tinted (tanks of other mods, JEI, Jade). */
+    @SubscribeEvent
+    public static void fluidModels(net.neoforged.neoforge.client.event.RegisterFluidModelsEvent event) {
+        fuelModel(event, Fuels.CRUDE_OIL.value(), 0x2A2018);
+        fuelModel(event, Fuels.DIESEL.value(), 0xD8B040);
+        fuelModel(event, Fuels.BIOFUEL.value(), 0x7AB83A);
+    }
+
+    private static void fuelModel(net.neoforged.neoforge.client.event.RegisterFluidModelsEvent event,
+                                  net.minecraft.world.level.material.Fluid fluid, int rgb) {
+        net.minecraft.client.resources.model.sprite.Material still = new net.minecraft.client.resources.model.sprite.Material(
+                net.minecraft.resources.Identifier.withDefaultNamespace("block/water_still"));
+        net.minecraft.client.resources.model.sprite.Material flow = new net.minecraft.client.resources.model.sprite.Material(
+                net.minecraft.resources.Identifier.withDefaultNamespace("block/water_flow"));
+        net.minecraft.client.resources.model.sprite.Material overlay = new net.minecraft.client.resources.model.sprite.Material(
+                net.minecraft.resources.Identifier.withDefaultNamespace("block/water_overlay"));
+        net.minecraft.client.color.block.BlockTintSource tint = state -> 0xFF000000 | rgb;
+        event.register(new net.minecraft.client.renderer.block.FluidModel.Unbaked(still, flow, overlay, tint), fluid);
+    }
+
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(FactoryCraft.DUMP_TRUCK_MENU.value(), DumpTruckScreen::new);
