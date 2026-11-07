@@ -673,6 +673,35 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("FUELTEST {}", out);
     }
 
+    /** Oil fields: deep layer at least as rich as the surface, worldgen features registered, detector works. */
+    private static void logOilFields(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            int surface = 0, deep = 0, deeperOrEqual = 0, ocean = 0, oceanChunks = 0;
+            for (int i = 0; i < 200; i++) {
+                net.minecraft.world.level.ChunkPos chunk = new net.minecraft.world.level.ChunkPos(i * 7 - 700, i * 3 - 300);
+                int s1 = OilDeposits.richness(level, chunk, 64);
+                int s2 = OilDeposits.richness(level, chunk, -32);
+                if (s1 > 0) surface++;
+                if (s2 > 0) deep++;
+                if (s2 >= s1) deeperOrEqual++;
+            }
+            out.append("surfaceWithOil=").append(surface).append("/200 deepWithOil=").append(deep).append("/200 deepNotWorse=").append(deeperOrEqual);
+            var features = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.PLACED_FEATURE);
+            out.append(" shaleFeature=").append(features.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                    net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "oil_shale"))).isPresent());
+            out.append(" tarFeature=").append(features.get(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                    net.minecraft.resources.Identifier.fromNamespaceAndPath(FactoryCraft.MOD_ID, "tar_sand"))).isPresent());
+            var player = net.neoforged.neoforge.common.util.FakePlayerFactory.getMinecraft(level);
+            player.setPos(base.getX(), base.getY() + 2, base.getZ());
+            player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(OilFields.OIL_DETECTOR.value()));
+            out.append(" detector=").append(OilFields.OIL_DETECTOR.value().use(level, player, net.minecraft.world.InteractionHand.MAIN_HAND));
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("OILTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -825,6 +854,7 @@ public final class TerrainSelfTest {
             logBuses(level, base);
             logSides(level, base);
             logFuels(level, base);
+            logOilFields(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
