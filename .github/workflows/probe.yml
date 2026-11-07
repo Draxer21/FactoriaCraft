@@ -17,14 +17,15 @@ jobs:
         run: |
           {
           echo '```'
-          for v in 26.2.0.93 26.1.2.122 26.1.0.19-beta; do
-            echo "##### $v"
-            curl -sL "https://maven.neoforged.net/releases/net/neoforged/neoforge/$v/neoforge-$v-universal.jar" -o nf.jar
-            unzip -l nf.jar | grep -i "fluidmodel\|FluidModel\|RegisterFluid\|ClientFluidType" | awk '{print $4}' | head -20
-            for c in $(unzip -l nf.jar | awk '{print $4}' | grep -i "fluidmodel\|RegisterFluidModel" | grep -v '\$' | sed 's/\.class$//;s#/#.#g' | head -6); do
-              echo "== $c"; javap -cp nf.jar $c 2>&1 | head -30
+          for mc in 26.2 26.1; do
+            echo "##### $mc"
+            url=$(curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json | python3 -c "import json,sys;d=json.load(sys.stdin);print([v['url'] for v in d['versions'] if v['id']=='$mc'][0])")
+            jar=$(curl -s "$url" | python3 -c "import json,sys;print(json.load(sys.stdin)['downloads']['client']['url'])")
+            curl -sL "$jar" -o c.jar
+            for c in 'net.minecraft.client.renderer.block.FluidModel$Unbaked' net.minecraft.client.renderer.block.FluidModel net.minecraft.client.resources.model.sprite.Material net.minecraft.client.color.block.BlockTintSource; do
+              echo "== $c"; javap -cp c.jar "$c" 2>&1 | head -25
             done
-            unzip -l nf.jar | grep -i "fluid_model\|fluidmodel" | grep -v class | head
+            javap -cp c.jar -c 'net.minecraft.client.renderer.block.FluidStateModelSet' 2>&1 | grep -i "water\|Unbaked\|Material" | head -20
           done
           echo '```'
           } > report.md 2>&1
