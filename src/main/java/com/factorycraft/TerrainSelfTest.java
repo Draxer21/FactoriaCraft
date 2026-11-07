@@ -726,6 +726,24 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("BATHTEST {}", out);
     }
 
+    /** Tank gauge: half a tank of diesel shows fill 4 and the diesel colour. */
+    private static void logTankGauge(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos at = base.offset(36, 1, -40);
+            level.setBlock(at, FactoryCraft.FLUID_TANK.value().defaultBlockState(), 3);
+            FluidStorage.offer(level, at, Direction.UP, Fuels.DIESEL.value(), FluidTankBlockEntity.CAPACITY / 2);
+            FluidTankBlockEntity tank = (FluidTankBlockEntity) level.getBlockEntity(at);
+            tank.showLevelForTest(level);
+            var state = level.getBlockState(at);
+            out.append("fill=").append(state.getValue(FluidTankBlock.FILL)).append(" content=").append(state.getValue(FluidTankBlock.CONTENT));
+            out.append(" bathRecipes=").append(GuideRecipes.machineDisplays("chemical_bath").size());
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("TANKTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -880,6 +898,7 @@ public final class TerrainSelfTest {
             logFuels(level, base);
             logOilFields(level, base);
             logChemicalBath(level, base);
+            logTankGauge(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

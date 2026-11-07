@@ -849,5 +849,6 @@
   "message.factorycraft.oil_detector.deep": "Petróleo profundo bajo Y 0 (%, tu chunk *, norte arriba):",
   "tooltip.factorycraft.info.oil_detector": "Clic derecho: riqueza de petróleo de los 5×5 chunks a tu alrededor para un balancín a tu altura. Agacharse + clic derecho: la capa profunda (bajo Y 0).",
   "block.factorycraft.chemical_bath": "Baño químico",
-  "tooltip.factorycraft.info.chemical_bath": "Disuelve minerales en bruto (×4 polvo) y bloques de mineral (×8) con un azufre y un cuarto de balde de agua por tanda (%s E/t). Llénalo de agua con balde o tubería."
+  "tooltip.factorycraft.info.chemical_bath": "Disuelve minerales en bruto (×4 polvo) y bloques de mineral (×8) con un azufre y un cuarto de balde de agua por tanda (%s E/t). Llénalo de agua con balde o tubería.",
+  "gui.factorycraft.guide.search": "Buscar..."
 }

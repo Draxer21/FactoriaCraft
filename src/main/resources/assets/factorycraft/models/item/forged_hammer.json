@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "factorycraft:item/forged_hammer_body",
+    "layer1": "factorycraft:item/forged_hammer_head"
+  }
+}

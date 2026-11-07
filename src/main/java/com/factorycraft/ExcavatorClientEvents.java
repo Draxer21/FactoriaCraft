@@ -126,6 +126,10 @@ public final class ExcavatorClientEvents {
         for (Materials.Alloy a : Materials.ALLOYS) tint(event, Materials.COLORS.get(a.name()), a.block().value());
         tint(event, Materials.COLORS.get("cobalt"), Exotic.COBALT_BLOCK.value());
         tint(event, Materials.COLORS.get("voidnite"), Exotic.VOIDNITE_BLOCK.value());
+        // Tank gauge: the colour of what's inside.
+        net.minecraft.client.color.block.BlockTintSource gauge = state -> 0xFF000000
+                | (state.hasProperty(FluidTankBlock.CONTENT) ? state.getValue(FluidTankBlock.CONTENT).color : 0);
+        event.register(java.util.List.of(gauge), FactoryCraft.FLUID_TANK.value());
     }
 
     private static void tint(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event,

@@ -849,5 +849,6 @@
   "message.factorycraft.oil_detector.deep": "Deep oil below Y 0 (%, your chunk *, north up):",
   "tooltip.factorycraft.info.oil_detector": "Right-click: oil richness of the 5×5 chunks around you for a pumpjack at your height. Sneak + right-click: the deep layer (below Y 0).",
   "block.factorycraft.chemical_bath": "Chemical Bath",
-  "tooltip.factorycraft.info.chemical_bath": "Dissolves raw ores (×4 dust) and ore blocks (×8) using one sulfur and a quarter bucket of water per batch (%s E/t). Fill it with water by bucket or pipe."
+  "tooltip.factorycraft.info.chemical_bath": "Dissolves raw ores (×4 dust) and ore blocks (×8) using one sulfur and a quarter bucket of water per batch (%s E/t). Fill it with water by bucket or pipe.",
+  "gui.factorycraft.guide.search": "Search..."
 }

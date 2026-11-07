@@ -42,6 +42,7 @@ public final class JeiCompat implements IModPlugin {
             machine("tannery", "factorycraft:tannery"),
             machine("alloy", "factorycraft:alloy_smelter"),
             machine("mixer", "factorycraft:mixer"),
+            machine("chemical_bath", "factorycraft:chemical_bath"),
             machine("refinery", "factorycraft:refinery"),
             machine("fermenter", "factorycraft:fermenter"),
             machine("accelerator", "factorycraft:accelerator"),
