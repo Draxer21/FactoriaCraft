@@ -1,17 +1,45 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "factorycraft:item/forged_shovel",
-    "tints": [
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
       {
-        "type": "minecraft:constant",
-        "value": -1
-      },
-      {
-        "type": "minecraft:custom_model_data",
-        "index": 0,
-        "default": -1
+        "when": [
+          "gui",
+          "ground",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "factorycraft:item/forged_shovel",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": -1
+            },
+            {
+              "type": "minecraft:custom_model_data",
+              "index": 0,
+              "default": -1
+            }
+          ]
+        }
       }
-    ]
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "factorycraft:item/forged_shovel_3d",
+      "tints": [
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        },
+        {
+          "type": "minecraft:custom_model_data",
+          "index": 0,
+          "default": -1
+        }
+      ]
+    }
   }
 }

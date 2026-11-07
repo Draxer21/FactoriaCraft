@@ -1,1 +1,23 @@
-{"model":{"type":"minecraft:model","model":"factorycraft:item/netherite_drill"}}
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "ground",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "factorycraft:item/netherite_drill"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "factorycraft:item/netherite_drill_3d"
+    }
+  }
+}

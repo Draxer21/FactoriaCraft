@@ -1,1 +1,23 @@
-{"model": {"type": "minecraft:model", "model": "factorycraft:item/titan_hammer"}}
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "ground",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "factorycraft:item/titan_hammer"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "factorycraft:item/titan_hammer_3d"
+    }
+  }
+}

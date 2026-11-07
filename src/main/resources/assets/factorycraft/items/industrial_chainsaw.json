@@ -1,1 +1,23 @@
-{"model": {"type": "minecraft:model", "model": "factorycraft:item/industrial_chainsaw"}}
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "ground",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "factorycraft:item/industrial_chainsaw"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "factorycraft:item/industrial_chainsaw_3d"
+    }
+  }
+}
