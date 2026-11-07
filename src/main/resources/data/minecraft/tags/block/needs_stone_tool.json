@@ -83,6 +83,7 @@
     "factorycraft:contract_board",
     "factorycraft:stats_terminal",
     "factorycraft:research_station",
-    "factorycraft:assembler"
+    "factorycraft:assembler",
+    "factorycraft:oil_shale"
   ]
 }

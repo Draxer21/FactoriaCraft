@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "CRC",
+    " P "
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "C": "#c:ingots/copper",
+    "R": "factorycraft:circuit_board",
+    "P": "#c:plates/iron"
+  },
+  "result": {
+    "id": "factorycraft:oil_detector",
+    "count": 1
+  }
+}

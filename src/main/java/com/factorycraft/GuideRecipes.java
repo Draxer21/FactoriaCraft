@@ -94,7 +94,7 @@ final class GuideRecipes {
             Map.entry("defense", new String[] {"turret", "alarm", "security_camera", "monitor", "shutter", "armored_door", "reinforced_concrete", "armor_plating", "steel_scaffold", "lift_pad", "hazard_block", "steel_grate"}),
             Map.entry("transport", new String[] {"storage_terminal", "data_cable", "assembler", "import_bus", "export_bus", "drone_port", "delivery_drone", "cable_station", "steel_cable", "cargo_ship", "garage"}),
             Map.entry("farm", new String[] {"greenhouse", "animal_farm", "fluid_tank", "sewer_grate", "desalinator", "treatment_plant", "salt_block", "leather_from_salt"}),
-            Map.entry("oil", new String[] {"pumpjack", "refinery", "fermenter", "hydro_turbine", "advanced_solar", "photon_array", "wireless_charger"}),
+            Map.entry("oil", new String[] {"oil_detector", "pumpjack", "refinery", "fermenter", "hydro_turbine", "advanced_solar", "photon_array", "wireless_charger"}),
             Map.entry("terrain", new String[] {"filler", "leveler", "quarry", "drain", "planter", "blueprint", "builder", "industrial_lamp"}),
             Map.entry("weapons", new String[] {"gamma_rifle", "irradiated_blade", "centrifuge", "machine:centrifuge",
                     "mini_nuke_grade_1", "mini_nuke_grade_2", "mini_nuke_grade_3", "mini_nuke_plutonium"}),

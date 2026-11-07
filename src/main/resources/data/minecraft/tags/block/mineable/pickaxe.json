@@ -128,6 +128,7 @@
     "factorycraft:research_station",
     "factorycraft:assembler",
     "factorycraft:import_bus",
-    "factorycraft:export_bus"
+    "factorycraft:export_bus",
+    "factorycraft:oil_shale"
   ]
 }

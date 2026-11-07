@@ -22,7 +22,7 @@ public final class PumpjackBlockEntity extends PoweredMachineBlockEntity impleme
     }
 
     private int richness() {
-        return level == null ? 0 : OilDeposits.richness(level, ChunkPos.containing(worldPosition));
+        return level == null ? 0 : OilDeposits.richness(level, ChunkPos.containing(worldPosition), worldPosition.getY());
     }
 
     /** At 100% one canister every 10 seconds; at 10%, every 100. */
