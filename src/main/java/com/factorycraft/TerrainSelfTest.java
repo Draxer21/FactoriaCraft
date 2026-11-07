@@ -737,7 +737,11 @@ public final class TerrainSelfTest {
             tank.showLevelForTest(level);
             var state = level.getBlockState(at);
             out.append("fill=").append(state.getValue(FluidTankBlock.FILL)).append(" content=").append(state.getValue(FluidTankBlock.CONTENT));
-            out.append(" bathRecipes=").append(GuideRecipes.machineDisplays("chemical_bath").size());
+            int bathInputs = 0;
+            for (net.minecraft.world.item.Item item : net.minecraft.core.registries.BuiltInRegistries.ITEM) {
+                if (ChemicalBathBlockEntity.result(new ItemStack(item)) != null) bathInputs++;
+            }
+            out.append(" bathInputs=").append(bathInputs);
         } catch (RuntimeException e) {
             out.append(" error=").append(e);
         }
