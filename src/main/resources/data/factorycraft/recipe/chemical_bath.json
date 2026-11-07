@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "SCS",
+    "PRP"
+  ],
+  "key": {
+    "P": "#c:plates/iron",
+    "G": "factorycraft:tempered_glass",
+    "S": "factorycraft:sulfur",
+    "C": "minecraft:cauldron",
+    "R": "factorycraft:circuit_board"
+  },
+  "result": {
+    "id": "factorycraft:chemical_bath",
+    "count": 1
+  }
+}

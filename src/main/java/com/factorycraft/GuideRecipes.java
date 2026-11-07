@@ -67,7 +67,7 @@ final class GuideRecipes {
             Map.entry("locomotive", new String[] {"locomotive", "cargo_wagon"}),
             Map.entry("drone", new String[] {"drone", "drone_controller"}),
             Map.entry("belts", new String[] {"conveyor", "fast_conveyor", "express_conveyor", "sorter", "elevator"}),
-            Map.entry("processing", new String[] {"crusher", "industrial_furnace", "machine_upgrade_speed", "machine_upgrade_efficiency", "machine_upgrade_output", "iron_ingot_from_iron_dust_smelting",
+            Map.entry("processing", new String[] {"crusher", "chemical_bath", "industrial_furnace", "machine_upgrade_speed", "machine_upgrade_efficiency", "machine_upgrade_output", "iron_ingot_from_iron_dust_smelting",
                     "gold_ingot_from_gold_dust_smelting", "copper_ingot_from_copper_dust_smelting",
                     "iron_ingot_from_iron_dust_blasting", "gold_ingot_from_gold_dust_blasting",
                     "copper_ingot_from_copper_dust_blasting", "machine:crusher"}),

@@ -28,6 +28,7 @@ public final class Tooltips {
     private static final Map<String, Info> INFO = new HashMap<>();
 
     static {
+        info("chemical_bath", "chemical_bath", () -> new Object[] {ChemicalBathBlockEntity.ENERGY});
         info("oil_detector", "oil_detector", () -> new Object[0]);
         info("import_bus", "import_bus", () -> new Object[] {BusBlockEntity.PER_MOVE});
         info("export_bus", "export_bus", () -> new Object[] {BusBlockEntity.PER_MOVE});

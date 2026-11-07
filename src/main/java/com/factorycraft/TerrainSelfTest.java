@@ -702,6 +702,30 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("OILTEST {}", out);
     }
 
+    /** Chemical bath: raw iron x4, iron ore x8, needs sulfur and water, refuses dirt. */
+    private static void logChemicalBath(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos at = base.offset(32, 1, -40);
+            level.setBlock(at, Processing.CHEMICAL_BATH.value().defaultBlockState(), 3);
+            ChemicalBathBlockEntity bath = (ChemicalBathBlockEntity) level.getBlockEntity(at);
+            bath.setItem(0, new ItemStack(Items.RAW_IRON, 4));
+            out.append("noSulfur=").append(bath.find(level) == null);
+            bath.setItem(1, new ItemStack(Exotic.SULFUR.value(), 4));
+            out.append(" noWater=").append(bath.find(level) == null);
+            out.append(" waterIn=").append(FluidStorage.offer(level, at, Direction.UP, net.minecraft.world.level.material.Fluids.WATER, FluidStorage.BUCKET));
+            var op = bath.find(level);
+            out.append(" raw=").append(op == null ? "null" : op.maxOutputs());
+            out.append(" ore=").append(ChemicalBathBlockEntity.result(new ItemStack(Items.IRON_ORE)));
+            out.append(" tin=").append(ChemicalBathBlockEntity.result(new ItemStack(Materials.TIN.raw().value())));
+            out.append(" dirt=").append(ChemicalBathBlockEntity.result(new ItemStack(Items.DIRT)));
+            out.append(" acceptsDirt=").append(bath.canPlaceItem(0, new ItemStack(Items.DIRT)));
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("BATHTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -855,6 +879,7 @@ public final class TerrainSelfTest {
             logSides(level, base);
             logFuels(level, base);
             logOilFields(level, base);
+            logChemicalBath(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(
