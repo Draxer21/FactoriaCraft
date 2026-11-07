@@ -27,6 +27,10 @@ public final class GuideScreen extends Screen {
     private record Page(List<FormattedCharSequence> lines, List<GuideRecipes.Display> recipes) {}
 
     private List<Page> pages = List.of();
+    /** Index search (kept while the game runs); also used to jump to the first matching page. */
+    private static String query = "";
+    private boolean searching;
+    private String jumpTo = "";
 
     public GuideScreen() {
         super(Component.translatable("item.factorycraft.guide_book"));
@@ -69,16 +73,38 @@ public final class GuideScreen extends Screen {
         int w = bookWidth();
         int h = bookHeight();
         if (chapter < 0) {
+            // Search box: only chapters whose title or text contain the words are listed.
+            net.minecraft.client.gui.components.EditBox box = new net.minecraft.client.gui.components.EditBox(
+                    this.font, x + w - 150, y + 6, 138, 14, Component.translatable("gui.factorycraft.guide.search"));
+            box.setHint(Component.translatable("gui.factorycraft.guide.search").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+            box.setValue(query);
+            box.setResponder(text -> {
+                if (!text.equals(query)) {
+                    query = text;
+                    searching = true;
+                    rebuildWidgets();
+                }
+            });
+            addRenderableWidget(box);
+            if (searching) {
+                setFocused(box);
+                box.setFocused(true);
+            }
+            List<Integer> shown = new ArrayList<>();
+            for (int i = 0; i < CHAPTERS.length; i++) if (matches(i, query)) shown.add(i);
             // Index: two columns of chapter buttons filling the page.
-            int perColumn = (CHAPTERS.length + 1) / 2;
+            int perColumn = Math.max(1, (CHAPTERS.length + 1) / 2);
             int rowHeight = Math.min(20, (h - HEADER - 12) / perColumn);
             int columnWidth = (w - 30) / 2;
-            for (int i = 0; i < CHAPTERS.length; i++) {
-                int column = i / perColumn;
-                int row = i % perColumn;
-                final int target = i;
-                addRenderableWidget(Button.builder(Component.translatable("guide.factorycraft." + CHAPTERS[i] + ".title"),
-                                button -> open(target))
+            for (int n = 0; n < shown.size(); n++) {
+                int column = n / perColumn;
+                int row = n % perColumn;
+                final int target = shown.get(n);
+                addRenderableWidget(Button.builder(Component.translatable("guide.factorycraft." + CHAPTERS[target] + ".title"),
+                                button -> {
+                                    jumpTo = query;
+                                    open(target);
+                                })
                         .bounds(x + 10 + column * (columnWidth + 10), y + HEADER + 6 + row * rowHeight, columnWidth, rowHeight - 2)
                         .build());
             }
@@ -96,7 +122,33 @@ public final class GuideScreen extends Screen {
     private void open(int target) {
         chapter = target;
         page = 0;
+        searching = false;
         rebuildWidgets();
+    }
+
+    /** Lower case without accents, so "tuberia" finds "tubería". */
+    private static String fold(String text) {
+        return java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFD).replaceAll("\\p{M}", "")
+                .toLowerCase(java.util.Locale.ROOT);
+    }
+
+    private static boolean matches(int chapter, String search) {
+        if (search.isBlank()) return true;
+        String text = fold(Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".title").getString()
+                + " " + Component.translatable("guide.factorycraft." + CHAPTERS[chapter] + ".text").getString());
+        for (String word : fold(search).trim().split("\\s+")) {
+            if (!text.contains(word)) return false;
+        }
+        return true;
+    }
+
+    private static String plain(FormattedCharSequence line) {
+        StringBuilder out = new StringBuilder();
+        line.accept((index, style, codePoint) -> {
+            out.appendCodePoint(codePoint);
+            return true;
+        });
+        return out.toString();
     }
 
     /** Next/previous page, flowing into the neighbouring chapter at the ends. */
@@ -135,6 +187,19 @@ public final class GuideScreen extends Screen {
             page = 0;
             while (page < result.size() - 1 && result.get(page).recipes().isEmpty()) page++;
             page = Math.min(result.size() - 1, page + skip);
+        }
+        // Opened from a search: start at the first page that has the first word.
+        if (!jumpTo.isBlank()) {
+            String word = fold(jumpTo).trim().split("\\s+")[0];
+            for (int p = 0; p < result.size(); p++) {
+                StringBuilder text = new StringBuilder();
+                for (FormattedCharSequence line : result.get(p).lines()) text.append(plain(line)).append(' ');
+                if (fold(text.toString()).contains(word)) {
+                    page = p;
+                    break;
+                }
+            }
+            jumpTo = "";
         }
         pages = result;
         page = Math.min(page, pages.size() - 1);

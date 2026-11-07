@@ -552,7 +552,7 @@ public final class FactoryCraft {
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ANIMAL_FARM_MENU = MENUS.register("animal_farm",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.ANIMAL_FARM_MENU.value(), id, inventory, 4, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<Block, Block> FLUID_TANK = BLOCKS.register("fluid_tank", () ->
-            new SimpleMachineBlock(machineProperties("fluid_tank"), () -> FactoryCraft.FLUID_TANK_BLOCK_ENTITY.value()));
+            new FluidTankBlock(machineProperties("fluid_tank"), () -> FactoryCraft.FLUID_TANK_BLOCK_ENTITY.value()));
     public static final DeferredHolder<Item, Item> FLUID_TANK_ITEM = ITEMS.registerItem("fluid_tank",
             properties -> new BlockItem(FLUID_TANK.value(), properties.useBlockDescriptionPrefix()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidTankBlockEntity>> FLUID_TANK_BLOCK_ENTITY =

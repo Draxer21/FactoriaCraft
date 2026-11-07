@@ -304,6 +304,20 @@ final class GuideRecipes {
                     if (d.outputs().get(0).shown().getItem() instanceof Radiation.Source) result.add(d);
                 }
             }
+            case "chemical_bath" -> {
+                ItemStack station = item("factorycraft:chemical_bath");
+                for (Item candidate : BuiltInRegistries.ITEM) {
+                    ItemStack in = new ItemStack(candidate);
+                    ItemStack out = ChemicalBathBlockEntity.result(in);
+                    if (out == null) continue;
+                    List<Slot> inputs = new ArrayList<>();
+                    for (int i = 0; i < 3; i++) inputs.add(Slot.of(ItemStack.EMPTY));
+                    inputs.add(Slot.of(in));
+                    inputs.add(Slot.of(new ItemStack(Exotic.SULFUR.value())));
+                    inputs.add(new Slot(List.of(new ItemStack(Items.WATER_BUCKET)), "¼"));
+                    result.add(new Display(inputs, List.of(Slot.of(out)), station));
+                }
+            }
             case "accelerator" -> {
                 ItemStack station = item("factorycraft:accelerator");
                 for (AcceleratorBlockEntity.Transmutation t : AcceleratorBlockEntity.RECIPES) {

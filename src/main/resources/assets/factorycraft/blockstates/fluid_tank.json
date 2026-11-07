@@ -1,28 +1,73 @@
 {
-  "variants": {
-    "facing=north,lit=false": {
-      "model": "factorycraft:block/fluid_tank"
+  "multipart": [
+    {
+      "apply": {
+        "model": "factorycraft:block/fluid_tank"
+      }
     },
-    "facing=north,lit=true": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "1"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_1"
+      }
     },
-    "facing=east,lit=false": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "2"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_2"
+      }
     },
-    "facing=east,lit=true": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "3"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_3"
+      }
     },
-    "facing=south,lit=false": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "4"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_4"
+      }
     },
-    "facing=south,lit=true": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "5"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_5"
+      }
     },
-    "facing=west,lit=false": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "6"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_6"
+      }
     },
-    "facing=west,lit=true": {
-      "model": "factorycraft:block/fluid_tank"
+    {
+      "when": {
+        "fill": "7"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_7"
+      }
+    },
+    {
+      "when": {
+        "fill": "8"
+      },
+      "apply": {
+        "model": "factorycraft:block/tank_gauge_8"
+      }
     }
-  }
+  ]
 }

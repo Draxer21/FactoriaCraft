@@ -31,8 +31,25 @@ public final class FluidTankBlockEntity extends MachineBlockEntity implements Fl
         player.sendOverlayMessage(fluids.describe(0));
     }
 
+    /** Keeps the gauge (block state) in step with the contents. */
+    private void showLevel(Level level) {
+        BlockState state = level.getBlockState(worldPosition);
+        if (!state.hasProperty(FluidTankBlock.FILL)) return;
+        int amount = fluids.amount(0);
+        int fill = amount <= 0 ? 0 : Math.max(1, (int) Math.round(amount * 8.0 / CAPACITY));
+        FluidTankBlock.Content content = amount <= 0 ? FluidTankBlock.Content.EMPTY : FluidTankBlock.Content.of(fluids.fluid(0));
+        if (state.getValue(FluidTankBlock.FILL) != fill || state.getValue(FluidTankBlock.CONTENT) != content) {
+            level.setBlock(worldPosition, state.setValue(FluidTankBlock.FILL, fill).setValue(FluidTankBlock.CONTENT, content), 2);
+        }
+    }
+
+    void showLevelForTest(Level level) {
+        showLevel(level);
+    }
+
     @Override
     protected boolean work(Level level) {
+        if (level.getGameTime() % 10 == 5) showLevel(level);
         if (level.getGameTime() % 10 == 0 && fluids.amount(0) > 0
                 && level.getBlockEntity(worldPosition.below()) instanceof FluidTankBlockEntity) {
             fluids.pushTo(level, worldPosition, Direction.DOWN, 0, 4 * FluidStorage.BUCKET);

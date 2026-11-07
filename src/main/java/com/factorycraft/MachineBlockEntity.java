@@ -59,7 +59,9 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         boolean working = machine.work(level);
         if (machine instanceof Energy.Source source) ModCompat.pushToNeighbours(level, pos, source);
         if (state.getValue(MachineBlock.LIT) != working) {
-            level.setBlock(pos, state.setValue(MachineBlock.LIT, working), 3);
+            // Fresh state: work() may have changed other properties this tick (tank gauge).
+            BlockState now = level.getBlockState(pos);
+            if (now.hasProperty(MachineBlock.LIT)) level.setBlock(pos, now.setValue(MachineBlock.LIT, working), 3);
         }
         if (level.getGameTime() % OUTPUT_INTERVAL == 0) machine.pushOutputs(level, pos, state);
     }
