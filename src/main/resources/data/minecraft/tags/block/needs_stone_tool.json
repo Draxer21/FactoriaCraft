@@ -84,6 +84,7 @@
     "factorycraft:stats_terminal",
     "factorycraft:research_station",
     "factorycraft:assembler",
-    "factorycraft:oil_shale"
+    "factorycraft:oil_shale",
+    "factorycraft:chemical_bath"
   ]
 }

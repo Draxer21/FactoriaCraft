@@ -39,7 +39,7 @@ public final class Research {
                     "lightning_collector", "copper_coil", "copper_radiator"),
             node("advanced_vehicles", 15, List.of(), "tunneler", "bulldozer", "forester", "harvester", "paver", "tanker", "tank_wagon"),
             node("terrain", 25, List.of("automation"), "filler", "leveler", "quarry", "drain", "planter", "builder", "blueprint", "industrial_lamp"),
-            node("metallurgy", 20, List.of("electricity"), "alloy_smelter", "tool_forge", "drill_mould", "hammer_mould", "chainsaw_mould",
+            node("metallurgy", 20, List.of("electricity"), "chemical_bath", "alloy_smelter", "tool_forge", "drill_mould", "hammer_mould", "chainsaw_mould",
                     "shovel_mould", "multitool_mould", "multitool"),
             node("farming", 20, List.of("electricity"), "greenhouse", "animal_farm", "fluid_tank", "sewer_grate", "desalinator", "treatment_plant"),
             node("oil", 25, List.of("electricity"), "pumpjack", "refinery", "fermenter"),

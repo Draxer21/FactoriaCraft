@@ -914,7 +914,7 @@ public final class FactoryCraft {
                         output.accept(INDUSTRIAL_LAMP_ITEM.value());
                         output.accept(TOOL_FORGE_ITEM.value());
                         for (DeferredHolder<Item, Item> item : java.util.List.of(HYDRO_TURBINE_ITEM, ADVANCED_SOLAR_ITEM, PHOTON_ARRAY_ITEM,
-                                PUMPJACK_ITEM, OilFields.OIL_DETECTOR, OilFields.OIL_SHALE_ITEM, OilFields.TAR_SAND_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM,
+                                PUMPJACK_ITEM, Processing.CHEMICAL_BATH_ITEM, OilFields.OIL_DETECTOR, OilFields.OIL_SHALE_ITEM, OilFields.TAR_SAND_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM,
                                 GREENHOUSE_ITEM, ANIMAL_FARM_ITEM, FLUID_TANK_ITEM, SEWER_GRATE_ITEM, DESALINATOR_ITEM, SALT, SALT_BLOCK_ITEM,
                                 TREATMENT_PLANT_ITEM)) {
                             output.accept(item.value());
@@ -954,6 +954,7 @@ public final class FactoryCraft {
         Economy.init();
         Automation.init();
         OilFields.init();
+        Processing.init();
         Fuels.register(modEventBus);
         Endgame.init();
         ResearchBlocks.init();

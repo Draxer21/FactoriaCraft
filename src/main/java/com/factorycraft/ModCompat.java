@@ -53,6 +53,7 @@ public final class ModCompat {
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.DESALINATOR_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
         // Piped fuels: crude oil into the refinery, diesel and biofuel into the generator.
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.REFINERY_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, Processing.CHEMICAL_BATH_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.GENERATOR_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, FactoryCraft.TREATMENT_PLANT_BLOCK_ENTITY.value(), (be, side) -> be.fluids());
         for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> holder : FactoryCraft.ENTITY_TYPES.getEntries()) {
