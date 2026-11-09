@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "top": "factorycraft:block/orbital_receiver_top_on",
-    "side": "factorycraft:block/machine_side",
+    "side": "factorycraft:block/machine_side_power",
     "bottom": "factorycraft:block/machine_bottom"
   }
 }

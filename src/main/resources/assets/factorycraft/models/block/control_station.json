@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "factorycraft:block/control_station_front",
-    "side": "factorycraft:block/machine_side",
+    "side": "factorycraft:block/machine_side_logistics",
     "top": "factorycraft:block/machine_top"
   }
 }
