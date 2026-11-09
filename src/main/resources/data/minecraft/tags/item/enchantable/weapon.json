@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "factorycraft:stone_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:copper_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:iron_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:diamond_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:netherite_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:forged_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:industrial_chainsaw",
+      "required": false
+    }
+  ]
+}
