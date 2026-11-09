@@ -748,6 +748,20 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("TANKTEST {}", out);
     }
 
+    /** Our mining tools take table enchantments (efficiency, fortune, unbreaking...). */
+    private static void logEnchanting() {
+        java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
+                net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.withDefaultNamespace(path));
+        StringBuilder out = new StringBuilder();
+        for (var item : java.util.List.of(FactoryCraft.STONE_HAMMER, FactoryCraft.NETHERITE_DRILL, FactoryCraft.IRON_CHAINSAW,
+                FactoryCraft.DIAMOND_EXCAVATING_SHOVEL, FactoryCraft.TITAN_HAMMER, FactoryCraft.MULTITOOL)) {
+            ItemStack stack = new ItemStack(item.value());
+            out.append(item.getId().getPath()).append("=").append(stack.isEnchantable()).append("/")
+                    .append(stack.is(tag.apply("enchantable/mining"))).append("/").append(stack.is(tag.apply("enchantable/durability"))).append(" ");
+        }
+        com.mojang.logging.LogUtils.getLogger().info("ENCHANTTEST {}", out);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -903,6 +917,7 @@ public final class TerrainSelfTest {
             logOilFields(level, base);
             logChemicalBath(level, base);
             logTankGauge(level, base);
+            logEnchanting();
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

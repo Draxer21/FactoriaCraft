@@ -1,0 +1,121 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "factorycraft:stone_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:copper_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:iron_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:diamond_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:netherite_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:forged_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:titan_hammer",
+      "required": false
+    },
+    {
+      "id": "factorycraft:stone_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:copper_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:iron_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:diamond_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:netherite_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:forged_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:giant_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:prototype_drill",
+      "required": false
+    },
+    {
+      "id": "factorycraft:stone_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:copper_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:iron_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:diamond_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:netherite_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:forged_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:industrial_chainsaw",
+      "required": false
+    },
+    {
+      "id": "factorycraft:stone_excavating_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:copper_excavating_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:iron_excavating_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:diamond_excavating_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:netherite_excavating_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:forged_shovel",
+      "required": false
+    },
+    {
+      "id": "factorycraft:multitool",
+      "required": false
+    }
+  ]
+}
