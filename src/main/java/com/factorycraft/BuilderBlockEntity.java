@@ -64,9 +64,9 @@ public final class BuilderBlockEntity extends PoweredMachineBlockEntity {
         return cached;
     }
 
-    /** Lowest corner of the build: centred in front of the machine, at its level. */
+    /** Lowest corner of the build: centred behind the machine (away from whoever placed it), at its level. */
     private BlockPos origin(Blueprint blueprint) {
-        Direction front = getBlockState().getValue(MachineBlock.FACING);
+        Direction front = getBlockState().getValue(MachineBlock.FACING).getOpposite();
         int reach = 2 + Math.max(blueprint.sizeX(), blueprint.sizeZ()) / 2;
         BlockPos center = worldPosition.relative(front, reach);
         return center.offset(-blueprint.sizeX() / 2, 0, -blueprint.sizeZ() / 2);
