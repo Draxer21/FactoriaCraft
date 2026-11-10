@@ -483,7 +483,7 @@ public final class FactoryCraft {
             BLOCK_ENTITY_TYPES.register("filler", () -> new BlockEntityType<>(FillerBlockEntity::new, FILLER.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> FILLER_MENU = MENUS.register("filler",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), id, inventory,
-                    ProcessingMenu.BIG_INPUTS, 0), FeatureFlags.VANILLA_SET));
+                    ProcessingMenu.HUGE, 0), FeatureFlags.VANILLA_SET));
 
     // ---- Stage 2: terrain machines.
     public static final DeferredHolder<Block, Block> LEVELER = BLOCKS.register("leveler", () ->
@@ -493,7 +493,7 @@ public final class FactoryCraft {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LevelerBlockEntity>> LEVELER_BLOCK_ENTITY =
             BLOCK_ENTITY_TYPES.register("leveler", () -> new BlockEntityType<>(LevelerBlockEntity::new, LEVELER.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> LEVELER_MENU = MENUS.register("leveler",
-            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.LEVELER_MENU.value(), id, inventory, 0, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.LEVELER_MENU.value(), id, inventory, 0, ProcessingMenu.HUGE), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<Block, Block> QUARRY = BLOCKS.register("quarry", () ->
             new SimpleMachineBlock(machineProperties("quarry"), () -> FactoryCraft.QUARRY_BLOCK_ENTITY.value()));
     public static final DeferredHolder<Item, Item> QUARRY_ITEM = ITEMS.registerItem("quarry",
@@ -501,7 +501,7 @@ public final class FactoryCraft {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBlockEntity>> QUARRY_BLOCK_ENTITY =
             BLOCK_ENTITY_TYPES.register("quarry", () -> new BlockEntityType<>(QuarryBlockEntity::new, QUARRY.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> QUARRY_MENU = MENUS.register("quarry",
-            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.QUARRY_MENU.value(), id, inventory, 0, ProcessingMenu.BIG_OUTPUTS), FeatureFlags.VANILLA_SET));
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(FactoryCraft.QUARRY_MENU.value(), id, inventory, 0, ProcessingMenu.HUGE), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<Block, Block> DRAIN = BLOCKS.register("drain", () ->
             new SimpleMachineBlock(machineProperties("drain"), () -> FactoryCraft.DRAIN_BLOCK_ENTITY.value()));
     public static final DeferredHolder<Item, Item> DRAIN_ITEM = ITEMS.registerItem("drain",

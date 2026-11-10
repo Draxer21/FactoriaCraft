@@ -36,8 +36,26 @@ public final class ProcessingMenu extends AbstractContainerMenu {
     /** Output grid for the big machines (4x2). */
     public static final int[][] BIG_OUTPUT_POS = {{98, 26}, {116, 26}, {134, 26}, {152, 26}, {98, 44}, {116, 44}, {134, 44}, {152, 44}};
 
+    /** Storage machines (leveller, quarry, filler): 27 slots laid out like a chest. */
+    public static final int HUGE = 27;
+
+    /** Chest-style 9x3 grid position of slot {@code i}. */
+    public static int[] hugePos(int i) {
+        return new int[] {8 + (i % 9) * 18, 17 + (i / 9) * 18};
+    }
+
     public static int[][] outputPos(int outputs) {
+        if (outputs == HUGE) {
+            int[][] grid = new int[HUGE][];
+            for (int i = 0; i < HUGE; i++) grid[i] = hugePos(i);
+            return grid;
+        }
         return outputs == BIG_OUTPUTS ? BIG_OUTPUT_POS : OUTPUT_POS;
+    }
+
+    /** 27-slot chest layout (all inputs or all outputs). */
+    public boolean isHuge() {
+        return inputs == HUGE || outputs == HUGE;
     }
 
     private final Container machine;
@@ -90,7 +108,7 @@ public final class ProcessingMenu extends AbstractContainerMenu {
         machine.startOpen(inventory.player);
 
         for (int i = 0; i < inputs; i++) {
-            int[] pos = INPUT_POS[inputs - 1][i];
+            int[] pos = inputs == HUGE ? hugePos(i) : INPUT_POS[inputs - 1][i];
             addSlot(new MachineSlot(machine, i, pos[0], pos[1]));
         }
         int firstOutput = inputs;
