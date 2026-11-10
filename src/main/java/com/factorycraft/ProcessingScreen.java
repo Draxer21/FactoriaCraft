@@ -23,7 +23,7 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
     @Override
     public void init() {
         super.init();
-        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
+        this.titleLabelX = menu.isHuge() ? 8 : (this.imageWidth - this.font.width(this.title)) / 2;
     }
 
     @Override
@@ -33,6 +33,21 @@ public final class ProcessingScreen extends AbstractContainerScreen<ProcessingMe
         int y = this.topPos;
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
+        if (menu.isHuge()) {
+            // Chest-style 9x3 grid; energy bar beside the title.
+            graphics.fill(x + 7, y + 14, x + 169, y + 76, PANEL);
+            for (int i = 0; i < ProcessingMenu.HUGE; i++) {
+                int[] pos = ProcessingMenu.hugePos(i);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + pos[0] - 1, y + pos[1] - 1, 55.0F, 16.0F, 18, 18, 256, 256);
+            }
+            if (menu.isPowered()) {
+                graphics.fill(x + 127, y + 5, x + 169, y + 13, 0xFF373737);
+                graphics.fill(x + 128, y + 6, x + 168, y + 12, 0xFF1E2124);
+                int w = Math.round(menu.energy() * 40.0F);
+                graphics.fill(x + 128, y + 6, x + 128 + w, y + 12, menu.energy() > 0.25F ? 0xFF3AC8D8 : 0xFFD9443A);
+            }
+            return;
+        }
         if (menu.isBig()) {
             extractBig(graphics, x, y);
             return;

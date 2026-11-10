@@ -216,10 +216,10 @@ public final class VehicleClient {
                     case "washer" -> ProcessingMenu.powered(FactoryCraft.ORE_WASHER_MENU.value(), 0, inv,
                             ProcessingMenu.BIG_INPUTS, ProcessingMenu.BIG_OUTPUTS);
                     case "tannery" -> ProcessingMenu.powered(FactoryCraft.TANNERY_MENU.value(), 0, inv, 2);
-                    case "quarry" -> ProcessingMenu.powered(FactoryCraft.QUARRY_MENU.value(), 0, inv, 0, ProcessingMenu.BIG_OUTPUTS);
+                    case "quarry" -> ProcessingMenu.powered(FactoryCraft.QUARRY_MENU.value(), 0, inv, 0, ProcessingMenu.HUGE);
                     case "refinery" -> ProcessingMenu.powered(FactoryCraft.REFINERY_MENU.value(), 0, inv, 1);
                     case "forge" -> ProcessingMenu.powered(FactoryCraft.TOOL_FORGE_MENU.value(), 0, inv, 3);
-                    case "filler" -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), 0, inv, ProcessingMenu.BIG_INPUTS, 0);
+                    case "filler" -> ProcessingMenu.powered(FactoryCraft.FILLER_MENU.value(), 0, inv, ProcessingMenu.HUGE, 0);
                     case "incinerator" -> ProcessingMenu.powered(FactoryCraft.INCINERATOR_MENU.value(), 0, inv, 4, 0);
                     default -> ProcessingMenu.powered(FactoryCraft.REPAIR_STATION_MENU.value(), 0, inv, 4);
                 };

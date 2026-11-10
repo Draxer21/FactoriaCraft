@@ -18,7 +18,7 @@ public final class LevelerBlockEntity extends AreaMachineBlockEntity {
     private static final int MAX_HEIGHT = 64;
 
     public LevelerBlockEntity(BlockPos pos, BlockState state) {
-        super(FactoryCraft.LEVELER_BLOCK_ENTITY.value(), pos, state, 0, ProcessingMenu.BIG_OUTPUTS, new int[] {4, 8, 16, 24}, 8);
+        super(FactoryCraft.LEVELER_BLOCK_ENTITY.value(), pos, state, 0, ProcessingMenu.HUGE, new int[] {4, 8, 16, 24}, 8);
     }
 
     @Override protected int time() { return 2; }

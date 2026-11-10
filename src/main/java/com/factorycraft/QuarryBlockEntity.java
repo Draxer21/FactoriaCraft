@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
  */
 public final class QuarryBlockEntity extends AreaMachineBlockEntity {
     public QuarryBlockEntity(BlockPos pos, BlockState state) {
-        super(FactoryCraft.QUARRY_BLOCK_ENTITY.value(), pos, state, 0, ProcessingMenu.BIG_OUTPUTS, new int[] {2, 4, 8, 16}, 4);
+        super(FactoryCraft.QUARRY_BLOCK_ENTITY.value(), pos, state, 0, ProcessingMenu.HUGE, new int[] {2, 4, 8, 16}, 4);
     }
 
     @Override protected int time() { return 3; }
