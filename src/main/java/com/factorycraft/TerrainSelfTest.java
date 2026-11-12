@@ -774,6 +774,36 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("ADVTEST loaded={} rootDisplayed={}", loaded, root);
     }
 
+    /** Jade diagnostics: an empty press waits for materials, a wrong item is invalid, a right one has no power. */
+    private static void logDiagnostics(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            BlockPos at = base.offset(40, 1, -40);
+            level.setBlock(at, FactoryCraft.PRESS.value().defaultBlockState(), 3);
+            PressBlockEntity press = (PressBlockEntity) level.getBlockEntity(at);
+            out.append("empty=").append(diagnostic(level, at, press));
+            press.setItem(0, new ItemStack(Items.DIRT));
+            out.append(" wrong=").append(diagnostic(level, at, press));
+            press.setItem(0, new ItemStack(Items.IRON_INGOT, 4));
+            out.append(" unpowered=").append(diagnostic(level, at, press));
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("DIAGTEST {}", out);
+    }
+
+    private static String diagnostic(ServerLevel level, BlockPos at, MachineBlockEntity machine) {
+        MachineBlockEntity.serverTick(level, at, level.getBlockState(at), machine);
+        java.util.List<net.minecraft.network.chat.Component> lines = new java.util.ArrayList<>();
+        machine.jadeInfo(lines);
+        String text = lines.toString();
+        int i = text.indexOf("diagnostic.");
+        if (i < 0) return "none";
+        int end = i + 11;
+        while (end < text.length() && (Character.isLetter(text.charAt(end)) || text.charAt(end) == '_')) end++;
+        return text.substring(i + 11, end);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -931,6 +961,7 @@ public final class TerrainSelfTest {
             logTankGauge(level, base);
             logEnchanting();
             logAdvancements(level);
+            logDiagnostics(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

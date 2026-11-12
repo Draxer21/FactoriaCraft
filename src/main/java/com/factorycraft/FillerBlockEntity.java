@@ -94,23 +94,33 @@ public final class FillerBlockEntity extends PoweredMachineBlockEntity implement
     protected boolean work(Level level) {
         if (done) {
             // Re-check now and then: the world may have changed (new holes, water flowing in).
-            if (level.getGameTime() % 200 != 0) return false;
+            if (level.getGameTime() % 200 != 0) {
+                diagnose(MachineDiagnostic.WORK_COMPLETE);
+                return false;
+            }
             done = false;
             column = 0;
         }
-        if (!hasFill()) return false;
+        if (!hasFill()) {
+            diagnose(MachineDiagnostic.WAITING_FOR_INPUT);
+            return false;
+        }
         if (++timer < scaledTime(TIME)) return true;
         timer = 0;
         BlockPos target = nextTarget(level);
         if (target == null) {
             done = true;
+            diagnose(MachineDiagnostic.WORK_COMPLETE);
             setProgress(0);
             return false;
         }
         if (target == NOT_YET) return true;
         if (!drawPower(level, ENERGY_PER_BLOCK)) return false;
         Block fill = takeFill();
-        if (fill == null) return false;
+        if (fill == null) {
+            diagnose(MachineDiagnostic.WAITING_FOR_INPUT);
+            return false;
+        }
         level.setBlock(target, fill.defaultBlockState(), Block.UPDATE_ALL);
         setChanged();
         return true;

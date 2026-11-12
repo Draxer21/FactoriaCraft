@@ -107,13 +107,20 @@ public final class GeneratorBlockEntity extends MachineBlockEntity implements Me
                 }
             }
         }
-        if (burnLeft <= 0) return false;
+        if (burnLeft <= 0) {
+            if (energy + OUTPUT > CAPACITY) diagnose(MachineDiagnostic.POWER_BUFFER_FULL);
+            else diagnose(MachineDiagnostic.NO_FUEL);
+            return false;
+        }
         // Smog unless a chimney filter sits on top.
         if (level.getGameTime() % 200 == 0 && level instanceof net.minecraft.server.level.ServerLevel server
                 && !hasFilter(level) && !cleanFuel) {
             Pollution.smog(server, worldPosition);
         }
-        if (energy + OUTPUT > CAPACITY) return true; // full: idle, keep the fire
+        if (energy + OUTPUT > CAPACITY) {
+            diagnose(MachineDiagnostic.POWER_BUFFER_FULL);
+            return true; // full: idle, keep the fire
+        }
         burnLeft--;
         energy += OUTPUT;
         setChanged();

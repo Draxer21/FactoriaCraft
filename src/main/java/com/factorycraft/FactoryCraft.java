@@ -148,7 +148,7 @@ public final class FactoryCraft {
     public static final DeferredHolder<Item, Item> GOLD_DUST = ITEMS.registerItem("gold_dust", Item::new);
     public static final DeferredHolder<Item, Item> COPPER_DUST = ITEMS.registerItem("copper_dust", Item::new);
 
-    private static BlockBehaviour.Properties machineProperties(String id) {
+    static BlockBehaviour.Properties machineProperties(String id) {
         return BlockBehaviour.Properties.of()
                 .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id)))
                 .strength(3.5F, 6.0F)
@@ -369,43 +369,20 @@ public final class FactoryCraft {
             () -> new MenuType<>(IndustrialChestMenu::client, FeatureFlags.VANILLA_SET));
 
     // ---- Vehicles & logistics: tank wagon, cargo stations, route beacons, helicopter, submarine.
-    public static final DeferredHolder<EntityType<?>, EntityType<TankWagonEntity>> TANK_WAGON = ENTITY_TYPES.register("tank_wagon", () ->
-            EntityType.Builder.<TankWagonEntity>of(TankWagonEntity::new, MobCategory.MISC)
-                    .sized(2.2F, 1.6F).clientTrackingRange(16).updateInterval(2)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "tank_wagon"))));
-    public static final DeferredHolder<Item, Item> TANK_WAGON_ITEM = ITEMS.registerItem("tank_wagon",
-            properties -> new CargoWagonItem(properties, TANK_WAGON::value));
-    public static final DeferredHolder<EntityType<?>, EntityType<HelicopterEntity>> HELICOPTER = ENTITY_TYPES.register("helicopter", () ->
-            EntityType.Builder.<HelicopterEntity>of(HelicopterEntity::new, MobCategory.MISC)
-                    .sized(2.7F, 2.4F).clientTrackingRange(16).updateInterval(2)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "helicopter"))));
-    public static final DeferredHolder<Item, Item> HELICOPTER_ITEM = ITEMS.registerItem("helicopter",
-            properties -> new VehicleItem(properties, HELICOPTER::value));
-    public static final DeferredHolder<EntityType<?>, EntityType<SubmarineEntity>> SUBMARINE = ENTITY_TYPES.register("submarine", () ->
-            EntityType.Builder.<SubmarineEntity>of(SubmarineEntity::new, MobCategory.MISC)
-                    .sized(2.0F, 2.2F).clientTrackingRange(16).updateInterval(2)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "submarine"))));
-    public static final DeferredHolder<Item, Item> SUBMARINE_ITEM = ITEMS.registerItem("submarine",
-            properties -> new VehicleItem(properties, SUBMARINE::value));
-    public static final DeferredHolder<Block, Block> LOADING_STATION = BLOCKS.register("loading_station", () ->
-            new SimpleMachineBlock(machineProperties("loading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
-    public static final DeferredHolder<Block, Block> UNLOADING_STATION = BLOCKS.register("unloading_station", () ->
-            new SimpleMachineBlock(machineProperties("unloading_station").lightLevel(state -> 0), () -> FactoryCraft.CARGO_STATION_BLOCK_ENTITY.value()));
-    public static final DeferredHolder<Item, Item> LOADING_STATION_ITEM = ITEMS.registerItem("loading_station",
-            properties -> new BlockItem(LOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
-    public static final DeferredHolder<Item, Item> UNLOADING_STATION_ITEM = ITEMS.registerItem("unloading_station",
-            properties -> new BlockItem(UNLOADING_STATION.value(), properties.useBlockDescriptionPrefix()));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CargoStationBlockEntity>> CARGO_STATION_BLOCK_ENTITY =
-            BLOCK_ENTITY_TYPES.register("cargo_station", () -> new BlockEntityType<>(CargoStationBlockEntity::new,
-                    LOADING_STATION.value(), UNLOADING_STATION.value()));
-    public static final DeferredHolder<Block, Block> ROUTE_BEACON = BLOCKS.register("route_beacon", () ->
-            new RouteBeaconBlock(BlockBehaviour.Properties.of()
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "route_beacon")))
-                    .strength(1.0F).sound(SoundType.METAL).noOcclusion().lightLevel(state -> 7)));
-    public static final DeferredHolder<Item, Item> ROUTE_BEACON_ITEM = ITEMS.registerItem("route_beacon",
-            properties -> new BlockItem(ROUTE_BEACON.value(), properties.useBlockDescriptionPrefix()));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RouteBeaconBlockEntity>> ROUTE_BEACON_BLOCK_ENTITY =
-            BLOCK_ENTITY_TYPES.register("route_beacon", () -> new BlockEntityType<>(RouteBeaconBlockEntity::new, ROUTE_BEACON.value()));
+    public static final DeferredHolder<EntityType<?>, EntityType<TankWagonEntity>> TANK_WAGON = FactoryVehicles.TANK_WAGON;
+    public static final DeferredHolder<Item, Item> TANK_WAGON_ITEM = FactoryVehicles.TANK_WAGON_ITEM;
+    public static final DeferredHolder<EntityType<?>, EntityType<HelicopterEntity>> HELICOPTER = FactoryVehicles.HELICOPTER;
+    public static final DeferredHolder<Item, Item> HELICOPTER_ITEM = FactoryVehicles.HELICOPTER_ITEM;
+    public static final DeferredHolder<EntityType<?>, EntityType<SubmarineEntity>> SUBMARINE = FactoryVehicles.SUBMARINE;
+    public static final DeferredHolder<Item, Item> SUBMARINE_ITEM = FactoryVehicles.SUBMARINE_ITEM;
+    public static final DeferredHolder<Block, Block> LOADING_STATION = FactoryVehicles.LOADING_STATION;
+    public static final DeferredHolder<Block, Block> UNLOADING_STATION = FactoryVehicles.UNLOADING_STATION;
+    public static final DeferredHolder<Item, Item> LOADING_STATION_ITEM = FactoryVehicles.LOADING_STATION_ITEM;
+    public static final DeferredHolder<Item, Item> UNLOADING_STATION_ITEM = FactoryVehicles.UNLOADING_STATION_ITEM;
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CargoStationBlockEntity>> CARGO_STATION_BLOCK_ENTITY = FactoryVehicles.CARGO_STATION_BLOCK_ENTITY;
+    public static final DeferredHolder<Block, Block> ROUTE_BEACON = FactoryVehicles.ROUTE_BEACON;
+    public static final DeferredHolder<Item, Item> ROUTE_BEACON_ITEM = FactoryVehicles.ROUTE_BEACON_ITEM;
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RouteBeaconBlockEntity>> ROUTE_BEACON_BLOCK_ENTITY = FactoryVehicles.ROUTE_BEACON_BLOCK_ENTITY;
 
     // ---- Copper: coils, reactor radiators, lightning collector.
     public static final DeferredHolder<Item, Item> COPPER_COIL = ITEMS.registerItem("copper_coil", Item::new);
@@ -778,171 +755,32 @@ public final class FactoryCraft {
             () -> new MenuType<>((id, inventory) -> new ChestMenu(FactoryCraft.DUMP_TRUCK_MENU.value(), id, inventory,
                     new SimpleContainer(DumpTruckEntity.CAPACITY), DumpTruckEntity.ROWS), FeatureFlags.VANILLA_SET));
 
-    public static final DeferredHolder<Item, Item> STONE_HAMMER = registerHammer("stone_hammer", ToolMaterial.STONE);
-    public static final DeferredHolder<Item, Item> COPPER_HAMMER = registerHammer("copper_hammer", ToolMaterial.COPPER);
-    public static final DeferredHolder<Item, Item> IRON_HAMMER = registerHammer("iron_hammer", ToolMaterial.IRON);
-    public static final DeferredHolder<Item, Item> DIAMOND_HAMMER = registerHammer("diamond_hammer", ToolMaterial.DIAMOND);
-    public static final DeferredHolder<Item, Item> NETHERITE_HAMMER = registerHammer("netherite_hammer", ToolMaterial.NETHERITE);
+    /** Core tool holders stay public here for compatibility; FactoryTools owns their registrations. */
+    public static final DeferredHolder<Item, Item> STONE_HAMMER = FactoryTools.STONE_HAMMER;
+    public static final DeferredHolder<Item, Item> COPPER_HAMMER = FactoryTools.COPPER_HAMMER;
+    public static final DeferredHolder<Item, Item> IRON_HAMMER = FactoryTools.IRON_HAMMER;
+    public static final DeferredHolder<Item, Item> DIAMOND_HAMMER = FactoryTools.DIAMOND_HAMMER;
+    public static final DeferredHolder<Item, Item> NETHERITE_HAMMER = FactoryTools.NETHERITE_HAMMER;
 
-    public static final DeferredHolder<Item, Item> STONE_DRILL = registerDrill("stone_drill", ToolMaterial.STONE);
-    public static final DeferredHolder<Item, Item> COPPER_DRILL = registerDrill("copper_drill", ToolMaterial.COPPER);
-    public static final DeferredHolder<Item, Item> IRON_DRILL = registerDrill("iron_drill", ToolMaterial.IRON);
-    public static final DeferredHolder<Item, Item> DIAMOND_DRILL = registerDrill("diamond_drill", ToolMaterial.DIAMOND);
-    public static final DeferredHolder<Item, Item> NETHERITE_DRILL = registerDrill("netherite_drill", ToolMaterial.NETHERITE);
+    public static final DeferredHolder<Item, Item> STONE_DRILL = FactoryTools.STONE_DRILL;
+    public static final DeferredHolder<Item, Item> COPPER_DRILL = FactoryTools.COPPER_DRILL;
+    public static final DeferredHolder<Item, Item> IRON_DRILL = FactoryTools.IRON_DRILL;
+    public static final DeferredHolder<Item, Item> DIAMOND_DRILL = FactoryTools.DIAMOND_DRILL;
+    public static final DeferredHolder<Item, Item> NETHERITE_DRILL = FactoryTools.NETHERITE_DRILL;
 
-    public static final DeferredHolder<Item, Item> STONE_CHAINSAW = registerChainsaw("stone_chainsaw", ToolMaterial.STONE);
-    public static final DeferredHolder<Item, Item> COPPER_CHAINSAW = registerChainsaw("copper_chainsaw", ToolMaterial.COPPER);
-    public static final DeferredHolder<Item, Item> IRON_CHAINSAW = registerChainsaw("iron_chainsaw", ToolMaterial.IRON);
-    public static final DeferredHolder<Item, Item> DIAMOND_CHAINSAW = registerChainsaw("diamond_chainsaw", ToolMaterial.DIAMOND);
-    public static final DeferredHolder<Item, Item> NETHERITE_CHAINSAW = registerChainsaw("netherite_chainsaw", ToolMaterial.NETHERITE);
+    public static final DeferredHolder<Item, Item> STONE_CHAINSAW = FactoryTools.STONE_CHAINSAW;
+    public static final DeferredHolder<Item, Item> COPPER_CHAINSAW = FactoryTools.COPPER_CHAINSAW;
+    public static final DeferredHolder<Item, Item> IRON_CHAINSAW = FactoryTools.IRON_CHAINSAW;
+    public static final DeferredHolder<Item, Item> DIAMOND_CHAINSAW = FactoryTools.DIAMOND_CHAINSAW;
+    public static final DeferredHolder<Item, Item> NETHERITE_CHAINSAW = FactoryTools.NETHERITE_CHAINSAW;
 
-    public static final DeferredHolder<Item, Item> STONE_EXCAVATING_SHOVEL = registerShovel("stone_excavating_shovel", ToolMaterial.STONE);
-    public static final DeferredHolder<Item, Item> COPPER_EXCAVATING_SHOVEL = registerShovel("copper_excavating_shovel", ToolMaterial.COPPER);
-    public static final DeferredHolder<Item, Item> IRON_EXCAVATING_SHOVEL = registerShovel("iron_excavating_shovel", ToolMaterial.IRON);
-    public static final DeferredHolder<Item, Item> DIAMOND_EXCAVATING_SHOVEL = registerShovel("diamond_excavating_shovel", ToolMaterial.DIAMOND);
-    public static final DeferredHolder<Item, Item> NETHERITE_EXCAVATING_SHOVEL = registerShovel("netherite_excavating_shovel", ToolMaterial.NETHERITE);
+    public static final DeferredHolder<Item, Item> STONE_EXCAVATING_SHOVEL = FactoryTools.STONE_EXCAVATING_SHOVEL;
+    public static final DeferredHolder<Item, Item> COPPER_EXCAVATING_SHOVEL = FactoryTools.COPPER_EXCAVATING_SHOVEL;
+    public static final DeferredHolder<Item, Item> IRON_EXCAVATING_SHOVEL = FactoryTools.IRON_EXCAVATING_SHOVEL;
+    public static final DeferredHolder<Item, Item> DIAMOND_EXCAVATING_SHOVEL = FactoryTools.DIAMOND_EXCAVATING_SHOVEL;
+    public static final DeferredHolder<Item, Item> NETHERITE_EXCAVATING_SHOVEL = FactoryTools.NETHERITE_EXCAVATING_SHOVEL;
 
-    private static DeferredHolder<Item, Item> registerShovel(String id, ToolMaterial material) {
-        return ITEMS.registerItem(id, properties -> new ExcavatingShovelItem(material, 2.0F, -3.2F,
-                material == ToolMaterial.NETHERITE ? properties.fireResistant() : properties));
-    }
-
-    private static DeferredHolder<Item, Item> registerHammer(String id, ToolMaterial material) {
-        return ITEMS.registerItem(id, properties -> new HammerItem(properties.pickaxe(material, 2.0F, -3.2F)));
-    }
-
-    private static DeferredHolder<Item, Item> registerDrill(String id, ToolMaterial material) {
-        float speed = material == ToolMaterial.IRON ? -2.4F : -2.8F;
-        return ITEMS.registerItem(id, properties -> new DrillItem(properties.pickaxe(material, 1.0F, speed)));
-    }
-
-    private static DeferredHolder<Item, Item> registerChainsaw(String id, ToolMaterial material) {
-        return ITEMS.registerItem(id, properties -> new ChainsawItem(material, 5.0F, -2.8F, properties));
-    }
-
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FACTORY_TAB = TABS.register("factorycraft",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.factorycraft"))
-                    .icon(() -> IRON_HAMMER.value().getDefaultInstance())
-                    .displayItems((parameters, output) -> {
-                        output.accept(STONE_HAMMER.value());
-                        output.accept(COPPER_HAMMER.value());
-                        output.accept(IRON_HAMMER.value());
-                        output.accept(DIAMOND_HAMMER.value());
-                        output.accept(NETHERITE_HAMMER.value());
-                        output.accept(STONE_DRILL.value());
-                        output.accept(COPPER_DRILL.value());
-                        output.accept(IRON_DRILL.value());
-                        output.accept(DIAMOND_DRILL.value());
-                        output.accept(NETHERITE_DRILL.value());
-                        output.accept(STONE_CHAINSAW.value());
-                        output.accept(COPPER_CHAINSAW.value());
-                        output.accept(IRON_CHAINSAW.value());
-                        output.accept(DIAMOND_CHAINSAW.value());
-                        output.accept(NETHERITE_CHAINSAW.value());
-                        output.accept(STONE_EXCAVATING_SHOVEL.value());
-                        output.accept(COPPER_EXCAVATING_SHOVEL.value());
-                        output.accept(IRON_EXCAVATING_SHOVEL.value());
-                        output.accept(DIAMOND_EXCAVATING_SHOVEL.value());
-                        output.accept(NETHERITE_EXCAVATING_SHOVEL.value());
-                        output.accept(EXCAVATOR_ITEM.value());
-                        output.accept(TUNNELER_ITEM.value());
-                        output.accept(DUMP_TRUCK_ITEM.value());
-                        output.accept(CARGO_WAGON_ITEM.value());
-                        output.accept(PAVER_ITEM.value());
-                        output.accept(HARVESTER_ITEM.value());
-                        output.accept(CRANE_ITEM.value());
-                        output.accept(CRANE_CONTROL.value());
-                        output.accept(BULLDOZER_ITEM.value());
-                        output.accept(TANKER_ITEM.value());
-                        output.accept(FORESTER_ITEM.value());
-                        output.accept(TOWER_CRANE_ITEM.value());
-                        output.accept(GUIDE_BOOK.value());
-                        output.accept(WRENCH.value());
-                        output.accept(MECHANIC_BENCH_ITEM.value());
-                        output.accept(PROTOTYPE_DRILL.value());
-                        output.accept(INDUSTRIAL_CHAINSAW.value());
-                        output.accept(TITAN_HAMMER.value());
-                        output.accept(GENERATOR_ITEM.value());
-                        output.accept(SOLAR_GENERATOR_ITEM.value());
-                        output.accept(REPAIR_STATION_ITEM.value());
-                        output.accept(BATTERY_ITEM.value());
-                        output.accept(COPPER_COIL.value());
-                        output.accept(COPPER_RADIATOR_ITEM.value());
-                        output.accept(LIGHTNING_COLLECTOR_ITEM.value());
-                        output.accept(WINDMILL_ITEM.value());
-                        output.accept(GEOTHERMAL_ITEM.value());
-                        output.accept(STEAM_TURBINE_ITEM.value());
-                        output.accept(CHIMNEY_FILTER_ITEM.value());
-                        output.accept(AIR_PURIFIER_ITEM.value());
-                        output.accept(PLANT_INSPECTOR.value());
-                        output.accept(JETPACK.value());
-                        output.accept(MAGNET.value());
-                        output.accept(GIANT_DRILL.value());
-                        output.accept(INDUSTRIAL_CHEST_ITEM.value());
-                        output.accept(TANK_WAGON_ITEM.value());
-                        output.accept(LOADING_STATION_ITEM.value());
-                        output.accept(UNLOADING_STATION_ITEM.value());
-                        output.accept(ROUTE_BEACON_ITEM.value());
-                        output.accept(HELICOPTER_ITEM.value());
-                        output.accept(SUBMARINE_ITEM.value());
-                        output.accept(ENERGY_METER.value());
-                        output.accept(MACHINE_UPGRADE_SPEED.value());
-                        output.accept(MACHINE_UPGRADE_EFFICIENCY.value());
-                        output.accept(MACHINE_UPGRADE_OUTPUT.value());
-                        output.accept(CABLE_ITEM.value());
-                        output.accept(ORE_WASHER_ITEM.value());
-                        output.accept(PRESS_ITEM.value());
-                        output.accept(MIXER_ITEM.value());
-                        output.accept(IRON_PLATE.value());
-                        output.accept(COPPER_PLATE.value());
-                        output.accept(GOLD_PLATE.value());
-                        output.accept(IRON_GEAR.value());
-                        output.accept(ROBOT_ARM_ITEM.value());
-                        output.accept(PUMP_ITEM.value());
-                        output.accept(FLUID_PIPE_ITEM.value());
-                        output.accept(PACKAGER_ITEM.value());
-                        output.accept(TANNERY_ITEM.value());
-                        output.accept(INCINERATOR_ITEM.value());
-                        output.accept(FILLER_ITEM.value());
-                        output.accept(LEVELER_ITEM.value());
-                        output.accept(QUARRY_ITEM.value());
-                        output.accept(DRAIN_ITEM.value());
-                        output.accept(PLANTER_ITEM.value());
-                        output.accept(BUILDER_ITEM.value());
-                        output.accept(BLUEPRINT.value());
-                        output.accept(INDUSTRIAL_LAMP_ITEM.value());
-                        output.accept(TOOL_FORGE_ITEM.value());
-                        for (DeferredHolder<Item, Item> item : java.util.List.of(HYDRO_TURBINE_ITEM, ADVANCED_SOLAR_ITEM, PHOTON_ARRAY_ITEM,
-                                PUMPJACK_ITEM, Processing.CHEMICAL_BATH_ITEM, OilFields.OIL_DETECTOR, OilFields.OIL_SHALE_ITEM, OilFields.TAR_SAND_ITEM, CRUDE_OIL, REFINERY_ITEM, DIESEL, ASPHALT_ITEM, FERMENTER_ITEM, BIOFUEL, WIRELESS_CHARGER_ITEM,
-                                GREENHOUSE_ITEM, ANIMAL_FARM_ITEM, FLUID_TANK_ITEM, SEWER_GRATE_ITEM, DESALINATOR_ITEM, SALT, SALT_BLOCK_ITEM,
-                                TREATMENT_PLANT_ITEM)) {
-                            output.accept(item.value());
-                        }
-                        for (DeferredHolder<Item, Item> mould : MOULDS.values()) output.accept(mould.value());
-                        output.accept(Gear.EXOSKELETON.value());
-                        output.accept(Gear.WORK_HELMET.value());
-                        output.accept(Gear.WORK_JACKET.value());
-                        output.accept(Gear.WORK_PANTS.value());
-                        output.accept(Gear.WORK_BOOTS.value());
-                        output.accept(Gear.JETPACK_MK2.value());
-                        output.accept(LOCOMOTIVE_ITEM.value());
-                        output.accept(DRONE_ITEM.value());
-                        output.accept(DRONE_CONTROLLER.value());
-                        output.accept(CONTROL_STATION_ITEM.value());
-                        for (DeferredHolder<Item, Item> module : UPGRADE_ITEMS.values()) output.accept(module.value());
-                        output.accept(CONVEYOR_ITEM.value());
-                        output.accept(FAST_CONVEYOR_ITEM.value());
-                        output.accept(EXPRESS_CONVEYOR_ITEM.value());
-                        output.accept(SORTER_ITEM.value());
-                        output.accept(ELEVATOR_ITEM.value());
-                        output.accept(WELL_DRILL_ITEM.value());
-                        output.accept(CRUSHER_ITEM.value());
-                        output.accept(INDUSTRIAL_FURNACE_ITEM.value());
-                        output.accept(IRON_DUST.value());
-                        output.accept(GOLD_DUST.value());
-                        output.accept(COPPER_DUST.value());
-                    }).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FACTORY_TAB = FactoryCreativeTab.register();
 
     public FactoryCraft(IEventBus modEventBus, net.neoforged.fml.ModContainer container) {
         Nuclear.init();

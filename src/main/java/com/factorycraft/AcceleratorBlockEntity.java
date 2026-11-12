@@ -85,7 +85,10 @@ public final class AcceleratorBlockEntity extends PoweredMachineBlockEntity {
     @Override
     protected boolean work(Level level) {
         if (level.getGameTime() % 40 == 0) magnets = countMagnets(level, worldPosition);
-        if (magnets < MIN_MAGNETS) return false;
+        if (magnets < MIN_MAGNETS) {
+            diagnose(MachineDiagnostic.NEEDS_MAGNETS);
+            return false;
+        }
         return super.work(level);
     }
 

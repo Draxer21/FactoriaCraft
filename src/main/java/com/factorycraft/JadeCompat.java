@@ -21,9 +21,10 @@ import snownee.jade.api.config.IPluginConfig;
 
 /**
  * Jade integration (only loaded when Jade is installed): looking at a machine
- * shows its progress, installed upgrades and special state (reactor heat and
- * water, accelerator magnets). Jade already shows energy, fluids and items on
- * its own through the standard capabilities the machines expose.
+ * shows operational diagnostics, progress, installed upgrades and special
+ * state (reactor heat and water, accelerator magnets). Jade already shows
+ * energy, fluids and items on its own through the standard capabilities the
+ * machines expose.
  */
 @WailaPlugin
 public final class JadeCompat implements IWailaPlugin {

@@ -117,7 +117,10 @@ public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity i
     protected boolean work(Level level) {
         if (!(level instanceof ServerLevel server)) return false;
         if (done) {
-            if (level.getGameTime() % idleTicks() != 0) return false;
+            if (level.getGameTime() % idleTicks() != 0) {
+                diagnose(MachineDiagnostic.WORK_COMPLETE);
+                return false;
+            }
             restart();
         }
         if (++timer < scaledTime(time())) return true;
@@ -127,11 +130,15 @@ public abstract class AreaMachineBlockEntity extends PoweredMachineBlockEntity i
             BlockPos target = findNext(server);
             if (target == null) {
                 done = true;
+                diagnose(MachineDiagnostic.WORK_COMPLETE);
                 return worked;
             }
             if (target == NOT_YET) return true;
             if (!drawPower(level, energyPerBlock())) return worked;
-            if (!workAt(server, target)) return worked;
+            if (!workAt(server, target)) {
+                diagnose(MachineDiagnostic.WORK_BLOCKED);
+                return worked;
+            }
             worked = true;
             setChanged();
         }

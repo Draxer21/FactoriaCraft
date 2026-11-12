@@ -75,8 +75,15 @@ public final class WellDrillBlockEntity extends MachineBlockEntity implements Me
 
     @Override
     protected boolean work(Level level) {
-        if (finished || !(level instanceof ServerLevel serverLevel)) return false;
-        if (level.hasNeighborSignal(worldPosition)) return false;
+        if (finished) {
+            diagnose(MachineDiagnostic.WORK_COMPLETE);
+            return false;
+        }
+        if (!(level instanceof ServerLevel serverLevel)) return false;
+        if (level.hasNeighborSignal(worldPosition)) {
+            diagnose(MachineDiagnostic.REDSTONE_PAUSED);
+            return false;
+        }
         if (--cooldown > 0) return true;
         cooldown = DIG_INTERVAL;
 
@@ -100,7 +107,10 @@ public final class WellDrillBlockEntity extends MachineBlockEntity implements Me
             boolean diggable = !state.isAir() && state.getFluidState().isEmpty() && !state.hasBlockEntity();
             if (diggable) {
                 List<ItemStack> drops = Block.getDrops(state, serverLevel, target, null);
-                if (!canStore(drops)) return false; // full: wait for the output to drain
+                if (!canStore(drops)) {
+                    diagnose(MachineDiagnostic.OUTPUT_BLOCKED);
+                    return false; // full: wait for the output to drain
+                }
                 state.spawnAfterBreak(serverLevel, target, ItemStack.EMPTY, true);
                 level.destroyBlock(target, false);
                 store(drops);
@@ -122,6 +132,7 @@ public final class WellDrillBlockEntity extends MachineBlockEntity implements Me
 
     private void finish() {
         finished = true;
+        diagnose(MachineDiagnostic.WORK_COMPLETE);
         setChanged();
     }
 
