@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:rocket"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.rocket.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.rocket.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:rocket"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/refinery"
+}

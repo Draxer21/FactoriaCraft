@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:stone_drill"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.drill.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.drill.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:stone_drill",
+              "factorycraft:copper_drill",
+              "factorycraft:iron_drill",
+              "factorycraft:diamond_drill",
+              "factorycraft:netherite_drill",
+              "factorycraft:forged_drill"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/root"
+}

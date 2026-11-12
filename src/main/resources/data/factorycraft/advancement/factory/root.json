@@ -1,0 +1,39 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:wrench"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.root.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:gui/advancements/backgrounds/stone"
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:iron_plate",
+              "factorycraft:guide_book",
+              "factorycraft:wrench"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ]
+}

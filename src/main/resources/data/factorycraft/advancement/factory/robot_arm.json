@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:robot_arm"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.robot_arm.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.robot_arm.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:robot_arm"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/conveyor"
+}

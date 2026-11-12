@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:helicopter"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.helicopter.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.helicopter.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:helicopter"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/tunneler"
+}

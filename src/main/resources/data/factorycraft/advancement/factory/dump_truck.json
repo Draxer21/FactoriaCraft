@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:dump_truck"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.dump_truck.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.dump_truck.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:dump_truck"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/excavator"
+}

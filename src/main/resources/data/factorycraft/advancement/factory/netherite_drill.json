@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:netherite_drill"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.netherite_drill.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.netherite_drill.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:netherite_drill"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/tool_forge",
+  "rewards": {
+    "experience": 100
+  }
+}

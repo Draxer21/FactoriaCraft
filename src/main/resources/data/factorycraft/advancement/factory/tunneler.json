@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:tunneler"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.tunneler.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.tunneler.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:tunneler"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/dump_truck"
+}

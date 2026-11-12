@@ -762,6 +762,18 @@ public final class TerrainSelfTest {
         com.mojang.logging.LogUtils.getLogger().info("ENCHANTTEST {}", out);
     }
 
+    /** The FactoryCraft advancement tab loaded (a bad file would be skipped by the game). */
+    private static void logAdvancements(ServerLevel level) {
+        int loaded = 0;
+        boolean root = false;
+        for (var holder : level.getServer().getAdvancements().getAllAdvancements()) {
+            if (!holder.id().getNamespace().equals(FactoryCraft.MOD_ID) || !holder.id().getPath().startsWith("factory/")) continue;
+            loaded++;
+            if (holder.id().getPath().equals("factory/root")) root = holder.value().display().isPresent();
+        }
+        com.mojang.logging.LogUtils.getLogger().info("ADVTEST loaded={} rootDisplayed={}", loaded, root);
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -918,6 +930,7 @@ public final class TerrainSelfTest {
             logChemicalBath(level, base);
             logTankGauge(level, base);
             logEnchanting();
+            logAdvancements(level);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

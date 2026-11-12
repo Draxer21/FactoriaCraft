@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:antimatter_cell"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.antimatter.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.antimatter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:antimatter_cell"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/reactor",
+  "rewards": {
+    "experience": 100
+  }
+}

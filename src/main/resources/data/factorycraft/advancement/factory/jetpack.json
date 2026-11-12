@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:jetpack"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.jetpack.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.jetpack.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:jetpack",
+              "factorycraft:jetpack_mk2"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/helicopter"
+}
