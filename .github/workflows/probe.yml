@@ -7,26 +7,20 @@ jobs:
     if: github.ref == 'refs/heads/probe'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '25'
-      - name: FluidModel
+      - name: CurseForge versions
         env:
           GH_TOKEN: ${{ github.token }}
+          CF: ${{ secrets.CURSEFORGE_TOKEN }}
         run: |
           {
           echo '```'
-          for mc in 26.2 26.1; do
-            echo "##### $mc"
-            url=$(curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json | python3 -c "import json,sys;d=json.load(sys.stdin);print([v['url'] for v in d['versions'] if v['id']=='$mc'][0])")
-            jar=$(curl -s "$url" | python3 -c "import json,sys;print(json.load(sys.stdin)['downloads']['client']['url'])")
-            curl -sL "$jar" -o c.jar
-            for c in 'net.minecraft.client.renderer.block.FluidModel$Unbaked' net.minecraft.client.renderer.block.FluidModel net.minecraft.client.resources.model.sprite.Material net.minecraft.client.color.block.BlockTintSource; do
-              echo "== $c"; javap -cp c.jar "$c" 2>&1 | head -25
-            done
-            javap -cp c.jar -c 'net.minecraft.client.renderer.block.FluidStateModelSet' 2>&1 | grep -i "water\|Unbaked\|Material" | head -20
-          done
+          [ -n "$CF" ] && echo "token present (${#CF} chars)" || echo "NO TOKEN"
+          curl -s -o types.json -w "types http=%{http_code}\n" -H "X-Api-Token: $CF" https://minecraft.curseforge.com/api/game/version-types
+          curl -s -o versions.json -w "versions http=%{http_code}\n" -H "X-Api-Token: $CF" https://minecraft.curseforge.com/api/game/versions
+          jq -c '.[] | select(.slug|test("26|modloader|java|environment|addons"))' types.json | head -40
+          echo ---
+          jq -c '.[] | select(.name|test("^26\\.|NeoForge|^Java 2|^Client$|^Server$"))' versions.json | head -60
+          head -c 300 types.json
           echo '```'
           } > report.md 2>&1
           head -c 65000 report.md > r2.md
