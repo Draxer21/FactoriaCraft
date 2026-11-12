@@ -94,7 +94,13 @@ public final class CrusherBlockEntity extends MachineBlockEntity implements Menu
     @Override
     protected boolean work(Level level) {
         List<ItemStack> results = batch();
-        if (results.isEmpty() || !canStore(results)) {
+        if (results.isEmpty()) {
+            diagnose(hasItemsInInputSlots() ? MachineDiagnostic.INVALID_INPUTS : MachineDiagnostic.WAITING_FOR_INPUT);
+            progress = 0;
+            return false;
+        }
+        if (!canStore(results)) {
+            diagnose(MachineDiagnostic.OUTPUT_BLOCKED);
             progress = 0;
             return false;
         }

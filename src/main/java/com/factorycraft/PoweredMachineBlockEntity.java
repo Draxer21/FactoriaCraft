@@ -113,12 +113,21 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
             networkCapacity = link.capacity(level) + link.feInput().getCapacityAsInt();
         }
         Operation op = find(level);
-        if (op == null || !canStore(op.maxOutputs())) {
+        if (op == null) {
+            diagnose(hasItemsInInputSlots() ? MachineDiagnostic.INVALID_INPUTS : MachineDiagnostic.WAITING_FOR_INPUT);
+            progress = 0;
+            return false;
+        }
+        if (!canStore(op.maxOutputs())) {
+            diagnose(MachineDiagnostic.OUTPUT_BLOCKED);
             progress = 0;
             return false;
         }
         int cost = Math.max(1, (int) Math.ceil(energyPerTick() * energyFactor()));
-        if (draw(level, cost) < cost) return false; // no power: wait
+        if (draw(level, cost) < cost) {
+            diagnose(MachineDiagnostic.NO_POWER);
+            return false; // no power: wait
+        }
         if (++progress >= scaledTime(time())) {
             progress = 0;
             List<ItemStack> results = boost(level, produce(level, op));
@@ -138,7 +147,9 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
             networkCapacity = link.capacity(level) + link.feInput().getCapacityAsInt();
         }
         int cost = Math.max(1, (int) Math.ceil(energy * energyFactor()));
-        return draw(level, cost) >= cost;
+        if (draw(level, cost) >= cost) return true;
+        diagnose(MachineDiagnostic.NO_POWER);
+        return false;
     }
 
     /** Takes power from FE pushed in by other mods first, then from our own network. */

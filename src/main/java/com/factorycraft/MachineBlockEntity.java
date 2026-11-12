@@ -33,6 +33,8 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
     private static final int MAX_ITEMS_ON_BELT = 3;
 
     protected NonNullList<ItemStack> items;
+    @org.jspecify.annotations.Nullable
+    private MachineDiagnostic diagnostic;
 
     protected MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int size) {
         super(type, pos, state);
@@ -56,6 +58,7 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
     // ---------------------------------------------------------------- ticking
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity machine) {
+        machine.diagnostic = null;
         boolean working = machine.work(level);
         if (machine instanceof Energy.Source source) ModCompat.pushToNeighbours(level, pos, source);
         if (state.getValue(MachineBlock.LIT) != working) {
@@ -228,6 +231,9 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
     /** Jade overlay: installed machine upgrades. Subclasses add their own state. */
     @Override
     public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {
+        if (diagnostic != null) {
+            lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.diagnostic", diagnostic.displayName()));
+        }
         for (Direction face : Direction.values()) {
             if (side(face) != SideMode.NORMAL) {
                 lines.add(net.minecraft.network.chat.Component.translatable("jade.factorycraft.side",
@@ -246,6 +252,19 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
             first = false;
         }
         lines.add(text);
+    }
+
+    /** Sets a transient status for the Jade overlay. Cleared before each server tick. */
+    protected final void diagnose(MachineDiagnostic status) {
+        diagnostic = status;
+    }
+
+    /** Whether any slot used for ingredients currently contains an item. */
+    protected final boolean hasItemsInInputSlots() {
+        for (int i = 0; i < items.size(); i++) {
+            if (isInputSlot(i) && !items.get(i).isEmpty()) return true;
+        }
+        return false;
     }
 
     /** " [Speed 2 · Eff. 1]" after the machine's name in its screen. */

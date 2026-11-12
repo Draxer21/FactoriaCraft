@@ -119,6 +119,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         ItemStack input = items.get(0);
         Optional<ItemStack> single = smeltResult(input);
         if (single.isEmpty()) {
+            diagnose(input.isEmpty() ? MachineDiagnostic.WAITING_FOR_INPUT : MachineDiagnostic.INVALID_INPUTS);
             progress = 0;
             return false;
         }
@@ -126,10 +127,12 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         List<ItemStack> products = new ArrayList<>();
         products.add(single.get().copyWithCount(single.get().getCount() * count));
         if (!canStore(products)) {
+            diagnose(MachineDiagnostic.OUTPUT_BLOCKED);
             progress = 0;
             return false;
         }
         if (fuelLeft <= 0 && !refuel(level)) {
+            diagnose(MachineDiagnostic.NO_FUEL);
             return false;
         }
         // Same fuel per item whatever the speed; efficiency modules save fuel.

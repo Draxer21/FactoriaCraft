@@ -145,6 +145,7 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
         boolean scram = level.hasNeighborSignal(worldPosition);
         rate = 0;
         turbinesThisTick = 0;
+        if (scram) diagnose(MachineDiagnostic.REDSTONE_PAUSED);
         // Load a new rod when the last one is spent and there's room for the power.
         if (!scram && burnLeft <= 0 && energy < CAPACITY && items.get(1).getCount() < items.get(1).getMaxStackSize()) {
             ItemStack rod = items.get(0);
@@ -158,6 +159,10 @@ public final class NuclearReactorBlockEntity extends MachineBlockEntity implemen
             }
         }
         boolean running = !scram && burnLeft > 0 && energy + power <= CAPACITY;
+        if (!scram && !running) {
+            if (energy + power > CAPACITY) diagnose(MachineDiagnostic.POWER_BUFFER_FULL);
+            else if (burnLeft <= 0) diagnose(MachineDiagnostic.NO_FUEL);
+        }
         if (running) {
             burnLeft--;
             energy += power;

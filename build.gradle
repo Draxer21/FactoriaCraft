@@ -59,3 +59,37 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+def languageFiles = fileTree('src/main/resources/assets/factorycraft/lang') {
+    include '*.json'
+}
+
+tasks.register('checkLanguageKeys') {
+    group = 'verification'
+    description = 'Checks that every language file has the same keys as en_us.json.'
+    inputs.files(languageFiles)
+
+    doLast {
+        def referenceFile = file('src/main/resources/assets/factorycraft/lang/en_us.json')
+        if (!referenceFile.isFile()) {
+            throw new GradleException('Missing language reference file: en_us.json')
+        }
+
+        def parser = new groovy.json.JsonSlurper()
+        def reference = parser.parse(referenceFile) as Map
+        def referenceKeys = new TreeSet(reference.keySet())
+
+        languageFiles.files.findAll { it.name != 'en_us.json' }.sort { it.name }.each { languageFile ->
+            def translated = parser.parse(languageFile) as Map
+            def missing = referenceKeys - translated.keySet()
+            def extra = translated.keySet() - referenceKeys
+            if (!missing.isEmpty() || !extra.isEmpty()) {
+                throw new GradleException("${languageFile.name} keys differ from en_us.json; missing: ${missing}, extra: ${extra}")
+            }
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn(tasks.named('checkLanguageKeys'))
+}
