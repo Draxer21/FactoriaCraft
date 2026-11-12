@@ -1,0 +1,41 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:solar_satellite"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.satellite.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.satellite.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:solar_satellite",
+              "factorycraft:survey_satellite"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/rocket",
+  "rewards": {
+    "experience": 100
+  }
+}

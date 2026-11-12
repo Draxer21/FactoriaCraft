@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:gamma_rifle"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.gamma_rifle.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.gamma_rifle.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:gamma_rifle"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/turret",
+  "rewards": {
+    "experience": 100
+  }
+}

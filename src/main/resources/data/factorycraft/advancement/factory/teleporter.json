@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "id": "factorycraft:teleporter"
+    },
+    "title": {
+      "translate": "advancements.factorycraft.teleporter.title"
+    },
+    "description": {
+      "translate": "advancements.factorycraft.teleporter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "factorycraft:teleporter"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "parent": "factorycraft:factory/advanced_circuit",
+  "rewards": {
+    "experience": 100
+  }
+}
