@@ -35,7 +35,7 @@ public final class Research {
 
     public static final List<Node> TREE = List.of(
             node("automation", 10, List.of(), "robot_arm", "sorter", "fast_conveyor", "express_conveyor", "elevator", "packager", "mixer", "assembler"),
-            node("electricity", 10, List.of(), "battery", "solar_generator", "windmill", "geothermal_generator", "steam_turbine",
+            node("electricity", 10, List.of(), "battery", "electric_furnace", "solar_generator", "windmill", "geothermal_generator", "steam_turbine",
                     "lightning_collector", "copper_coil", "copper_radiator"),
             node("advanced_vehicles", 15, List.of(), "tunneler", "bulldozer", "forester", "harvester", "paver", "tanker", "tank_wagon"),
             node("terrain", 25, List.of("automation"), "filler", "leveler", "quarry", "drain", "planter", "builder", "blueprint", "industrial_lamp"),

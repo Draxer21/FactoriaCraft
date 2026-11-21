@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-/** Ore processing tier 3: the chemical bath. */
+/** Ore processing tier 3 (the chemical bath) and the electric furnace. */
 public final class Processing {
     private Processing() {}
 
@@ -37,4 +37,18 @@ public final class Processing {
             BLOCK_ENTITY_TYPES.register("chemical_bath", () -> new BlockEntityType<>(ChemicalBathBlockEntity::new, CHEMICAL_BATH.value()));
     public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> CHEMICAL_BATH_MENU = MENUS.register("chemical_bath",
             () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(Processing.CHEMICAL_BATH_MENU.value(), id, inventory, 2), FeatureFlags.VANILLA_SET));
+
+    /** Electric furnace: furnace recipes on power, 16 items a second. */
+    public static final DeferredHolder<Block, Block> ELECTRIC_FURNACE = BLOCKS.register("electric_furnace", () ->
+            new SimpleMachineBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, "electric_furnace")))
+                    .strength(3.5F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops()
+                    .lightLevel(state -> state.getValue(MachineBlock.LIT) ? 13 : 0),
+                    () -> Processing.ELECTRIC_FURNACE_BLOCK_ENTITY.value()));
+    public static final DeferredHolder<Item, Item> ELECTRIC_FURNACE_ITEM = ITEMS.registerItem("electric_furnace",
+            properties -> new BlockItem(ELECTRIC_FURNACE.value(), properties.useBlockDescriptionPrefix()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ElectricFurnaceBlockEntity>> ELECTRIC_FURNACE_BLOCK_ENTITY =
+            BLOCK_ENTITY_TYPES.register("electric_furnace", () -> new BlockEntityType<>(ElectricFurnaceBlockEntity::new, ELECTRIC_FURNACE.value()));
+    public static final DeferredHolder<MenuType<?>, MenuType<ProcessingMenu>> ELECTRIC_FURNACE_MENU = MENUS.register("electric_furnace",
+            () -> new MenuType<>((id, inventory) -> ProcessingMenu.powered(Processing.ELECTRIC_FURNACE_MENU.value(), id, inventory, 1), FeatureFlags.VANILLA_SET));
 }

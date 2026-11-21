@@ -224,5 +224,13 @@ public final class ProcessingMenu extends AbstractContainerMenu {
         public boolean mayPlace(ItemStack stack) {
             return false;
         }
+
+        @Override
+        public void onTake(Player player, ItemStack stack) {
+            super.onTake(player, stack);
+            if (container instanceof StoredExperience furnace && player.level() instanceof net.minecraft.server.level.ServerLevel level) {
+                furnace.popExperience(level, player.position());
+            }
+        }
     }
 }

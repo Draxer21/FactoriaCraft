@@ -35,6 +35,7 @@ public final class Tooltips {
         info("assembler", "assembler", () -> new Object[] {AssemblerBlockEntity.ENERGY});
         info("crusher", "crusher", () -> new Object[0]);
         info("industrial_furnace", "industrial_furnace", () -> new Object[] {IndustrialFurnaceBlockEntity.BATCH});
+        info("electric_furnace", "electric_furnace", () -> new Object[] {ElectricFurnaceBlockEntity.BATCH * 20 / ElectricFurnaceBlockEntity.TIME, ElectricFurnaceBlockEntity.ENERGY});
         info("generator", "generator", () -> new Object[] {GeneratorBlockEntity.OUTPUT, n(GeneratorBlockEntity.CAPACITY)});
         info("solar_generator", "solar_generator", () -> new Object[] {SolarGeneratorBlockEntity.OUTPUT, n(SolarGeneratorBlockEntity.CAPACITY), (int) SolarGeneratorBlockEntity.VEHICLE_RANGE});
         info("battery", "battery", () -> new Object[] {n(BatteryBlockEntity.CAPACITY)});
