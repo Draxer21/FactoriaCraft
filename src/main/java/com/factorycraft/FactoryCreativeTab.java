@@ -133,6 +133,7 @@ final class FactoryCreativeTab {
                     output.accept(FactoryCraft.WELL_DRILL_ITEM.value());
                     output.accept(FactoryCraft.CRUSHER_ITEM.value());
                     output.accept(FactoryCraft.INDUSTRIAL_FURNACE_ITEM.value());
+                    output.accept(Processing.ELECTRIC_FURNACE_ITEM.value());
                     output.accept(FactoryCraft.IRON_DUST.value());
                     output.accept(FactoryCraft.GOLD_DUST.value());
                     output.accept(FactoryCraft.COPPER_DUST.value());

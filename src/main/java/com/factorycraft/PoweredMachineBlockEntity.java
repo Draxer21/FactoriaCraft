@@ -136,8 +136,13 @@ public abstract class PoweredMachineBlockEntity extends MachineBlockEntity imple
                 if (op.consume()[i] > 0) items.get(i).shrink(op.consume()[i]);
             }
             store(results);
+            finished(level, op);
         }
         return true;
+    }
+
+    /** Called once after an operation's products are stored. */
+    protected void finished(Level level, Operation operation) {
     }
 
     /** For machines with their own work loop: draws {@code energy} (scaled by modules) from the network. */

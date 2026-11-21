@@ -228,6 +228,15 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         return boosted;
     }
 
+    /** Breaking a furnace drops the experience it still holds. */
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (this instanceof StoredExperience furnace && level instanceof net.minecraft.server.level.ServerLevel server) {
+            furnace.popExperience(server, net.minecraft.world.phys.Vec3.atCenterOf(pos));
+        }
+    }
+
     /** Jade overlay: installed machine upgrades. Subclasses add their own state. */
     @Override
     public void jadeInfo(java.util.List<net.minecraft.network.chat.Component> lines) {

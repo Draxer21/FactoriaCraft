@@ -85,6 +85,7 @@
     "factorycraft:research_station",
     "factorycraft:assembler",
     "factorycraft:oil_shale",
-    "factorycraft:chemical_bath"
+    "factorycraft:chemical_bath",
+    "factorycraft:electric_furnace"
   ]
 }

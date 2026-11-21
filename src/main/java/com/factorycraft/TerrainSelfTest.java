@@ -804,6 +804,56 @@ public final class TerrainSelfTest {
         return text.substring(i + 11, end);
     }
 
+    /** Furnace experience: kept while smelting, given to the player who takes the products; electric furnace on FE. */
+    private static void logFurnaces(ServerLevel level, BlockPos base) {
+        StringBuilder out = new StringBuilder();
+        try {
+            var player = net.neoforged.neoforge.common.util.FakePlayerFactory.getMinecraft(level);
+            BlockPos at = base.offset(44, 1, -40);
+            level.setBlock(at, FactoryCraft.INDUSTRIAL_FURNACE.value().defaultBlockState(), 3);
+            IndustrialFurnaceBlockEntity furnace = (IndustrialFurnaceBlockEntity) level.getBlockEntity(at);
+            furnace.setItem(0, new ItemStack(Items.RAW_IRON, 8));
+            furnace.setItem(1, new ItemStack(Items.COAL, 2));
+            for (int i = 0; i < 60; i++) MachineBlockEntity.serverTick(level, at, level.getBlockState(at), furnace);
+            out.append("industrial=").append(furnace.getItem(2).getCount()).append('x').append(furnace.getItem(2).getItem())
+                    .append(" xp=").append(String.format(java.util.Locale.ROOT, "%.1f", furnace.storedExperience()));
+            out.append(" taken=").append(takeAndCountOrbs(level, player, at, furnace, 2));
+
+            BlockPos at2 = base.offset(46, 1, -40);
+            level.setBlock(at2, Processing.ELECTRIC_FURNACE.value().defaultBlockState(), 3);
+            ElectricFurnaceBlockEntity electric = (ElectricFurnaceBlockEntity) level.getBlockEntity(at2);
+            electric.setItem(0, new ItemStack(Items.RAW_GOLD, 20));
+            out.append(" unpowered=").append(diagnostic(level, at2, electric));
+            electric.energyLink().feInput().set(10_000);
+            for (int i = 0; i < 25; i++) MachineBlockEntity.serverTick(level, at2, level.getBlockState(at2), electric);
+            out.append(" electric=").append(electric.getItem(1).getCount()).append('x').append(electric.getItem(1).getItem())
+                    .append(" left=").append(electric.getItem(0).getCount())
+                    .append(" xp=").append(String.format(java.util.Locale.ROOT, "%.1f", electric.storedExperience()));
+            out.append(" taken=").append(takeAndCountOrbs(level, player, at2, electric, 1));
+            out.append(" dirtAccepted=").append(electric.canPlaceItem(0, new ItemStack(Items.DIRT)));
+        } catch (RuntimeException e) {
+            out.append(" error=").append(e);
+        }
+        com.mojang.logging.LogUtils.getLogger().info("FURNACETEST {}", out);
+    }
+
+    /** Takes the first output through the menu like a player would; returns the experience in the orbs that appear. */
+    private static String takeAndCountOrbs(ServerLevel level, net.minecraft.world.entity.player.Player player, BlockPos at,
+                                           MachineBlockEntity machine, int slotIndex) {
+        player.setPos(at.getX() + 0.5, at.getY() + 1, at.getZ() + 0.5);
+        var menu = ((net.minecraft.world.MenuProvider) machine).createMenu(0, player.getInventory(), player);
+        var slot = menu.getSlot(slotIndex);
+        ItemStack taken = slot.remove(slot.getItem().getCount());
+        slot.onTake(player, taken);
+        var box = new net.minecraft.world.phys.AABB(at).inflate(4);
+        int xp = 0;
+        for (var orb : level.getEntitiesOfClass(net.minecraft.world.entity.ExperienceOrb.class, box)) {
+            xp += orb.getValue();
+            orb.discard();
+        }
+        return taken.getCount() + "/orbsXp=" + xp + "/left=" + ((StoredExperience) machine).storedExperience();
+    }
+
     private static void logBonded() {
         java.util.function.Function<String, net.minecraft.tags.TagKey<net.minecraft.world.item.Item>> tag = path ->
                 net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
@@ -962,6 +1012,7 @@ public final class TerrainSelfTest {
             logEnchanting();
             logAdvancements(level);
             logDiagnostics(level, base);
+            logFurnaces(level, base);
             int turbineRate = level.getBlockEntity(base.offset(240, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             int photonRate = level.getBlockEntity(base.offset(250, 0, 0)) instanceof Energy.Source t ? t.rate() : -1;
             com.mojang.logging.LogUtils.getLogger().info(

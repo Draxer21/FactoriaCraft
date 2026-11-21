@@ -130,6 +130,7 @@
     "factorycraft:import_bus",
     "factorycraft:export_bus",
     "factorycraft:oil_shale",
-    "factorycraft:chemical_bath"
+    "factorycraft:chemical_bath",
+    "factorycraft:electric_furnace"
   ]
 }

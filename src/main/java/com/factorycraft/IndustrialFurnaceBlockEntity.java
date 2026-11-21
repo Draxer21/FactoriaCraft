@@ -28,7 +28,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * per batch (a furnace does 1 item in 200), with the same fuel cost per item.
  * Slot 0 = input, 1 = fuel, 2..5 = output.
  */
-public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity implements MenuProvider {
+public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity implements MenuProvider, StoredExperience {
     public static final int BATCH = 8;
     /** Ticks per batch. */
     private static final int BATCH_TIME = 40;
@@ -40,6 +40,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
     private int progress;
     private int fuelLeft;
     private int fuelMax;
+    private float experience;
 
     /** Synced to the screen: progress, progress max, fuel left, fuel of the current item. */
     private final ContainerData data = new ContainerData() {
@@ -109,9 +110,23 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
     }
 
     private Optional<ItemStack> smeltResult(ItemStack stack) {
+        return recipe(stack).map(r -> r.assemble(new SingleRecipeInput(stack.copyWithCount(1))));
+    }
+
+    private Optional<SmeltingRecipe> recipe(ItemStack stack) {
         if (!(level instanceof ServerLevel serverLevel) || stack.isEmpty()) return Optional.empty();
-        SingleRecipeInput input = new SingleRecipeInput(stack.copyWithCount(1));
-        return recipes.getRecipeFor(input, serverLevel).map(RecipeHolder::value).map(r -> r.assemble(input));
+        return recipes.getRecipeFor(new SingleRecipeInput(stack.copyWithCount(1)), serverLevel).map(RecipeHolder::value);
+    }
+
+    @Override
+    public float storedExperience() {
+        return experience;
+    }
+
+    @Override
+    public void setStoredExperience(float value) {
+        experience = value;
+        setChanged();
     }
 
     @Override
@@ -139,6 +154,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         fuelLeft -= Math.max(1, (int) Math.round(FUEL_PER_TICK * energyFactor() / speedFactor()));
         if (++progress >= scaledTime(BATCH_TIME)) {
             progress = 0;
+            addExperience(recipe(input).map(SmeltingRecipe::experience).orElse(0.0F) * count);
             input.shrink(count);
             List<ItemStack> boosted = boost(level, products);
             store(canStore(boosted) ? boosted : products);
@@ -167,6 +183,7 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         progress = input.getIntOr("Progress", 0);
         fuelLeft = input.getIntOr("Fuel", 0);
         fuelMax = input.getIntOr("FuelMax", 0);
+        experience = input.getFloatOr("Experience", 0.0F);
     }
 
     @Override
@@ -175,5 +192,6 @@ public final class IndustrialFurnaceBlockEntity extends MachineBlockEntity imple
         output.putInt("Progress", progress);
         output.putInt("Fuel", fuelLeft);
         output.putInt("FuelMax", fuelMax);
+        output.putFloat("Experience", experience);
     }
 }

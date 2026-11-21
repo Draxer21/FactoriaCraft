@@ -89,6 +89,9 @@ public final class JeiCompat implements IModPlugin {
             ItemStack station = GuideRecipes.itemStack(machine.block());
             if (!station.isEmpty()) registration.addCraftingStation(machine.type(), station);
         }
+        // Both furnaces use the normal furnace recipes.
+        registration.addCraftingStation(mezz.jei.api.constants.RecipeTypes.SMELTING,
+                new ItemStack(FactoryCraft.INDUSTRIAL_FURNACE_ITEM.value()), new ItemStack(Processing.ELECTRIC_FURNACE_ITEM.value()));
     }
 
     private static final class Category implements IRecipeCategory<MachineRecipe> {

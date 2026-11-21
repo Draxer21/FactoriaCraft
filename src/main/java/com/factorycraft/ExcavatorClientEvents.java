@@ -66,6 +66,7 @@ public final class ExcavatorClientEvents {
         event.register(Nuclear.REACTOR_MENU.value(), ReactorScreen::new);
         event.register(Nuclear.CENTRIFUGE_MENU.value(), ProcessingScreen::new);
         event.register(Processing.CHEMICAL_BATH_MENU.value(), ProcessingScreen::new);
+        event.register(Processing.ELECTRIC_FURNACE_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.REPAIR_STATION_MENU.value(), ProcessingScreen::new);
         event.register(FactoryCraft.VEHICLE_MENU.value(), VehicleScreen::new);
         event.register(FactoryCraft.ORE_WASHER_MENU.value(), ProcessingScreen::new);
